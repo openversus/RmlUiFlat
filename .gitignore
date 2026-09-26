@@ -1,0 +1,6 @@
+external/
+bin/
+obj/
+native/build/
+gen/gen.log
+demo/Demo/demo-selftest.*

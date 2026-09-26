@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HexaGen" Version="1.1.24.1" />
+    <!-- HexaGen only references the win-x64 libclang runtimes; without these, Linux falls back to the system libclang and crashes on the version mismatch. -->
+    <PackageReference Include="libclang.runtime.linux-x64" Version="20.1.2" />
+    <PackageReference Include="libclangsharp.runtime.linux-x64" Version="20.1.2" />
+  </ItemGroup>
+
+</Project>

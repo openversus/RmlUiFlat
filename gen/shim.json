@@ -1,0 +1,44 @@
+{
+  // Everything the generator wraps is named here. An RmlUi update needs no edits unless you want to widen the scope;
+  // shim-report.md lists what changed shape.
+  "RmlUiInclude": "../external/RmlUi/Include",
+  "EntryHeader": "RmlUi/Core.h",
+  "SystemIncludeFolders": [
+    "/usr/include/c++/16",
+    "/usr/include/c++/16/x86_64-redhat-linux",
+    "/usr/include/c++/16/backward",
+    "/usr/lib/clang/22/include",
+    "/usr/local/include",
+    "/usr/include"
+  ],
+  "Defines": [ "RMLUI_STATIC_LIB" ],
+
+  "FreeFunctionHeaders": [ "RmlUi/Core/Core.h" ],
+  "Classes": [
+    "Rml::Context",
+    "Rml::Element",
+    "Rml::ElementDocument",
+    "Rml::Event"
+  ],
+  "OpaqueTypes": [
+    "Rml::EventListener",
+    "Rml::RenderInterface",
+    "Rml::SystemInterface",
+    "Rml::FileInterface",
+    "Rml::FontEngineInterface",
+    "Rml::TextInputHandler",
+    "Rml::Plugin"
+  ],
+  "ValueTypes": [
+    "Rml::Vector2f",
+    "Rml::Vector2i",
+    "Rml::Colourb"
+  ],
+  "IgnoredFunctions": [],
+  "Renames": {},
+
+  "NativeOutput": "../native/generated",
+  "ReportOutput": "shim-report.md",
+  "HexaGenConfig": "hexagen.json",
+  "CSharpOutput": "../src/RmlUi.Net/Generated"
+}

@@ -1,0 +1,18 @@
+{
+  "Namespace": "RmlUi.Net",
+  "ApiName": "RmlUi",
+  "LibName": "rmlui_c",
+  "GenerateConstructorsForStructs": false,
+  "WrapPointersAsHandle": true,
+  "ImportType": "LibraryImport",
+  "IgnoredExtensions": [],
+  "AllowedExtensions": [],
+  "SystemIncludeFolders": [
+    "/usr/lib/clang/22/include",
+    "/usr/include"
+  ],
+  "Defines": [
+    "RMLC_STATIC"
+  ],
+  "GenerateAdditionalOverloads": true
+}
