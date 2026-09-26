@@ -123,7 +123,10 @@ internal static unsafe partial class Program
                     Console.Error.WriteLine($"FAIL: expected one click and \"{expected}\"");
                     exitCode = 1;
                 }
-                SaveScreenshot("demo-selftest.ppm");
+                if (OperatingSystem.IsLinux())
+                {
+                    SaveScreenshot("demo-selftest.ppm");
+                }
                 running = false;
             }
             Backend.PresentFrame();

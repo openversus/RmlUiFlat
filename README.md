@@ -101,9 +101,26 @@ demo/Demo/bin/publish/Demo --selftest external/RmlUi/Samples/assets   # clicks t
 `RMLC_BACKEND` builds one of RmlUi's sample desktop backends (window, input, renderer) as `rmlui_c_backend`, for
 standalone windows. The in-game overlay will not use it; it needs a render interface for the game's own device.
 
+## Build for Windows (cross-compiled from Linux)
+
+```sh
+cross/build-windows.sh              # native/build/win/rmlui_c.dll: RmlUi + FreeType + the shim, for a client to load
+cross/build-windows.sh Win32_DX11   # native/build/win-Win32_DX11/rmlui_c.dll: the same plus RmlUi's Win32/DX11 window backend
+dotnet publish demo/Demo -c Release -r win-x64 -p:AcceptVSBuildToolsLicense=true -o demo/Demo/bin/publish-win
+wine demo/Demo/bin/publish-win/Demo.exe --selftest
+```
+
+clang-cl and lld-link against an xwin splat (`cross/xwin-clang-cl.cmake`, found at `$XWIN_SPLAT`,
+`~/.xwin-cache/splat` or `~/.cache/xwin/splat`). FreeType is built from `external/freetype` (2.14.3) without zlib,
+png, bzip2, brotli or harfbuzz. The C and C++ runtimes are linked statically: the DLL imports only Windows system DLLs,
+so players need no VC++ redistributable. The demo on Windows loads `rmlui_c.dll` from beside the executable at run
+time, the way the client would; on Linux it links everything statically. Checked under Wine 11.13: the self-test
+passes, and the window renders as it does on Linux. The .NET side cross-compiles with
+`PublishAotCrossXWin`, as ovs-client does.
+
 ## Not done yet
 
-- Windows: nothing here has been cross-built for Windows or run under Proton.
-- In-game: a DXGI Present hook and RmlUi's DX11 or DX12 renderer (which one depends on the game's device).
+- In-game: a DXGI Present hook and RmlUi's DX11 renderer (the game's default) and DX12 renderer (`-d3d12`), chosen
+  from the device the game created.
 - Unmapped in scope (see shim-report.md): `ElementPtr` ownership (`CreateElement`, `AppendChild`), `Dictionary`
   and `Variant` (event parameters), `Property`, and the containers (`StringList`, `ElementList`).

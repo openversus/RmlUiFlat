@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -15,13 +14,31 @@
     <ProjectReference Include="../../src/RmlUi.Net/RmlUi.Net.csproj" />
   </ItemGroup>
 
-  <!-- Static link: the shim, the desktop backend and RmlUi itself go into the executable. Build native/ first (see README). -->
-  <ItemGroup>
+  <!-- Linux: static link. The shim, the desktop backend and RmlUi itself go into the executable. Build native/ first
+       (see README). -->
+  <ItemGroup Condition="$(RuntimeIdentifier.StartsWith('linux'))">
     <DirectPInvoke Include="rmlui_c" />
     <NativeLibrary Include="$(NativeBuildDir)librmlui_c_backend.a" />
     <NativeLibrary Include="$(NativeBuildDir)librmlui_c.a" />
     <NativeLibrary Include="$(NativeBuildDir)librmlui.a" />
     <LinkerArg Include="-lfreetype -lX11 -lXext -lGL -lstdc++ -ldl -lm" />
   </ItemGroup>
+
+  <!-- Windows: rmlui_c.dll loaded at runtime from beside the executable, as the client would load it. Build it with
+       cross/build-windows.sh Win32_DX11 first. -->
+  <PropertyGroup>
+    <WinDllDir>$(MSBuildThisFileDirectory)../../native/build/win-Win32_DX11/</WinDllDir>
+    <!-- As in ovs-client: keep PublishAotCrossXWin's xwin cache out of its NuGet folder (restore loops on the
+         splat's self-referencing symlink). -->
+    <XWinCache Condition="'$(XWinCache)' == ''">$(HOME)/.cache/xwin/</XWinCache>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Lets `dotnet publish -r win-x64` link on Linux with lld-link and the xwin sysroot; inert for other RIDs. -->
+    <PackageReference Include="PublishAotCrossXWin" Version="1.2.0" />
+  </ItemGroup>
+  <Target Name="CopyRmlUiDll" AfterTargets="Publish" Condition="$(RuntimeIdentifier.StartsWith('win'))">
+    <Error Condition="!Exists('$(WinDllDir)rmlui_c.dll')" Text="No $(WinDllDir)rmlui_c.dll; run cross/build-windows.sh Win32_DX11" />
+    <Copy SourceFiles="$(WinDllDir)rmlui_c.dll" DestinationFolder="$(PublishDir)" />
+  </Target>
 
 </Project>

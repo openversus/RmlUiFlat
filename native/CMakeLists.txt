@@ -16,16 +16,31 @@ endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_subdirectory(../external/RmlUi RmlUi EXCLUDE_FROM_ALL)
 
-add_library(rmlui_c STATIC
-    generated/rmlui_c.cpp
-    rmlui_c_manual.cpp
-)
+# RMLC_SHARED builds rmlui_c as a DLL/shared object with RmlUi, FreeType and (with RMLC_BACKEND) the desktop backend
+# inside it, for a client that loads it at runtime. Otherwise it is a static library for linking into an executable.
+option(RMLC_SHARED "Build rmlui_c as a shared library" OFF)
+
+if(RMLC_SHARED)
+    add_library(rmlui_c SHARED
+        generated/rmlui_c.cpp
+        rmlui_c_manual.cpp
+    )
+    if(RMLC_BACKEND)
+        target_sources(rmlui_c PRIVATE backend/rmlui_c_backend.cpp)
+        target_link_libraries(rmlui_c PRIVATE rmlui_backend_${RMLC_BACKEND})
+    endif()
+else()
+    add_library(rmlui_c STATIC
+        generated/rmlui_c.cpp
+        rmlui_c_manual.cpp
+    )
+    target_compile_definitions(rmlui_c PUBLIC RMLC_STATIC)
+endif()
 target_compile_features(rmlui_c PRIVATE cxx_std_20)
-target_compile_definitions(rmlui_c PUBLIC RMLC_STATIC)
 target_include_directories(rmlui_c PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(rmlui_c PUBLIC RmlUi::Core)
 
-if(RMLC_BACKEND)
+if(RMLC_BACKEND AND NOT RMLC_SHARED)
     add_library(rmlui_c_backend STATIC backend/rmlui_c_backend.cpp)
     target_compile_features(rmlui_c_backend PRIVATE cxx_std_20)
     target_link_libraries(rmlui_c_backend PUBLIC rmlui_c rmlui_backend_${RMLC_BACKEND})

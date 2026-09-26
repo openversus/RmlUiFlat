@@ -1,5 +1,7 @@
 <Project>
   <PropertyGroup>
+    <!-- Matches ovs-client, which will reference RmlUi.Net. -->
+    <TargetFramework>net10.0</TargetFramework>
     <!-- The .editorconfig rules run as analyzers during the build, as in ovs-client: braces on every control-flow
          body (IDE0011) is an error. -->
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
