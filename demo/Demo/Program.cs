@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using RmlUi;
+using RmlUi.Desktop;
 
 namespace Demo;
 
@@ -43,104 +44,78 @@ internal static unsafe partial class Program
         string assets = args.FirstOrDefault(a => !a.StartsWith("--"))
             ?? Path.Combine(AppContext.BaseDirectory, "../../../../external/RmlUi/Samples/assets");
 
-        if (!Backend.Initialize("RmlUi from C#", Width, Height, true))
-        {
-            Console.Error.WriteLine("Backend.Initialize failed");
-            return 1;
-        }
-        Rml.SetSystemInterface(Backend.GetSystemInterface());
-        Rml.SetRenderInterface(Backend.GetRenderInterface());
-        Rml.Initialise();
+        using var window = new RmlWindowBuilder("RmlUi from C#", Width, Height)
+            .PowerSave(!selfTest)
+            .AddFont(File.ReadAllBytes(Path.Combine(assets, "LatoLatin-Regular.ttf")), "Lato", weight: Style.FontWeight.Normal)
+            .AddFont(File.ReadAllBytes(Path.Combine(assets, "LatoLatin-Bold.ttf")), "Lato", weight: Style.FontWeight.Bold)
+            .Build();
         Console.WriteLine($"RmlUi {Rml.GetVersion()}");
 
-        // Font data is not copied by RmlUi: it must outlive Rml.Shutdown, so it lives in native memory until then.
-        var fonts = new List<nint>();
-        foreach (var (file, weight) in new[] { ("LatoLatin-Regular.ttf", Style.FontWeight.Normal), ("LatoLatin-Bold.ttf", Style.FontWeight.Bold) })
-        {
-            byte[] bytes = File.ReadAllBytes(Path.Combine(assets, file));
-            byte* data = (byte*)NativeMemory.Alloc((nuint)bytes.Length);
-            bytes.CopyTo(new Span<byte>(data, bytes.Length));
-            fonts.Add((nint)data);
-            if (!Rml.LoadFontFace(data, (nuint)bytes.Length, "Lato", Style.FontStyle.Normal, weight))
-            {
-                Console.Error.WriteLine($"LoadFontFace failed for {file}");
-                return 1;
-            }
-        }
-
-        var context = Rml.CreateContext("main", new Vector2i(Width, Height));
-        var document = context.LoadDocumentFromMemory(Document, "[demo]");
+        var document = window.Context.LoadDocumentFromMemory(Document, "[demo]");
         document.Show();
         var button = document.GetElementById("hello");
         var status = document.GetElementById("status");
 
         int clicks = 0;
-        var listener = EventListener.Create(evt =>
+        window.Listen(button, "click", _ =>
         {
             clicks++;
             status.SetInnerRML($"Clicked {clicks} time{(clicks == 1 ? "" : "s")} — handled in C#.");
         });
-        button.AddEventListener("click", listener);
 
+        if (!selfTest)
+        {
+            window.Run();
+            return 0;
+        }
+        return SelfTest(window, button, status, () => clicks);
+    }
+
+    /// <summary>
+    /// Clicks the button through RmlUi's own input path, then checks what the handler wrote back and a C bool round trip,
+    /// and on Linux saves a screenshot. Returns the exit code.
+    /// </summary>
+    private static int SelfTest(RmlWindow window, Element button, Element status, Func<int> clicks)
+    {
         int exitCode = 0;
-        int frame = 0;
-        bool running = true;
-        while (running)
+        for (int frame = 0; frame < 5; frame++)
         {
-            running = Backend.ProcessEvents(context, !selfTest);
-            if (selfTest && frame == 5)
-            {
-                // Through RmlUi's own input path: move onto the button, press, release.
-                var offset = button.GetAbsoluteOffset(BoxArea.Border);
-                int x = (int)(offset.X + button.GetOffsetWidth() / 2);
-                int y = (int)(offset.Y + button.GetOffsetHeight() / 2);
-                context.ProcessMouseMove(x, y, 0);
-                context.ProcessMouseButtonDown(0, 0);
-                context.ProcessMouseButtonUp(0, 0);
-                Console.WriteLine($"clicked at ({x}, {y})");
-            }
-            context.Update();
-            Backend.BeginFrame();
-            context.Render();
-            if (selfTest && frame == 10)
-            {
-                // C bool is one byte: false must read back false, and true true.
-                Rml.CreateContext("scratch", new Vector2i(1, 1));
-                bool removedMissing = Rml.RemoveContext("no-such-context");
-                bool removedScratch = Rml.RemoveContext("scratch");
-                Console.WriteLine($"RemoveContext: missing={removedMissing} existing={removedScratch}");
-                if (removedMissing || !removedScratch)
-                {
-                    Console.Error.WriteLine("FAIL: RemoveContext returned the wrong bool");
-                    exitCode = 1;
-                }
-
-                string text = status.GetInnerRML();
-                Console.WriteLine($"status: {text}");
-                const string expected = "Clicked 1 time — handled in C#.";
-                if (clicks != 1 || text != expected)
-                {
-                    Console.Error.WriteLine($"FAIL: expected one click and \"{expected}\"");
-                    exitCode = 1;
-                }
-                if (OperatingSystem.IsLinux())
-                {
-                    SaveScreenshot("demo-selftest.ppm");
-                }
-                running = false;
-            }
-            Backend.PresentFrame();
-            frame++;
+            window.RunFrame();
         }
 
-        button.RemoveEventListener("click", listener);
-        listener.Destroy();
-        Rml.Shutdown();
-        foreach (var data in fonts)
+        var offset = button.GetAbsoluteOffset(BoxArea.Border);
+        int x = (int)(offset.X + button.GetOffsetWidth() / 2);
+        int y = (int)(offset.Y + button.GetOffsetHeight() / 2);
+        window.Context.ProcessMouseMove(x, y, 0);
+        window.Context.ProcessMouseButtonDown(0, 0);
+        window.Context.ProcessMouseButtonUp(0, 0);
+        Console.WriteLine($"clicked at ({x}, {y})");
+
+        if (OperatingSystem.IsLinux())
         {
-            NativeMemory.Free((void*)data);
+            window.AfterRender += () => SaveScreenshot("demo-selftest.ppm");
         }
-        Backend.Shutdown();
+        window.RunFrame();
+
+        // C bool is one byte: false must read back false, and true true.
+        Rml.CreateContext("scratch", new Vector2i(1, 1));
+        bool removedMissing = Rml.RemoveContext("no-such-context");
+        bool removedScratch = Rml.RemoveContext("scratch");
+        Console.WriteLine($"RemoveContext: missing={removedMissing} existing={removedScratch}");
+        if (removedMissing || !removedScratch)
+        {
+            Console.Error.WriteLine("FAIL: RemoveContext returned the wrong bool");
+            exitCode = 1;
+        }
+
+        string text = status.GetInnerRML();
+        Console.WriteLine($"status: {text}");
+        const string expected = "Clicked 1 time — handled in C#.";
+        if (clicks() != 1 || text != expected)
+        {
+            Console.Error.WriteLine($"FAIL: expected one click and \"{expected}\"");
+            exitCode = 1;
+        }
         return exitCode;
     }
 
@@ -164,37 +139,4 @@ internal static unsafe partial class Program
 
     [LibraryImport("libGL.so.1")]
     private static partial void glReadPixels(int x, int y, int width, int height, uint format, uint type, void* data);
-}
-
-/// <summary>rmlui_c_backend.h: RmlUi's sample desktop backend, for standalone windows.</summary>
-internal static unsafe partial class Backend
-{
-    [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_Initialize", StringMarshalling = StringMarshalling.Utf8)]
-    [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool Initialize(string windowName, int width, int height, [MarshalAs(UnmanagedType.U1)] bool allowResize);
-
-    [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_Shutdown")]
-    public static partial void Shutdown();
-
-    [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_GetSystemInterface")]
-    private static partial nint GetSystemInterfaceNative();
-
-    public static SystemInterface GetSystemInterface() => new(GetSystemInterfaceNative());
-
-    [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_GetRenderInterface")]
-    private static partial nint GetRenderInterfaceNative();
-
-    public static RenderInterface GetRenderInterface() => new(GetRenderInterfaceNative());
-
-    [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_ProcessEvents")]
-    [return: MarshalAs(UnmanagedType.U1)]
-    private static partial bool ProcessEventsNative(nint context, [MarshalAs(UnmanagedType.U1)] bool powerSave);
-
-    public static bool ProcessEvents(Context context, bool powerSave) => ProcessEventsNative(context.Handle, powerSave);
-
-    [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_BeginFrame")]
-    public static partial void BeginFrame();
-
-    [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_PresentFrame")]
-    public static partial void PresentFrame();
 }

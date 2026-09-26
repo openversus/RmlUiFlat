@@ -24,6 +24,32 @@ method names (C# overloads and C++ default arguments where they have a C# spelli
 methods. Handles do not own what they point at; RmlUi's own lifetime rules apply, and the C++ doc comments,
 including `@lifetime` notes, come through as XML docs.
 
+### A standalone window
+
+`src/RmlUi.Net.Desktop` (for an installer, tools, the demo; the in-game client does not reference it) wraps RmlUi's
+desktop backend and owns the setup and teardown RmlUi is particular about:
+
+```csharp
+using RmlUi;
+using RmlUi.Desktop;
+
+using var window = new RmlWindowBuilder("Installer", 800, 480)
+    .AddFont(regularBytes, "Lato")
+    .AddFont(boldBytes, "Lato", weight: Style.FontWeight.Bold)
+    .Build();
+
+var document = window.Context.LoadDocumentFromMemory(rml);
+document.Show();
+window.Listen(document.GetElementById("install"), "click", e => StartInstall());
+window.Run();
+```
+
+Font bytes are copied into native memory the window keeps until RmlUi is shut down (RmlUi reads them until then).
+Listeners made with `Listen` belong to the window. `Dispose` shuts RmlUi down first, which destroys the context and
+detaches every listener, then destroys the listeners, frees the fonts and closes the window. RmlUi and its backend are
+process-wide, so one window can be open at a time; `RunFrame` and `AfterRender` are there for driving it from code.
+It needs an `rmlui_c` built with a backend (`RMLC_BACKEND` on Linux, `cross/build-windows.sh Win32_DX11`).
+
 ## How it fits together
 
 ```

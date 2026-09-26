@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- A standalone RmlUi window (installer, tools, the demo) on RmlUi's desktop backend. Needs an rmlui_c built with
+       RMLC_BACKEND; the in-game client does not reference this. -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../RmlUi.Net/RmlUi.Net.csproj" />
+  </ItemGroup>
+
+</Project>

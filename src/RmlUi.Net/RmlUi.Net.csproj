@@ -12,4 +12,9 @@
     <PackageReference Include="HexaGen.Runtime" Version="1.1.24" />
   </ItemGroup>
 
+  <ItemGroup>
+    <!-- For NativeMethods.LibraryName, so both assemblies import the same library by the same name. -->
+    <InternalsVisibleTo Include="RmlUi.Net.Desktop" />
+  </ItemGroup>
+
 </Project>

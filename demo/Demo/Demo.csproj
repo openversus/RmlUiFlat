@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../src/RmlUi.Net/RmlUi.Net.csproj" />
+    <ProjectReference Include="../../src/RmlUi.Net.Desktop/RmlUi.Net.Desktop.csproj" />
   </ItemGroup>
 
   <!-- Linux: static link. The shim, the desktop backend and RmlUi itself go into the executable. Build native/ first
