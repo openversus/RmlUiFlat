@@ -44,11 +44,24 @@ window.Listen(document.GetElementById("install"), "click", e => StartInstall());
 window.Run();
 ```
 
-Font bytes are copied into native memory the window keeps until RmlUi is shut down (RmlUi reads them until then).
-Listeners made with `Listen` belong to the window. `Dispose` shuts RmlUi down first, which destroys the context and
-detaches every listener, then destroys the listeners, frees the fonts and closes the window. RmlUi and its backend are
-process-wide, so one window can be open at a time; `RunFrame` and `AfterRender` are there for driving it from code.
-It needs an `rmlui_c` built with a backend (`RMLC_BACKEND` on Linux, `cross/build-windows.sh Win32_DX11`).
+`RunFrame` and `AfterRender` are there for driving it from code. It needs an `rmlui_c` built with a backend
+(`RMLC_BACKEND` on Linux, `cross/build-windows.sh Win32_DX11`).
+
+### Hosts
+
+What every host shares lives in `RmlUi.Hosting` (in RmlUi.Net), so the installer's window and the in-game overlay are
+built on the same thing rather than one bent to fit the other:
+
+- `RmlHost` initialises RmlUi, owns `Context`, `Listen`ed listeners and in-memory fonts, and disposes in RmlUi's
+  order: `Rml::Shutdown` (destroying the context and detaching every listener), then the listeners, then the font
+  memory RmlUi was reading, then the host's own resources. RmlUi is process-wide, so one host exists at a time; a
+  second is refused.
+- `RmlHostBuilder<TSelf>` holds the configuration every host takes (`AddFont`, `ContextName`); a host's builder
+  derives from it and chains its own options.
+
+A host brings up its window and renderer, calls `InitialiseRml`, and releases its own resources in `ShutdownHost`.
+`RmlWindow` does that with RmlUi's desktop backend and adds the frame loop. The in-game overlay will do it with the
+game's swap chain from a Present hook, the game's window messages, and RmlUi's DX11 or DX12 renderer.
 
 ## How it fits together
 

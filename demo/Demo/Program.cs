@@ -78,6 +78,19 @@ internal static unsafe partial class Program
     private static int SelfTest(RmlWindow window, Element button, Element status, Func<int> clicks)
     {
         int exitCode = 0;
+
+        // RmlUi is process-wide: a second host must be refused while this one is open, and leave this one working.
+        try
+        {
+            using var second = new RmlWindowBuilder("second", 100, 100).Build();
+            Console.Error.WriteLine("FAIL: a second RmlWindow was built while one was open");
+            exitCode = 1;
+        }
+        catch (InvalidOperationException e)
+        {
+            Console.WriteLine($"second host refused: {e.Message}");
+        }
+
         for (int frame = 0; frame < 5; frame++)
         {
             window.RunFrame();
