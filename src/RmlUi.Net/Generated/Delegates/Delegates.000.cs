@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using HexaGen.Runtime;
 
-namespace RmlUi.Net
+namespace RmlUi.Interop
 {
 	#if NET5_0_OR_GREATER
 	/// <summary>

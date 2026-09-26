@@ -3,28 +3,39 @@ using HexaGen.CppAst.Model.Types;
 
 namespace RmlShimGen;
 
+public enum Indirection { None, Ref, Ptr }
+
+public abstract record Base;
+public sealed record VoidBase : Base;
+public sealed record StringBase : Base;
+public sealed record PrimBase(string CName, string? Widen) : Base;
+public sealed record HandleBase(CppClass Class) : Base;
+public sealed record ValueBase(string CppName, string CName) : Base;
+public sealed record EnumBase(CppEnum Enum) : Base;
+public sealed record SpanBase(string ElementCName) : Base;
+
 /// <summary>How one C++ parameter crosses: its C declarations, and the C++ that rebuilds the argument.</summary>
-public sealed record ParamMap(List<string> CDecls, string CppArg, List<string> Pre, List<string> Post);
+public sealed record ParamMap(List<string> CDecls, string CppArg, List<string> Pre, List<string> Post)
+{
+    public Base Base { get; init; } = new VoidBase();
+    public Indirection Ind { get; init; }
+    public bool PointeeConst { get; init; }
+    public string Name { get; init; } = "";
+}
 
 /// <summary>How a C++ return value crosses: its C type, and the statements that return it given the value in <c>rml_ret</c>.</summary>
-public sealed record ReturnMap(string CType, bool IsVoid, List<string> Statements);
+public sealed record ReturnMap(string CType, bool IsVoid, List<string> Statements)
+{
+    public Base Base { get; init; } = new VoidBase();
+    public Indirection Ind { get; init; }
+    public bool PointeeConst { get; init; }
+}
 
 /// <summary>Thrown (and caught per function) when a type has no rule; the message goes into the report.</summary>
 public sealed class UnmappedException(string reason) : Exception(reason);
 
 public sealed class TypeMapper
 {
-    private enum Indirection { None, Ref, Ptr }
-
-    private abstract record Base;
-    private sealed record VoidBase : Base;
-    private sealed record StringBase : Base;
-    private sealed record PrimBase(string CName, string? Widen) : Base;
-    private sealed record HandleBase(CppClass Class) : Base;
-    private sealed record ValueBase(string CppName, string CName) : Base;
-    private sealed record EnumBase(CppEnum Enum) : Base;
-    private sealed record SpanBase(string ElementCName) : Base;
-
     // Typedefs that C spells the same way; kept by name so size_t stays size_t on both sides.
     private static readonly HashSet<string> CTypedefs =
     [
@@ -55,6 +66,11 @@ public sealed class TypeMapper
     public ParamMap MapParam(CppType type, string name)
     {
         var (b, ind, pointeeConst) = Classify(type);
+        return MapParam(b, ind, pointeeConst, name) with { Base = b, Ind = ind, PointeeConst = pointeeConst, Name = name };
+    }
+
+    private ParamMap MapParam(Base b, Indirection ind, bool pointeeConst, string name)
+    {
         string c = pointeeConst ? "const " : "";
         switch (b)
         {
@@ -108,6 +124,11 @@ public sealed class TypeMapper
     public ReturnMap MapReturn(CppType type)
     {
         var (b, ind, pointeeConst) = Classify(type);
+        return MapReturn(b, ind, pointeeConst) with { Base = b, Ind = ind, PointeeConst = pointeeConst };
+    }
+
+    private ReturnMap MapReturn(Base b, Indirection ind, bool pointeeConst)
+    {
         string c = pointeeConst ? "const " : "";
         switch (b)
         {
@@ -155,7 +176,7 @@ public sealed class TypeMapper
         }
     }
 
-    private static string Describe(Base b) => b switch
+    public static string Describe(Base b) => b switch
     {
         VoidBase => "void",
         StringBase => "String",
@@ -179,7 +200,7 @@ public sealed class TypeMapper
         CppClass c when c.TemplateSpecializedArguments.Count > 0 =>
             $"{c.Name}<{string.Join(", ", c.TemplateSpecializedArguments.Select(a => a.ArgAsType is { } t ? Spell(t) : a.ArgString))}>",
         CppClass c => c.Name,
-        _ => type.ToString(),
+        _ => type.ToString() ?? type.GetType().Name,
     };
 
     /// <summary>Splits a type into one level of reference or pointer and the base type under it.</summary>

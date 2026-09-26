@@ -1,6 +1,6 @@
 {
-  "Namespace": "RmlUi.Net",
-  "ApiName": "RmlUi",
+  "Namespace": "RmlUi.Interop",
+  "ApiName": "RmlNative",
   "LibName": "rmlui_c",
   "GenerateConstructorsForStructs": false,
   "WrapPointersAsHandle": true,
@@ -13,6 +13,5 @@
   ],
   "Defines": [
     "RMLC_STATIC"
-  ],
-  "GenerateAdditionalOverloads": true
+  ]
 }

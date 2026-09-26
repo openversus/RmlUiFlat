@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using HexaGen.Runtime;
 
-namespace RmlUi.Net
+namespace RmlUi.Interop
 {
 	/// <summary>
 	/// Callbacks for an event listener. process_event is required; the others may be null. <br/>

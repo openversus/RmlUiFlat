@@ -3,8 +3,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using RmlUi.Net;
-using static RmlUi.Net.RmlUi;
+using RmlUi;
 
 namespace Demo;
 
@@ -38,58 +37,50 @@ internal static unsafe partial class Program
         </rml>
         """;
 
-    private sealed class ClickState
-    {
-        public RmlElementPtr Status;
-        public int Clicks;
-    }
-
     private static int Main(string[] args)
     {
         bool selfTest = args.Contains("--selftest");
         string assets = args.FirstOrDefault(a => !a.StartsWith("--"))
-            ?? Path.Combine(AppContext.BaseDirectory, "../../../../../../../external/RmlUi/Samples/assets");
+            ?? Path.Combine(AppContext.BaseDirectory, "../../../../external/RmlUi/Samples/assets");
 
         if (!Backend.Initialize("RmlUi from C#", Width, Height, true))
         {
             Console.Error.WriteLine("Backend.Initialize failed");
             return 1;
         }
-        RmlSetSystemInterface(Backend.GetSystemInterface());
-        RmlSetRenderInterface(Backend.GetRenderInterface());
-        RmlInitialise();
-        Console.WriteLine($"RmlUi {RmlGetVersionS()}");
+        Rml.SetSystemInterface(Backend.GetSystemInterface());
+        Rml.SetRenderInterface(Backend.GetRenderInterface());
+        Rml.Initialise();
+        Console.WriteLine($"RmlUi {Rml.GetVersion()}");
 
-        // Font data is not copied by RmlUi: it must outlive Rml::Shutdown, so it lives in native memory until then.
-        var fonts = new List<(nint Data, nuint Length)>();
-        foreach (var (file, weight) in new[] { ("LatoLatin-Regular.ttf", RmlStyleFontWeight.Normal), ("LatoLatin-Bold.ttf", RmlStyleFontWeight.Bold) })
+        // Font data is not copied by RmlUi: it must outlive Rml.Shutdown, so it lives in native memory until then.
+        var fonts = new List<nint>();
+        foreach (var (file, weight) in new[] { ("LatoLatin-Regular.ttf", Style.FontWeight.Normal), ("LatoLatin-Bold.ttf", Style.FontWeight.Bold) })
         {
             byte[] bytes = File.ReadAllBytes(Path.Combine(assets, file));
             byte* data = (byte*)NativeMemory.Alloc((nuint)bytes.Length);
             bytes.CopyTo(new Span<byte>(data, bytes.Length));
-            fonts.Add(((nint)data, (nuint)bytes.Length));
-            if (!RmlLoadFontFaceSpanStringFontStyleFontWeightBoolInt(data, (nuint)bytes.Length, "Lato", RmlStyleFontStyle.Normal, weight, false, 0))
+            fonts.Add((nint)data);
+            if (!Rml.LoadFontFace(data, (nuint)bytes.Length, "Lato", Style.FontStyle.Normal, weight))
             {
                 Console.Error.WriteLine($"LoadFontFace failed for {file}");
                 return 1;
             }
         }
 
-        var context = RmlCreateContext("main", new RmlVector2I { X = Width, Y = Height }, default, default);
-        var document = RmlContextLoadDocumentFromMemory(context, Document, "[demo]");
-        RmlElementDocumentShow(document, RmlModalFlag.None, RmlFocusFlag.Auto, RmlScrollFlag.Auto);
-        var root = RmlElementDocumentAsElement(document);
-        var button = RmlElementGetElementById(root, "hello");
-        var state = new ClickState { Status = RmlElementGetElementById(root, "status") };
+        var context = Rml.CreateContext("main", new Vector2i(Width, Height));
+        var document = context.LoadDocumentFromMemory(Document, "[demo]");
+        document.Show();
+        var button = document.GetElementById("hello");
+        var status = document.GetElementById("status");
 
-        var handle = GCHandle.Alloc(state);
-        var callbacks = new RmlEventListenerCallbacks
+        int clicks = 0;
+        var listener = EventListener.Create(evt =>
         {
-            UserData = (void*)GCHandle.ToIntPtr(handle),
-            ProcessEvent = &OnClick,
-        };
-        var listener = RmlEventListenerCreate(&callbacks);
-        RmlElementAddEventListenerStringEventListenerPtrBool(button, "click", listener, false);
+            clicks++;
+            status.SetInnerRML($"Clicked {clicks} time{(clicks == 1 ? "" : "s")} — handled in C#.");
+        });
+        button.AddEventListener("click", listener);
 
         int exitCode = 0;
         int frame = 0;
@@ -100,34 +91,34 @@ internal static unsafe partial class Program
             if (selfTest && frame == 5)
             {
                 // Through RmlUi's own input path: move onto the button, press, release.
-                var offset = RmlElementGetAbsoluteOffset(button, RmlBoxArea.Border);
-                int x = (int)(offset.X + RmlElementGetOffsetWidth(button) / 2);
-                int y = (int)(offset.Y + RmlElementGetOffsetHeight(button) / 2);
-                RmlContextProcessMouseMove(context, x, y, 0);
-                RmlContextProcessMouseButtonDown(context, 0, 0);
-                RmlContextProcessMouseButtonUp(context, 0, 0);
+                var offset = button.GetAbsoluteOffset(BoxArea.Border);
+                int x = (int)(offset.X + button.GetOffsetWidth() / 2);
+                int y = (int)(offset.Y + button.GetOffsetHeight() / 2);
+                context.ProcessMouseMove(x, y, 0);
+                context.ProcessMouseButtonDown(0, 0);
+                context.ProcessMouseButtonUp(0, 0);
                 Console.WriteLine($"clicked at ({x}, {y})");
             }
-            RmlContextUpdate(context);
+            context.Update();
             Backend.BeginFrame();
-            RmlContextRender(context);
+            context.Render();
             if (selfTest && frame == 10)
             {
                 // C bool is one byte: false must read back false, and true true.
-                RmlCreateContext("scratch", new RmlVector2I { X = 1, Y = 1 }, default, default);
-                bool removedMissing = RmlRemoveContext("no-such-context");
-                bool removedScratch = RmlRemoveContext("scratch");
+                Rml.CreateContext("scratch", new Vector2i(1, 1));
+                bool removedMissing = Rml.RemoveContext("no-such-context");
+                bool removedScratch = Rml.RemoveContext("scratch");
                 Console.WriteLine($"RemoveContext: missing={removedMissing} existing={removedScratch}");
                 if (removedMissing || !removedScratch)
                 {
-                    Console.Error.WriteLine("FAIL: RmlRemoveContext returned the wrong bool");
+                    Console.Error.WriteLine("FAIL: RemoveContext returned the wrong bool");
                     exitCode = 1;
                 }
 
-                string status = RmlElementGetInnerRMLS(state.Status);
-                Console.WriteLine($"status: {status}");
+                string text = status.GetInnerRML();
+                Console.WriteLine($"status: {text}");
                 const string expected = "Clicked 1 time — handled in C#.";
-                if (state.Clicks != 1 || status != expected)
+                if (clicks != 1 || text != expected)
                 {
                     Console.Error.WriteLine($"FAIL: expected one click and \"{expected}\"");
                     exitCode = 1;
@@ -139,24 +130,15 @@ internal static unsafe partial class Program
             frame++;
         }
 
-        RmlElementRemoveEventListenerStringEventListenerPtrBool(button, "click", listener, false);
-        RmlEventListenerDestroy(listener);
-        handle.Free();
-        RmlShutdown();
-        foreach (var (data, _) in fonts)
+        button.RemoveEventListener("click", listener);
+        listener.Destroy();
+        Rml.Shutdown();
+        foreach (var data in fonts)
         {
             NativeMemory.Free((void*)data);
         }
         Backend.Shutdown();
         return exitCode;
-    }
-
-    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
-    private static void OnClick(void* userData, RmlEvent* evt)
-    {
-        var state = (ClickState)GCHandle.FromIntPtr((nint)userData).Target!;
-        state.Clicks++;
-        RmlElementSetInnerRML(state.Status, $"Clicked {state.Clicks} time{(state.Clicks == 1 ? "" : "s")} — handled in C#.");
     }
 
     /// <summary>Reads the back buffer before it is presented and writes a binary PPM, top row first.</summary>
@@ -192,14 +174,20 @@ internal static unsafe partial class Backend
     public static partial void Shutdown();
 
     [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_GetSystemInterface")]
-    public static partial RmlSystemInterface* GetSystemInterface();
+    private static partial nint GetSystemInterfaceNative();
+
+    public static SystemInterface GetSystemInterface() => new(GetSystemInterfaceNative());
 
     [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_GetRenderInterface")]
-    public static partial RmlRenderInterface* GetRenderInterface();
+    private static partial nint GetRenderInterfaceNative();
+
+    public static RenderInterface GetRenderInterface() => new(GetRenderInterfaceNative());
 
     [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_ProcessEvents")]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool ProcessEvents(RmlContext* context, [MarshalAs(UnmanagedType.U1)] bool powerSave);
+    private static partial bool ProcessEventsNative(nint context, [MarshalAs(UnmanagedType.U1)] bool powerSave);
+
+    public static bool ProcessEvents(Context context, bool powerSave) => ProcessEventsNative(context.Handle, powerSave);
 
     [LibraryImport("rmlui_c", EntryPoint = "RmlBackend_BeginFrame")]
     public static partial void BeginFrame();

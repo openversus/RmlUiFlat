@@ -27,6 +27,9 @@ typedef struct RmlEventListenerCallbacks
  */
 RMLC_API RmlEventListener* RmlEventListener_Create(const RmlEventListenerCallbacks* callbacks);
 
+/** The user_data given to RmlEventListener_Create. */
+RMLC_API void* RmlEventListener_GetUserData(RmlEventListener* listener);
+
 /** Destroys a listener made by RmlEventListener_Create. */
 RMLC_API void RmlEventListener_Destroy(RmlEventListener* listener);
 

@@ -40,5 +40,7 @@
   "NativeOutput": "../native/generated",
   "ReportOutput": "shim-report.md",
   "HexaGenConfig": "hexagen.json",
-  "CSharpOutput": "../src/RmlUi.Net/Generated"
+  "CSharpOutput": "../src/RmlUi.Net/Generated",
+  "CsApiOutput": "../src/RmlUi.Net/Api.Generated",
+  "LibraryName": "rmlui_c"
 }

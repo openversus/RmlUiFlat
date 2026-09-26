@@ -170,6 +170,11 @@ Wrapped 192 functions; 65 in scope could not be mapped; 0 ignored by shim.json.
 
 - `void Rml::ElementDocument::SetStyleSheetContainer(shared_ptr<StyleSheetContainer> style_sheet)`
 
+## C# names that differ from C++
+
+Methods whose RmlUi name could not be used as is in the C# API (src/RmlUi.Net/Api.Generated).
+
+
 ## In RmlUi's headers, not in scope
 
 Public classes with public methods that shim.json does not list in Classes.

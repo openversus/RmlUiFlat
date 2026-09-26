@@ -13,7 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using HexaGen.Runtime;
 
-namespace RmlUi.Net
+namespace RmlUi.Interop
 {
 	/// <summary>
 	/// To be documented.

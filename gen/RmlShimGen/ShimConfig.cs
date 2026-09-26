@@ -42,7 +42,14 @@ public sealed class ShimConfig
 
     public string HexaGenConfig { get; set; } = "";
 
+    /// <summary>HexaGen's raw bindings over the C API.</summary>
     public string CSharpOutput { get; set; } = "";
+
+    /// <summary>The C# API (RmlUi namespace). The generator owns this directory and recreates it.</summary>
+    public string CsApiOutput { get; set; } = "";
+
+    /// <summary>Library name in the C# LibraryImports; DirectPInvoke matches it when statically linked.</summary>
+    public string LibraryName { get; set; } = "rmlui_c";
 
     [JsonIgnore]
     public string BaseDirectory { get; private set; } = "";

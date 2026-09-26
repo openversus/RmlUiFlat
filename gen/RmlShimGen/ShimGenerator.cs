@@ -57,6 +57,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         Directory.CreateDirectory(nativeDir);
         File.WriteAllText(Path.Combine(nativeDir, "rmlui_c.h"), WriteHeader());
         File.WriteAllText(Path.Combine(nativeDir, "rmlui_c.cpp"), WriteSource());
+        WriteCsLayer();
         File.WriteAllText(config.Resolve(config.ReportOutput), WriteReport());
 
         Console.WriteLine($"wrapped {wrapped.Count} functions, {unmapped.Count} unmapped, {ignored.Count} ignored, {mapper.UsedEnums.Count} enums, {valueStructs.Count} value types");
@@ -547,6 +548,16 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
             }
             w.AppendLine();
         }
+
+        w.AppendLine("## C# names that differ from C++");
+        w.AppendLine();
+        w.AppendLine("Methods whose RmlUi name could not be used as is in the C# API (src/RmlUi.Net/Api.Generated).");
+        w.AppendLine();
+        foreach (var note in csNotes)
+        {
+            w.AppendLine($"- {note}");
+        }
+        w.AppendLine();
 
         w.AppendLine("## In RmlUi's headers, not in scope");
         w.AppendLine();

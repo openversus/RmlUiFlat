@@ -10,9 +10,9 @@
 using System;
 using HexaGen.Runtime;
 
-namespace RmlUi.Net
+namespace RmlUi.Interop
 {
-	public unsafe partial class RmlUi
+	public unsafe partial class RmlNative
 	{
 		public const int RMLC_STATIC = 1;
 

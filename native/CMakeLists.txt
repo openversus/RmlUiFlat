@@ -9,16 +9,16 @@ set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 set(RMLUI_SAMPLES OFF CACHE BOOL "" FORCE)
 set(RMLUI_PRECOMPILED_HEADERS OFF CACHE BOOL "" FORCE)
 if(RMLC_BACKEND)
-	# RmlUi only adds its Backends directory for the shell; this adds it without the samples.
-	set(RMLUI_SHELL ON)
-	set(RMLUI_BACKEND "${RMLC_BACKEND}" CACHE STRING "" FORCE)
+    # RmlUi only adds its Backends directory for the shell; this adds it without the samples.
+    set(RMLUI_SHELL ON)
+    set(RMLUI_BACKEND "${RMLC_BACKEND}" CACHE STRING "" FORCE)
 endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_subdirectory(../external/RmlUi RmlUi EXCLUDE_FROM_ALL)
 
 add_library(rmlui_c STATIC
-	generated/rmlui_c.cpp
-	rmlui_c_manual.cpp
+    generated/rmlui_c.cpp
+    rmlui_c_manual.cpp
 )
 target_compile_features(rmlui_c PRIVATE cxx_std_20)
 target_compile_definitions(rmlui_c PUBLIC RMLC_STATIC)
@@ -26,7 +26,7 @@ target_include_directories(rmlui_c PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(rmlui_c PUBLIC RmlUi::Core)
 
 if(RMLC_BACKEND)
-	add_library(rmlui_c_backend STATIC backend/rmlui_c_backend.cpp)
-	target_compile_features(rmlui_c_backend PRIVATE cxx_std_20)
-	target_link_libraries(rmlui_c_backend PUBLIC rmlui_c rmlui_backend_${RMLC_BACKEND})
+    add_library(rmlui_c_backend STATIC backend/rmlui_c_backend.cpp)
+    target_compile_features(rmlui_c_backend PRIVATE cxx_std_20)
+    target_link_libraries(rmlui_c_backend PUBLIC rmlui_c rmlui_backend_${RMLC_BACKEND})
 endif()

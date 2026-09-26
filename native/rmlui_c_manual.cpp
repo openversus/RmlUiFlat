@@ -31,6 +31,8 @@ namespace
             }
         }
 
+        void* UserData() const { return callbacks.user_data; }
+
     private:
         RmlEventListenerCallbacks callbacks;
     };
@@ -45,6 +47,12 @@ RMLC_API RmlEventListener* RmlEventListener_Create(const RmlEventListenerCallbac
     // Upcast before reinterpreting, so the handle is the Rml::EventListener* RmlUi expects.
     Rml::EventListener* listener = new ForwardingEventListener(*callbacks);
     return reinterpret_cast<RmlEventListener*>(listener);
+}
+
+RMLC_API void* RmlEventListener_GetUserData(RmlEventListener* listener)
+{
+    // Only listeners from RmlEventListener_Create reach here, so the downcast is to the type that was created.
+    return static_cast<ForwardingEventListener*>(reinterpret_cast<Rml::EventListener*>(listener))->UserData();
 }
 
 RMLC_API void RmlEventListener_Destroy(RmlEventListener* listener)

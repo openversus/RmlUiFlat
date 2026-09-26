@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <!-- The .editorconfig rules run as analyzers during the build, as in ovs-client: braces on every control-flow
+         body (IDE0011) is an error. -->
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+</Project>

@@ -10,7 +10,7 @@
 using System;
 using HexaGen.Runtime;
 
-namespace RmlUi.Net
+namespace RmlUi.Interop
 {
 	/// <summary>
 	/// Rml::Style::FontStyle <br/>
