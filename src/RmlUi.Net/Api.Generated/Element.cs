@@ -30,14 +30,6 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     public static bool operator !=(Element a, Element b) => a.Handle != b.Handle;
 
     /// <summary>
-    /// </summary>
-    /// <remarks>C++: <c>ClassId Rml::Element::GetStaticClassIdentifier()</c></remarks>
-    public static void* GetStaticClassIdentifier()
-    {
-        return NativeMethods.RmlElement_GetStaticClassIdentifier();
-    }
-
-    /// <summary>
     /// Classes<br/>
     /// 
     /// @<br/>
@@ -146,6 +138,56 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     }
 
     /// <summary>
+    /// Sets the box describing the size of the element, and removes all others.<br/>
+    /// 
+    /// @param box The new dimensions box for the element.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>void Rml::Element::SetBox(const Box&amp; box)</c></remarks>
+    public void SetBox(Box box)
+    {
+        NativeMethods.RmlElement_SetBox(Handle, box.Handle);
+    }
+
+    /// <summary>
+    /// Adds a box to the end of the list describing this element&apos;s geometry.<br/>
+    /// 
+    /// @param box The auxiliary box for the element.<br/>
+    /// @param offset The offset of the box relative to the top left border corner of the element.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>void Rml::Element::AddBox(const Box&amp; box, Vector2f offset)</c></remarks>
+    public void AddBox(Box box, Vector2f offset)
+    {
+        NativeMethods.RmlElement_AddBox(Handle, box.Handle, offset);
+    }
+
+    /// <summary>
+    /// Returns the main box describing the size of the element.<br/>
+    /// 
+    /// @return The box.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Box&amp; Rml::Element::GetBox()</c></remarks>
+    public Box GetBox()
+    {
+        return new Box(NativeMethods.RmlElement_GetBox(Handle));
+    }
+
+    /// <summary>
+    /// Returns one of the boxes describing the size of the element.<br/>
+    /// 
+    /// @param index The index of the desired box, with 0 being the main box. If outside of bounds, the main box will be returned.<br/>
+    /// @param offset The offset of the box relative to the element&apos;s border box.<br/>
+    /// @return The requested box.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Box&amp; Rml::Element::GetBox(int index, Vector2f&amp; offset)</c></remarks>
+    public Box GetBox(int index, ref Vector2f offset)
+    {
+        fixed (Vector2f* offset_p = &offset)
+        {
+            return new Box(NativeMethods.RmlElement_GetBox_Int_Vector2f(Handle, index, offset_p));
+        }
+    }
+
+    /// <summary>
     /// Returns the number of boxes making up this element&apos;s geometry.<br/>
     /// 
     /// @return the number of boxes making up this element&apos;s geometry.<br/>
@@ -227,6 +269,19 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     }
 
     /// <summary>
+    /// Sets a local property override on the element to a pre-parsed value.<br/>
+    /// 
+    /// @param id The id of the new property.<br/>
+    /// @param property The parsed property to set.<br/>
+    /// @return True if the property was set successfully, false otherwise.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>bool Rml::Element::SetProperty(PropertyId id, const Property&amp; property)</c></remarks>
+    public bool SetProperty(PropertyId id, Property property)
+    {
+        return NativeMethods.RmlElement_SetProperty_PropertyId_Property(Handle, id, property.Handle) != 0;
+    }
+
+    /// <summary>
     /// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
     /// 
     /// @param name The name of the local property definition to remove.<br/>
@@ -252,6 +307,68 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     public void RemoveProperty(PropertyId id)
     {
         NativeMethods.RmlElement_RemoveProperty_PropertyId(Handle, id);
+    }
+
+    /// <summary>
+    /// Returns one of this element&apos;s properties. If the property is not defined for this element and not inherited from an ancestor,<br/>
+    /// the default value will be returned. Cascading variables (&quot;var()&quot;) are fully resolved.<br/>
+    /// 
+    /// @param name The name of the property to fetch the value for.<br/>
+    /// @return The value of this property for this element, or nullptr if no property exists with the given name.<br/>
+    /// @note When resolving any cascading variables (&quot;var()&quot;) in the property, correctness is only guaranteed after a context update.<br/>
+    /// @lifetime The returned pointer is invalidated on any following call into RmlUi, please copy by value to store the property around.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Property* Rml::Element::GetProperty(const String&amp; name)</c></remarks>
+    public Property GetProperty(string name)
+    {
+        scoped Utf8StringMarshaller.ManagedToUnmanagedIn name_m = new();
+        name_m.FromManaged(name, stackalloc byte[Utf8StringMarshaller.ManagedToUnmanagedIn.BufferSize]);
+        try
+        {
+            return new Property(NativeMethods.RmlElement_GetProperty_String(Handle, name_m.ToUnmanaged()));
+        }
+        finally
+        {
+            name_m.Free();
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <remarks>C++: <c>const Property* Rml::Element::GetProperty(PropertyId id)</c></remarks>
+    public Property GetProperty(PropertyId id)
+    {
+        return new Property(NativeMethods.RmlElement_GetProperty_PropertyId(Handle, id));
+    }
+
+    /// <summary>
+    /// Returns one of this element&apos;s local style properties. Cascading variables (&quot;var()&quot;) are not resolved.<br/>
+    /// 
+    /// @param name The name of the property to fetch the value for.<br/>
+    /// @return The value of this property for this element, or nullptr if this property has not been explicitly defined for this element.<br/>
+    /// @lifetime The returned pointer is invalidated on any following call into RmlUi, please copy by value to store the property around.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Property* Rml::Element::GetLocalProperty(const String&amp; name)</c></remarks>
+    public Property GetLocalProperty(string name)
+    {
+        scoped Utf8StringMarshaller.ManagedToUnmanagedIn name_m = new();
+        name_m.FromManaged(name, stackalloc byte[Utf8StringMarshaller.ManagedToUnmanagedIn.BufferSize]);
+        try
+        {
+            return new Property(NativeMethods.RmlElement_GetLocalProperty_String(Handle, name_m.ToUnmanaged()));
+        }
+        finally
+        {
+            name_m.Free();
+        }
+    }
+
+    /// <summary>
+    /// </summary>
+    /// <remarks>C++: <c>const Property* Rml::Element::GetLocalProperty(PropertyId id)</c></remarks>
+    public Property GetLocalProperty(PropertyId id)
+    {
+        return new Property(NativeMethods.RmlElement_GetLocalProperty_PropertyId(Handle, id));
     }
 
     /// <summary>
@@ -791,22 +908,6 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     }
 
     /// <summary>
-    /// </summary>
-    /// <remarks>C++: <c>ClassId Rml::Element::GetClassIdentifier() const</c></remarks>
-    public void* GetClassIdentifier()
-    {
-        return NativeMethods.RmlElement_GetClassIdentifier(Handle);
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <remarks>C++: <c>bool Rml::Element::IsClass(ClassId type_identifier) const</c></remarks>
-    public bool IsClass(void* typeIdentifier)
-    {
-        return NativeMethods.RmlElement_IsClass(Handle, typeIdentifier) != 0;
-    }
-
-    /// <summary>
     /// Checks if a class is set on the element.<br/>
     /// 
     /// @param class_name The name of the class to check for.<br/>
@@ -836,6 +937,17 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     public string GetClassNames()
     {
         return Utf8StringMarshaller.ConvertToManaged(NativeMethods.RmlElement_GetClassNames(Handle)) ?? "";
+    }
+
+    /// <summary>
+    /// Returns the active style sheet for this element. This may be nullptr.<br/>
+    /// 
+    /// @return The element&apos;s style sheet.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const StyleSheet* Rml::Element::GetStyleSheet() const</c></remarks>
+    public StyleSheet GetStyleSheet()
+    {
+        return new StyleSheet(NativeMethods.RmlElement_GetStyleSheet(Handle));
     }
 
     /// <summary>
@@ -1162,6 +1274,15 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     public string GetEventDispatcherSummary()
     {
         return Utf8StringMarshaller.ConvertToManaged(NativeMethods.RmlElement_GetEventDispatcherSummary(Handle)) ?? "";
+    }
+
+    /// <summary>
+    /// Returns the element&apos;s scrollbar functionality.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>ElementScroll* Rml::Element::GetElementScroll() const</c></remarks>
+    public ElementScroll GetElementScroll()
+    {
+        return new ElementScroll(NativeMethods.RmlElement_GetElementScroll(Handle));
     }
 
 }

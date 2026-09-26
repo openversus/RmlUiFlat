@@ -49,7 +49,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         foreach (var name in config.Classes)
         {
             var cls = classes[name];
-            var methods = cls.Functions.Where(IsWrappable).ToList();
+            var methods = cls.Functions.Where(f => IsWrappable(f) && !(DeclaresRtti(cls) && RttiMethods.Contains(f.Name))).ToList();
             WrapGroup(methods, cls);
         }
 
@@ -95,6 +95,12 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         && !f.IsFunctionTemplate
         && !f.Name.StartsWith("operator", StringComparison.Ordinal)
         && (f.Flags & CppFunctionFlags.Deleted) == 0;
+
+    // RmlUi's own RTTI (RMLUI_RTTI_DefineWithParent). The generated From downcasts use it; the ClassId values these
+    // return mean nothing to a caller, so they are not wrapped.
+    private static readonly HashSet<string> RttiMethods = ["GetClassIdentifier", "GetStaticClassIdentifier", "IsClass"];
+
+    private static bool DeclaresRtti(CppClass c) => c.Functions.Any(f => f.Name == "GetStaticClassIdentifier");
 
     private static string QualifiedName(CppFunction f, CppClass? owner) => owner == null ? $"Rml::{f.Name}" : $"{owner.FullName}::{f.Name}";
 
@@ -340,6 +346,13 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         }
         w.AppendLine();
 
+        w.AppendLine("/* Checked downcasts: null when the object is not of that type */");
+        foreach (var (derived, @base) in Downcasts())
+        {
+            w.AppendLine($"RMLC_API {TypeMapper.HandleCName(derived)}* {TypeMapper.HandleCName(derived)}_From{ShortName(@base)}({TypeMapper.HandleCName(@base)}* value);");
+        }
+        w.AppendLine();
+
         CppClass? current = null;
         foreach (var f in wrapped)
         {
@@ -413,6 +426,10 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
 
     private static string ShortName(string qualified) => qualified[(qualified.LastIndexOf(':') + 1)..];
 
+    /// <summary>The upcasts that can be checked the other way: both classes declare RmlUi's RTTI.</summary>
+    private IEnumerable<(string Derived, string Base)> Downcasts() =>
+        Upcasts().Where(u => DeclaresRtti(classes[u.From]) && classes.GetValueOrDefault(u.To) is { } b && DeclaresRtti(b));
+
     /// <summary>Every base class of a wrapped class that is itself a handle, direct or not.</summary>
     private IEnumerable<(string From, string To)> Upcasts()
     {
@@ -482,6 +499,16 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
             w.AppendLine($"RMLC_API {cTo}* {cFrom}_As{ShortName(to)}({cFrom}* self)");
             w.AppendLine("{");
             w.AppendLine($"    return reinterpret_cast<{cTo}*>(static_cast<{to}*>(reinterpret_cast<{from}*>(self)));");
+            w.AppendLine("}");
+            w.AppendLine();
+        }
+
+        foreach (var (derived, @base) in Downcasts())
+        {
+            string cDerived = TypeMapper.HandleCName(derived), cBase = TypeMapper.HandleCName(@base);
+            w.AppendLine($"RMLC_API {cDerived}* {cDerived}_From{ShortName(@base)}({cBase}* value)");
+            w.AppendLine("{");
+            w.AppendLine($"    return reinterpret_cast<{cDerived}*>(::rmlui_dynamic_cast<{derived}*>(reinterpret_cast<{@base}*>(value)));");
             w.AppendLine("}");
             w.AppendLine();
         }

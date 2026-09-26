@@ -21,7 +21,10 @@ document.GetElementById("hello").AddEventListener("click", listener);
 The API mirrors RmlUi's C++: `Rml::` free functions are `Rml.*`, each class is a handle struct with the same
 method names (C# overloads and C++ default arguments where they have a C# spelling), enums keep RmlUi's names
 (`Style.FontWeight.Bold`, `Input.KeyIdentifier.KI_A`), and an `ElementDocument` converts to `Element` and has its
-methods. Handles do not own what they point at; RmlUi's own lifetime rules apply, and the C++ doc comments,
+methods. The other way is checked: `ElementFormControlInput.From(element)` is the input, or a null handle (`IsNull`)
+when the element is something else, so `ElementFormControlInput.From(document.GetElementById("name")).GetValue()`
+reads a text box. A `Property` prints as RmlUi writes it (`element.GetProperty("display")` is `inline-block` in an
+interpolated string). Handles do not own what they point at; RmlUi's own lifetime rules apply, and the C++ doc comments,
 including `@lifetime` notes, come through as XML docs.
 
 ### A standalone window
@@ -112,7 +115,7 @@ How a C++ type crosses:
 | `const String&`, `String` parameter | `const char*` (UTF-8) | `string` | null reads as empty |
 | `const String&` return | `const char*` | `string` (copied) | owned by RmlUi, valid while its owner is |
 | `String` return | `const char*` | `string` (copied) | per-thread buffer in C, valid until the next such call on the thread |
-| class in `Classes`/`OpaqueTypes` | opaque handle pointer | handle struct | `Rml{Name}_As{Base}` upcasts, implicit in C# |
+| class in `Classes`/`OpaqueTypes` | opaque handle pointer | handle struct | `Rml{Name}_As{Base}` upcasts, implicit in C#; `Rml{Name}_From{Base}` checked downcasts through RmlUi's own RTTI, `{Name}.From(base)` in C# |
 | `ValueTypes` (Vector2f, Colourb, ...) | C struct, copied by `std::bit_cast` | struct of the same fields | size, alignment and field offsets `static_assert`ed against RmlUi's type |
 | enum | C enum | `enum : int` | every value `static_assert`ed against RmlUi's |
 | `Span<const T>` (T primitive) | `const T*, size_t` | `T*, nuint` | a pointer, not a span: RmlUi may keep it (LoadFontFace does, until Shutdown) |
@@ -120,7 +123,9 @@ How a C++ type crosses:
 | `long` | `int64_t` | `long` | 32-bit on Windows, 64-bit on Linux |
 
 C names for overloads come from their C++ parameter types (`RmlGetContext_String`, `RmlGetContext_Int`), counting
-every overload, so a new mapping rule never renames an existing function. C# uses the C++ name and overloading.
+every overload, so a new mapping rule never renames an existing function. C# uses the C++ name and overloading. A
+class's `String ToString() const` becomes its C# `ToString()` override. RmlUi's RTTI methods (`IsClass`,
+`GetClassIdentifier`, `GetStaticClassIdentifier`) are not wrapped: `From` is what they are for.
 
 Code style is ovs-client's `.editorconfig`; `Directory.Build.props` makes its rules build errors, and the generated
 C# API is checked by them too (HexaGen's output is marked auto-generated and is not).
@@ -201,18 +206,20 @@ clang-cl and lld-link against an xwin splat (`cross/xwin-clang-cl.cmake`, found 
 `~/.xwin-cache/splat` or `~/.cache/xwin/splat`). FreeType is built from `external/freetype` (2.14.3) without zlib,
 png, bzip2, brotli or harfbuzz. The C and C++ runtimes are linked statically: the DLL imports only Windows system DLLs,
 so players need no VC++ redistributable. The demo on Windows loads `rmlui_c.dll` from beside the executable at run
-time, the way the client would; on Linux it links everything statically. Checked under Wine 11.13 with Vulkan: the
-self-test passes, and the window renders and responds to clicks as on Linux. The in-game DLL has no SDL in it and imports only KERNEL32 and USER32. The .NET side cross-compiles with
+time, the way the client would; on Linux it links everything statically. The publish folder is self-contained (the
+executable, `rmlui_c.dll` on Windows, the fonts in `assets/`, the notices), so it can be zipped and run anywhere. Checked under Wine 11.13 with Vulkan: the
+self-test passes, and the window renders and responds to clicks as on Linux. On real Windows (a tester, 2026-09-26)
+the demo runs with Vulkan and with `--renderer=opengl`. The in-game DLL has no SDL in it and imports only KERNEL32 and USER32. The .NET side cross-compiles with
 `PublishAotCrossXWin`, as ovs-client does.
 
 ## Not done yet
 
 - OpenGL under Wine: Wine 11.13 Staging's EGL-backed WGL offers SDL no pixel format for a window, so the forced-OpenGL
-  path fails there (Vulkan, which Wine and Proton always have, works). Not yet tried on real Windows, where the
-  OpenGL fallback is the path that matters.
-- Nothing has been run on real Windows yet; everything Windows was checked under Wine.
+  path fails there (Vulkan, which Wine and Proton always have, works). The same request works on real Windows, so
+  this is Wine's, not ours.
 
 - In-game: a DXGI Present hook and RmlUi's DX11 renderer (the game's default) and DX12 renderer (`-d3d12`), chosen
   from the device the game created.
 - Unmapped in scope (see shim-report.md): `ElementPtr` ownership (`CreateElement`, `AppendChild`), `Dictionary`
-  and `Variant` (event parameters), `Property`, and the containers (`StringList`, `ElementList`).
+  and `Variant` (event parameters, attribute values, and what setting a `Property` takes), the containers
+  (`StringList`, `ElementList`), and `String&`/`String*` out-parameters (`GetInnerRML`, a text box's selection).

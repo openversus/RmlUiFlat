@@ -18,6 +18,664 @@ namespace RmlUi.Interop
 	{
 
 		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, byte* id)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)pself, id);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentString(RmlContextPtr self, in byte id)
+		{
+			fixed (byte* pid = &id)
+			{
+				RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, (byte*)pid);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentString(RmlContextPtr self, ReadOnlySpan<byte> id)
+		{
+			fixed (byte* pid = id)
+			{
+				RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, (byte*)pid);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentString(RmlContextPtr self, string id)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (id != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(id);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(id, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, in byte id)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				fixed (byte* pid = &id)
+				{
+					RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)pself, (byte*)pid);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, ReadOnlySpan<byte> id)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				fixed (byte* pid = id)
+				{
+					RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)pself, (byte*)pid);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, string id)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (id != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(id);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(id, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)pself, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns a document in the context by index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_GetDocument_Int")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementDocument* RmlContextGetDocumentIntNative(RmlContext* self, int index);
+
+		/// <summary>
+		/// Returns a document in the context by index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentInt(RmlContextPtr self, int index)
+		{
+			RmlElementDocumentPtr ret = RmlContextGetDocumentIntNative((RmlContext*)self, index);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns a document in the context by index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentInt(ref RmlContext self, int index)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlElementDocumentPtr ret = RmlContextGetDocumentIntNative((RmlContext*)pself, index);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the hover element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_GetHoverElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlContextGetHoverElementNative(RmlContext* self);
+
+		/// <summary>
+		/// Returns the hover element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlContextGetHoverElement(RmlContextPtr self)
+		{
+			RmlElementPtr ret = RmlContextGetHoverElementNative((RmlContext*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the hover element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlContextGetHoverElement(ref RmlContext self)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlElementPtr ret = RmlContextGetHoverElementNative((RmlContext*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the focus element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_GetFocusElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlContextGetFocusElementNative(RmlContext* self);
+
+		/// <summary>
+		/// Returns the focus element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlContextGetFocusElement(RmlContextPtr self)
+		{
+			RmlElementPtr ret = RmlContextGetFocusElementNative((RmlContext*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the focus element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlContextGetFocusElement(ref RmlContext self)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlElementPtr ret = RmlContextGetFocusElementNative((RmlContext*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the root element that holds all the documents<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_GetRootElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlContextGetRootElementNative(RmlContext* self);
+
+		/// <summary>
+		/// Returns the root element that holds all the documents<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlContextGetRootElement(RmlContextPtr self)
+		{
+			RmlElementPtr ret = RmlContextGetRootElementNative((RmlContext*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the root element that holds all the documents<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlContextGetRootElement(ref RmlContext self)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlElementPtr ret = RmlContextGetRootElementNative((RmlContext*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Brings the document to the front of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_PullDocumentToFront")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlContextPullDocumentToFrontNative(RmlContext* self, RmlElementDocument* document);
+
+		/// <summary>
+		/// Brings the document to the front of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextPullDocumentToFront(RmlContextPtr self, RmlElementDocumentPtr document)
+		{
+			RmlContextPullDocumentToFrontNative((RmlContext*)self, (RmlElementDocument*)document);
+		}
+
+		/// <summary>
+		/// Brings the document to the front of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextPullDocumentToFront(ref RmlContext self, RmlElementDocumentPtr document)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlContextPullDocumentToFrontNative((RmlContext*)pself, (RmlElementDocument*)document);
+			}
+		}
+
+		/// <summary>
+		/// Brings the document to the front of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextPullDocumentToFront(RmlContextPtr self, ref RmlElementDocument document)
+		{
+			fixed (RmlElementDocument* pdocument = &document)
+			{
+				RmlContextPullDocumentToFrontNative((RmlContext*)self, (RmlElementDocument*)pdocument);
+			}
+		}
+
+		/// <summary>
+		/// Brings the document to the front of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextPullDocumentToFront(ref RmlContext self, ref RmlElementDocument document)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				fixed (RmlElementDocument* pdocument = &document)
+				{
+					RmlContextPullDocumentToFrontNative((RmlContext*)pself, (RmlElementDocument*)pdocument);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sends the document to the back of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_PushDocumentToBack")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlContextPushDocumentToBackNative(RmlContext* self, RmlElementDocument* document);
+
+		/// <summary>
+		/// Sends the document to the back of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextPushDocumentToBack(RmlContextPtr self, RmlElementDocumentPtr document)
+		{
+			RmlContextPushDocumentToBackNative((RmlContext*)self, (RmlElementDocument*)document);
+		}
+
+		/// <summary>
+		/// Sends the document to the back of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextPushDocumentToBack(ref RmlContext self, RmlElementDocumentPtr document)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlContextPushDocumentToBackNative((RmlContext*)pself, (RmlElementDocument*)document);
+			}
+		}
+
+		/// <summary>
+		/// Sends the document to the back of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextPushDocumentToBack(RmlContextPtr self, ref RmlElementDocument document)
+		{
+			fixed (RmlElementDocument* pdocument = &document)
+			{
+				RmlContextPushDocumentToBackNative((RmlContext*)self, (RmlElementDocument*)pdocument);
+			}
+		}
+
+		/// <summary>
+		/// Sends the document to the back of the document stack.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextPushDocumentToBack(ref RmlContext self, ref RmlElementDocument document)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				fixed (RmlElementDocument* pdocument = &document)
+				{
+					RmlContextPushDocumentToBackNative((RmlContext*)pself, (RmlElementDocument*)pdocument);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Remove the document from the focus history and focus the previous document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_UnfocusDocument")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlContextUnfocusDocumentNative(RmlContext* self, RmlElementDocument* document);
+
+		/// <summary>
+		/// Remove the document from the focus history and focus the previous document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextUnfocusDocument(RmlContextPtr self, RmlElementDocumentPtr document)
+		{
+			RmlContextUnfocusDocumentNative((RmlContext*)self, (RmlElementDocument*)document);
+		}
+
+		/// <summary>
+		/// Remove the document from the focus history and focus the previous document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextUnfocusDocument(ref RmlContext self, RmlElementDocumentPtr document)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlContextUnfocusDocumentNative((RmlContext*)pself, (RmlElementDocument*)document);
+			}
+		}
+
+		/// <summary>
+		/// Remove the document from the focus history and focus the previous document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextUnfocusDocument(RmlContextPtr self, ref RmlElementDocument document)
+		{
+			fixed (RmlElementDocument* pdocument = &document)
+			{
+				RmlContextUnfocusDocumentNative((RmlContext*)self, (RmlElementDocument*)pdocument);
+			}
+		}
+
+		/// <summary>
+		/// Remove the document from the focus history and focus the previous document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextUnfocusDocument(ref RmlContext self, ref RmlElementDocument document)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				fixed (RmlElementDocument* pdocument = &document)
+				{
+					RmlContextUnfocusDocumentNative((RmlContext*)pself, (RmlElementDocument*)pdocument);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds an event listener to the context's root element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_AddEventListener")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlContextAddEventListenerNative(RmlContext* self, byte* evnt, RmlEventListener* listener, byte inCapturePhase);
+
+		/// <summary>
+		/// Adds an event listener to the context's root element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextAddEventListener(RmlContextPtr self, byte* evnt, RmlEventListenerPtr listener, bool inCapturePhase)
+		{
+			RmlContextAddEventListenerNative((RmlContext*)self, evnt, (RmlEventListener*)listener, inCapturePhase ? (byte)1 : (byte)0);
+		}
+
+		/// <summary>
+		/// Adds an event listener to the context's root element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextAddEventListener(ref RmlContext self, byte* evnt, RmlEventListenerPtr listener, bool inCapturePhase)
+		{
+			fixed (RmlContext* pself = &self)
+			{
+				RmlContextAddEventListenerNative((RmlContext*)pself, evnt, (RmlEventListener*)listener, inCapturePhase ? (byte)1 : (byte)0);
+			}
+		}
+
+		/// <summary>
+		/// Adds an event listener to the context's root element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextAddEventListener(RmlContextPtr self, in byte evnt, RmlEventListenerPtr listener, bool inCapturePhase)
+		{
+			fixed (byte* pevnt = &evnt)
+			{
+				RmlContextAddEventListenerNative((RmlContext*)self, (byte*)pevnt, (RmlEventListener*)listener, inCapturePhase ? (byte)1 : (byte)0);
+			}
+		}
+
+		/// <summary>
+		/// Adds an event listener to the context's root element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlContextAddEventListener(RmlContextPtr self, ReadOnlySpan<byte> evnt, RmlEventListenerPtr listener, bool inCapturePhase)
+		{
+			fixed (byte* pevnt = evnt)
+			{
+				RmlContextAddEventListenerNative((RmlContext*)self, (byte*)pevnt, (RmlEventListener*)listener, inCapturePhase ? (byte)1 : (byte)0);
+			}
+		}
+
+		/// <summary>
 		/// Adds an event listener to the context's root element.<br/>
 		/// <br/>
 		/// <summary>
@@ -2909,23 +3567,6 @@ namespace RmlUi.Interop
 
 		/// <summary>
 		/// Rml::Element <br/>
-		/// C++: ClassId Rml::Element::GetStaticClassIdentifier()<br/>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_GetStaticClassIdentifier")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void* RmlElementGetStaticClassIdentifierNative();
-
-		/// <summary>
-		/// Rml::Element <br/>
-		/// C++: ClassId Rml::Element::GetStaticClassIdentifier()<br/>
-		/// </summary>
-		public static void* RmlElementGetStaticClassIdentifier()
-		{
-			void* ret = RmlElementGetStaticClassIdentifierNative();
-			return ret;
-		}
-
-		/// <summary>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -2944,6 +3585,7 @@ namespace RmlUi.Interop
 		internal static partial void RmlElementSetClassNative(RmlElement* self, byte* className, byte activate);
 
 		/// <summary>
+		/// Rml::Element <br/>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -2963,6 +3605,7 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Rml::Element <br/>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -2985,6 +3628,7 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Rml::Element <br/>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -3007,6 +3651,7 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Rml::Element <br/>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -3029,6 +3674,7 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Rml::Element <br/>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -3069,6 +3715,7 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Rml::Element <br/>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -3094,6 +3741,7 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Rml::Element <br/>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -3119,6 +3767,7 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Rml::Element <br/>
 		/// Classes<br/>
 		/// <br/>
 		/// @<br/>
@@ -3628,6 +4277,308 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Sets the box describing the size of the element, and removes all others.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_SetBox")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementSetBoxNative(RmlElement* self, RmlBox* box);
+
+		/// <summary>
+		/// Sets the box describing the size of the element, and removes all others.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementSetBox(RmlElementPtr self, RmlBoxPtr box)
+		{
+			RmlElementSetBoxNative((RmlElement*)self, (RmlBox*)box);
+		}
+
+		/// <summary>
+		/// Sets the box describing the size of the element, and removes all others.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementSetBox(ref RmlElement self, RmlBoxPtr box)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementSetBoxNative((RmlElement*)pself, (RmlBox*)box);
+			}
+		}
+
+		/// <summary>
+		/// Sets the box describing the size of the element, and removes all others.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementSetBox(RmlElementPtr self, in RmlBox box)
+		{
+			fixed (RmlBox* pbox = &box)
+			{
+				RmlElementSetBoxNative((RmlElement*)self, (RmlBox*)pbox);
+			}
+		}
+
+		/// <summary>
+		/// Sets the box describing the size of the element, and removes all others.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementSetBox(ref RmlElement self, in RmlBox box)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlBox* pbox = &box)
+				{
+					RmlElementSetBoxNative((RmlElement*)pself, (RmlBox*)pbox);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a box to the end of the list describing this element's geometry.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_AddBox")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementAddBoxNative(RmlElement* self, RmlBox* box, RmlVector2F offset);
+
+		/// <summary>
+		/// Adds a box to the end of the list describing this element's geometry.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementAddBox(RmlElementPtr self, RmlBoxPtr box, RmlVector2F offset)
+		{
+			RmlElementAddBoxNative((RmlElement*)self, (RmlBox*)box, offset);
+		}
+
+		/// <summary>
+		/// Adds a box to the end of the list describing this element's geometry.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementAddBox(ref RmlElement self, RmlBoxPtr box, RmlVector2F offset)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementAddBoxNative((RmlElement*)pself, (RmlBox*)box, offset);
+			}
+		}
+
+		/// <summary>
+		/// Adds a box to the end of the list describing this element's geometry.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementAddBox(RmlElementPtr self, in RmlBox box, RmlVector2F offset)
+		{
+			fixed (RmlBox* pbox = &box)
+			{
+				RmlElementAddBoxNative((RmlElement*)self, (RmlBox*)pbox, offset);
+			}
+		}
+
+		/// <summary>
+		/// Adds a box to the end of the list describing this element's geometry.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementAddBox(ref RmlElement self, in RmlBox box, RmlVector2F offset)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlBox* pbox = &box)
+				{
+					RmlElementAddBoxNative((RmlElement*)pself, (RmlBox*)pbox, offset);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the main box describing the size of the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_GetBox")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlBox* RmlElementGetBoxNative(RmlElement* self);
+
+		/// <summary>
+		/// Returns the main box describing the size of the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlBoxPtr RmlElementGetBox(RmlElementPtr self)
+		{
+			RmlBoxPtr ret = RmlElementGetBoxNative((RmlElement*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the main box describing the size of the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlBoxPtr RmlElementGetBox(ref RmlElement self)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlBoxPtr ret = RmlElementGetBoxNative((RmlElement*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns one of the boxes describing the size of the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_GetBox_Int_Vector2f")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlBox* RmlElementGetBoxIntVector2FNative(RmlElement* self, int index, RmlVector2F* offset);
+
+		/// <summary>
+		/// Returns one of the boxes describing the size of the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlBoxPtr RmlElementGetBoxIntVector2F(RmlElementPtr self, int index, RmlVector2FPtr offset)
+		{
+			RmlBoxPtr ret = RmlElementGetBoxIntVector2FNative((RmlElement*)self, index, (RmlVector2F*)offset);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns one of the boxes describing the size of the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlBoxPtr RmlElementGetBoxIntVector2F(ref RmlElement self, int index, RmlVector2FPtr offset)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlBoxPtr ret = RmlElementGetBoxIntVector2FNative((RmlElement*)pself, index, (RmlVector2F*)offset);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns one of the boxes describing the size of the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlBoxPtr RmlElementGetBoxIntVector2F(RmlElementPtr self, int index, ref RmlVector2F offset)
+		{
+			fixed (RmlVector2F* poffset = &offset)
+			{
+				RmlBoxPtr ret = RmlElementGetBoxIntVector2FNative((RmlElement*)self, index, (RmlVector2F*)poffset);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns one of the boxes describing the size of the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlBoxPtr RmlElementGetBoxIntVector2F(ref RmlElement self, int index, ref RmlVector2F offset)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlVector2F* poffset = &offset)
+				{
+					RmlBoxPtr ret = RmlElementGetBoxIntVector2FNative((RmlElement*)pself, index, (RmlVector2F*)poffset);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Returns the number of boxes making up this element's geometry.<br/>
 		/// <br/>
 		/// <summary>
@@ -4063,960 +5014,6 @@ namespace RmlUi.Interop
 			{
 				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, (byte*)pname, value);
 				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, ReadOnlySpan<byte> name, byte* value)
-		{
-			fixed (byte* pname = name)
-			{
-				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, (byte*)pname, value);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, string name, byte* value)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (name != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(name);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, pStr0, value);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, in byte name, byte* value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pname = &name)
-				{
-					byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, (byte*)pname, value);
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, ReadOnlySpan<byte> name, byte* value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pname = name)
-				{
-					byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, (byte*)pname, value);
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, string name, byte* value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (name != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(name);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, pStr0, value);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, byte* name, in byte value)
-		{
-			fixed (byte* pvalue = &value)
-			{
-				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, name, (byte*)pvalue);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, byte* name, ReadOnlySpan<byte> value)
-		{
-			fixed (byte* pvalue = value)
-			{
-				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, name, (byte*)pvalue);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, byte* name, string value)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (value != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(value);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, name, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, byte* name, in byte value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pvalue = &value)
-				{
-					byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, name, (byte*)pvalue);
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, byte* name, ReadOnlySpan<byte> value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pvalue = value)
-				{
-					byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, name, (byte*)pvalue);
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, byte* name, string value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (value != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(value);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, name, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, in byte name, in byte value)
-		{
-			fixed (byte* pname = &name)
-			{
-				fixed (byte* pvalue = &value)
-				{
-					byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, (byte*)pname, (byte*)pvalue);
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, ReadOnlySpan<byte> name, ReadOnlySpan<byte> value)
-		{
-			fixed (byte* pname = name)
-			{
-				fixed (byte* pvalue = value)
-				{
-					byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, (byte*)pname, (byte*)pvalue);
-					return ret != 0;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, string name, string value)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (name != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(name);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte* pStr1 = null;
-			int pStrSize1 = 0;
-			if (value != null)
-			{
-				pStrSize1 = Utils.GetByteCountUTF8(value);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-				}
-				else
-				{
-					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-					pStr1 = pStrStack1;
-				}
-				int pStrOffset1 = Utils.EncodeStringUTF8(value, pStr1, pStrSize1);
-				pStr1[pStrOffset1] = 0;
-			}
-			byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, pStr0, pStr1);
-			if (pStrSize1 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr1);
-			}
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, in byte name, in byte value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pname = &name)
-				{
-					fixed (byte* pvalue = &value)
-					{
-						byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, (byte*)pname, (byte*)pvalue);
-						return ret != 0;
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, ReadOnlySpan<byte> name, ReadOnlySpan<byte> value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pname = name)
-				{
-					fixed (byte* pvalue = value)
-					{
-						byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, (byte*)pname, (byte*)pvalue);
-						return ret != 0;
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(ref RmlElement self, string name, string value)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (name != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(name);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				byte* pStr1 = null;
-				int pStrSize1 = 0;
-				if (value != null)
-				{
-					pStrSize1 = Utils.GetByteCountUTF8(value);
-					if (pStrSize1 >= Utils.MaxStackallocSize)
-					{
-						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-					}
-					else
-					{
-						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-						pStr1 = pStrStack1;
-					}
-					int pStrOffset1 = Utils.EncodeStringUTF8(value, pStr1, pStrSize1);
-					pStr1[pStrOffset1] = 0;
-				}
-				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, pStr0, pStr1);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr1);
-				}
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_RemoveProperty_String")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementRemovePropertyStringNative(RmlElement* self, byte* name);
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementRemovePropertyString(RmlElementPtr self, byte* name)
-		{
-			RmlElementRemovePropertyStringNative((RmlElement*)self, name);
-		}
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementRemovePropertyString(ref RmlElement self, byte* name)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				RmlElementRemovePropertyStringNative((RmlElement*)pself, name);
-			}
-		}
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementRemovePropertyString(RmlElementPtr self, in byte name)
-		{
-			fixed (byte* pname = &name)
-			{
-				RmlElementRemovePropertyStringNative((RmlElement*)self, (byte*)pname);
-			}
-		}
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementRemovePropertyString(RmlElementPtr self, ReadOnlySpan<byte> name)
-		{
-			fixed (byte* pname = name)
-			{
-				RmlElementRemovePropertyStringNative((RmlElement*)self, (byte*)pname);
-			}
-		}
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementRemovePropertyString(RmlElementPtr self, string name)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (name != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(name);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementRemovePropertyStringNative((RmlElement*)self, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementRemovePropertyString(ref RmlElement self, in byte name)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pname = &name)
-				{
-					RmlElementRemovePropertyStringNative((RmlElement*)pself, (byte*)pname);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementRemovePropertyString(ref RmlElement self, ReadOnlySpan<byte> name)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pname = name)
-				{
-					RmlElementRemovePropertyStringNative((RmlElement*)pself, (byte*)pname);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementRemovePropertyString(ref RmlElement self, string name)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (name != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(name);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementRemovePropertyStringNative((RmlElement*)pself, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// C++: void Rml::Element::RemoveProperty(PropertyId id)<br/>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_RemoveProperty_PropertyId")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementRemovePropertyPropertyIdNative(RmlElement* self, RmlPropertyId id);
-
-		/// <summary>
-		/// C++: void Rml::Element::RemoveProperty(PropertyId id)<br/>
-		/// </summary>
-		public static void RmlElementRemovePropertyPropertyId(RmlElementPtr self, RmlPropertyId id)
-		{
-			RmlElementRemovePropertyPropertyIdNative((RmlElement*)self, id);
-		}
-
-		/// <summary>
-		/// C++: void Rml::Element::RemoveProperty(PropertyId id)<br/>
-		/// </summary>
-		public static void RmlElementRemovePropertyPropertyId(ref RmlElement self, RmlPropertyId id)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				RmlElementRemovePropertyPropertyIdNative((RmlElement*)pself, id);
-			}
-		}
-
-		/// <summary>
-		/// Returns the size of the containing block. Often percentages are scaled relative to this.<br/>
-		/// C++: Vector2f Rml::Element::GetContainingBlock()<br/>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_GetContainingBlock")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlVector2F RmlElementGetContainingBlockNative(RmlElement* self);
-
-		/// <summary>
-		/// Returns the size of the containing block. Often percentages are scaled relative to this.<br/>
-		/// C++: Vector2f Rml::Element::GetContainingBlock()<br/>
-		/// </summary>
-		public static RmlVector2F RmlElementGetContainingBlock(RmlElementPtr self)
-		{
-			RmlVector2F ret = RmlElementGetContainingBlockNative((RmlElement*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns the size of the containing block. Often percentages are scaled relative to this.<br/>
-		/// C++: Vector2f Rml::Element::GetContainingBlock()<br/>
-		/// </summary>
-		public static RmlVector2F RmlElementGetContainingBlock(ref RmlElement self)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				RmlVector2F ret = RmlElementGetContainingBlockNative((RmlElement*)pself);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns 'position' property value from the element's computed values.<br/>
-		/// C++: Position Rml::Element::GetPosition()<br/>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_GetPosition")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlStylePosition RmlElementGetPositionNative(RmlElement* self);
-
-		/// <summary>
-		/// Returns 'position' property value from the element's computed values.<br/>
-		/// C++: Position Rml::Element::GetPosition()<br/>
-		/// </summary>
-		public static RmlStylePosition RmlElementGetPosition(RmlElementPtr self)
-		{
-			RmlStylePosition ret = RmlElementGetPositionNative((RmlElement*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns 'position' property value from the element's computed values.<br/>
-		/// C++: Position Rml::Element::GetPosition()<br/>
-		/// </summary>
-		public static RmlStylePosition RmlElementGetPosition(ref RmlElement self)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				RmlStylePosition ret = RmlElementGetPositionNative((RmlElement*)pself);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns 'float' property value from the element's computed values.<br/>
-		/// C++: Float Rml::Element::GetFloat()<br/>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_GetFloat")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlStyleFloat RmlElementGetFloatNative(RmlElement* self);
-
-		/// <summary>
-		/// Returns 'float' property value from the element's computed values.<br/>
-		/// C++: Float Rml::Element::GetFloat()<br/>
-		/// </summary>
-		public static RmlStyleFloat RmlElementGetFloat(RmlElementPtr self)
-		{
-			RmlStyleFloat ret = RmlElementGetFloatNative((RmlElement*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns 'float' property value from the element's computed values.<br/>
-		/// C++: Float Rml::Element::GetFloat()<br/>
-		/// </summary>
-		public static RmlStyleFloat RmlElementGetFloat(ref RmlElement self)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				RmlStyleFloat ret = RmlElementGetFloatNative((RmlElement*)pself);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns 'display' property value from the element's computed values.<br/>
-		/// C++: Display Rml::Element::GetDisplay()<br/>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_GetDisplay")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlStyleDisplay RmlElementGetDisplayNative(RmlElement* self);
-
-		/// <summary>
-		/// Returns 'display' property value from the element's computed values.<br/>
-		/// C++: Display Rml::Element::GetDisplay()<br/>
-		/// </summary>
-		public static RmlStyleDisplay RmlElementGetDisplay(RmlElementPtr self)
-		{
-			RmlStyleDisplay ret = RmlElementGetDisplayNative((RmlElement*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns 'display' property value from the element's computed values.<br/>
-		/// C++: Display Rml::Element::GetDisplay()<br/>
-		/// </summary>
-		public static RmlStyleDisplay RmlElementGetDisplay(ref RmlElement self)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				RmlStyleDisplay ret = RmlElementGetDisplayNative((RmlElement*)pself);
-				return ret;
 			}
 		}
 	}

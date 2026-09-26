@@ -30,11 +30,19 @@ static_assert(static_cast<long long>(RmlBoxArea_Border) == static_cast<long long
 static_assert(static_cast<long long>(RmlBoxArea_Padding) == static_cast<long long>(Rml::BoxArea::Padding));
 static_assert(static_cast<long long>(RmlBoxArea_Content) == static_cast<long long>(Rml::BoxArea::Content));
 static_assert(static_cast<long long>(RmlBoxArea_Auto) == static_cast<long long>(Rml::BoxArea::Auto));
+static_assert(static_cast<long long>(RmlBoxDirection_Vertical) == static_cast<long long>(Rml::BoxDirection::Vertical));
+static_assert(static_cast<long long>(RmlBoxDirection_Horizontal) == static_cast<long long>(Rml::BoxDirection::Horizontal));
+static_assert(static_cast<long long>(RmlBoxEdge_Top) == static_cast<long long>(Rml::BoxEdge::Top));
+static_assert(static_cast<long long>(RmlBoxEdge_Right) == static_cast<long long>(Rml::BoxEdge::Right));
+static_assert(static_cast<long long>(RmlBoxEdge_Bottom) == static_cast<long long>(Rml::BoxEdge::Bottom));
+static_assert(static_cast<long long>(RmlBoxEdge_Left) == static_cast<long long>(Rml::BoxEdge::Left));
 static_assert(static_cast<long long>(RmlCharacter_Null) == static_cast<long long>(Rml::Character::Null));
 static_assert(static_cast<long long>(RmlCharacter_Replacement) == static_cast<long long>(Rml::Character::Replacement));
 static_assert(static_cast<long long>(RmlDefaultActionPhase_None) == static_cast<long long>(Rml::DefaultActionPhase::None));
 static_assert(static_cast<long long>(RmlDefaultActionPhase_Target) == static_cast<long long>(Rml::DefaultActionPhase::Target));
 static_assert(static_cast<long long>(RmlDefaultActionPhase_TargetAndBubble) == static_cast<long long>(Rml::DefaultActionPhase::TargetAndBubble));
+static_assert(static_cast<long long>(RmlElementScrollOrientation_VERTICAL) == static_cast<long long>(Rml::ElementScroll::Orientation::VERTICAL));
+static_assert(static_cast<long long>(RmlElementScrollOrientation_HORIZONTAL) == static_cast<long long>(Rml::ElementScroll::Orientation::HORIZONTAL));
 static_assert(static_cast<long long>(RmlEventId_Invalid) == static_cast<long long>(Rml::EventId::Invalid));
 static_assert(static_cast<long long>(RmlEventId_Mousedown) == static_cast<long long>(Rml::EventId::Mousedown));
 static_assert(static_cast<long long>(RmlEventId_Mousescroll) == static_cast<long long>(Rml::EventId::Mousescroll));
@@ -399,6 +407,121 @@ static_assert(static_cast<long long>(RmlStylePosition_Fixed) == static_cast<long
 RMLC_API RmlElement* RmlElementDocument_AsElement(RmlElementDocument* self)
 {
     return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementDocument*>(self)));
+}
+
+RMLC_API RmlElement* RmlElementText_AsElement(RmlElementText* self)
+{
+    return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementText*>(self)));
+}
+
+RMLC_API RmlElement* RmlElementForm_AsElement(RmlElementForm* self)
+{
+    return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementForm*>(self)));
+}
+
+RMLC_API RmlElement* RmlElementFormControl_AsElement(RmlElementFormControl* self)
+{
+    return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementFormControl*>(self)));
+}
+
+RMLC_API RmlElementFormControl* RmlElementFormControlInput_AsElementFormControl(RmlElementFormControlInput* self)
+{
+    return reinterpret_cast<RmlElementFormControl*>(static_cast<Rml::ElementFormControl*>(reinterpret_cast<Rml::ElementFormControlInput*>(self)));
+}
+
+RMLC_API RmlElement* RmlElementFormControlInput_AsElement(RmlElementFormControlInput* self)
+{
+    return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementFormControlInput*>(self)));
+}
+
+RMLC_API RmlElementFormControl* RmlElementFormControlSelect_AsElementFormControl(RmlElementFormControlSelect* self)
+{
+    return reinterpret_cast<RmlElementFormControl*>(static_cast<Rml::ElementFormControl*>(reinterpret_cast<Rml::ElementFormControlSelect*>(self)));
+}
+
+RMLC_API RmlElement* RmlElementFormControlSelect_AsElement(RmlElementFormControlSelect* self)
+{
+    return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementFormControlSelect*>(self)));
+}
+
+RMLC_API RmlElementFormControl* RmlElementFormControlTextArea_AsElementFormControl(RmlElementFormControlTextArea* self)
+{
+    return reinterpret_cast<RmlElementFormControl*>(static_cast<Rml::ElementFormControl*>(reinterpret_cast<Rml::ElementFormControlTextArea*>(self)));
+}
+
+RMLC_API RmlElement* RmlElementFormControlTextArea_AsElement(RmlElementFormControlTextArea* self)
+{
+    return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementFormControlTextArea*>(self)));
+}
+
+RMLC_API RmlElement* RmlElementProgress_AsElement(RmlElementProgress* self)
+{
+    return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementProgress*>(self)));
+}
+
+RMLC_API RmlElement* RmlElementTabSet_AsElement(RmlElementTabSet* self)
+{
+    return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementTabSet*>(self)));
+}
+
+RMLC_API RmlElementDocument* RmlElementDocument_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementDocument*>(::rmlui_dynamic_cast<Rml::ElementDocument*>(reinterpret_cast<Rml::Element*>(value)));
+}
+
+RMLC_API RmlElementText* RmlElementText_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementText*>(::rmlui_dynamic_cast<Rml::ElementText*>(reinterpret_cast<Rml::Element*>(value)));
+}
+
+RMLC_API RmlElementForm* RmlElementForm_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementForm*>(::rmlui_dynamic_cast<Rml::ElementForm*>(reinterpret_cast<Rml::Element*>(value)));
+}
+
+RMLC_API RmlElementFormControl* RmlElementFormControl_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementFormControl*>(::rmlui_dynamic_cast<Rml::ElementFormControl*>(reinterpret_cast<Rml::Element*>(value)));
+}
+
+RMLC_API RmlElementFormControlInput* RmlElementFormControlInput_FromElementFormControl(RmlElementFormControl* value)
+{
+    return reinterpret_cast<RmlElementFormControlInput*>(::rmlui_dynamic_cast<Rml::ElementFormControlInput*>(reinterpret_cast<Rml::ElementFormControl*>(value)));
+}
+
+RMLC_API RmlElementFormControlInput* RmlElementFormControlInput_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementFormControlInput*>(::rmlui_dynamic_cast<Rml::ElementFormControlInput*>(reinterpret_cast<Rml::Element*>(value)));
+}
+
+RMLC_API RmlElementFormControlSelect* RmlElementFormControlSelect_FromElementFormControl(RmlElementFormControl* value)
+{
+    return reinterpret_cast<RmlElementFormControlSelect*>(::rmlui_dynamic_cast<Rml::ElementFormControlSelect*>(reinterpret_cast<Rml::ElementFormControl*>(value)));
+}
+
+RMLC_API RmlElementFormControlSelect* RmlElementFormControlSelect_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementFormControlSelect*>(::rmlui_dynamic_cast<Rml::ElementFormControlSelect*>(reinterpret_cast<Rml::Element*>(value)));
+}
+
+RMLC_API RmlElementFormControlTextArea* RmlElementFormControlTextArea_FromElementFormControl(RmlElementFormControl* value)
+{
+    return reinterpret_cast<RmlElementFormControlTextArea*>(::rmlui_dynamic_cast<Rml::ElementFormControlTextArea*>(reinterpret_cast<Rml::ElementFormControl*>(value)));
+}
+
+RMLC_API RmlElementFormControlTextArea* RmlElementFormControlTextArea_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementFormControlTextArea*>(::rmlui_dynamic_cast<Rml::ElementFormControlTextArea*>(reinterpret_cast<Rml::Element*>(value)));
+}
+
+RMLC_API RmlElementProgress* RmlElementProgress_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementProgress*>(::rmlui_dynamic_cast<Rml::ElementProgress*>(reinterpret_cast<Rml::Element*>(value)));
+}
+
+RMLC_API RmlElementTabSet* RmlElementTabSet_FromElement(RmlElement* value)
+{
+    return reinterpret_cast<RmlElementTabSet*>(::rmlui_dynamic_cast<Rml::ElementTabSet*>(reinterpret_cast<Rml::Element*>(value)));
 }
 
 RMLC_API bool RmlInitialise(void)
@@ -827,12 +950,6 @@ RMLC_API double RmlContext_GetNextUpdateDelay(RmlContext* self)
     return rml_ret;
 }
 
-RMLC_API void* RmlElement_GetStaticClassIdentifier(void)
-{
-    decltype(auto) rml_ret = Rml::Element::GetStaticClassIdentifier();
-    return rml_ret;
-}
-
 RMLC_API void RmlElement_SetClass(RmlElement* self, const char* class_name, bool activate)
 {
     reinterpret_cast<Rml::Element*>(self)->SetClass(Rml::String(class_name ? class_name : ""), activate);
@@ -870,6 +987,30 @@ RMLC_API void RmlElement_SetScrollableOverflowRectangle(RmlElement* self, RmlVec
     reinterpret_cast<Rml::Element*>(self)->SetScrollableOverflowRectangle(std::bit_cast<Rml::Vector2f>(scrollable_overflow_rectangle), clamp_scroll_offset);
 }
 
+RMLC_API void RmlElement_SetBox(RmlElement* self, const RmlBox* box)
+{
+    reinterpret_cast<Rml::Element*>(self)->SetBox(*reinterpret_cast<const Rml::Box*>(box));
+}
+
+RMLC_API void RmlElement_AddBox(RmlElement* self, const RmlBox* box, RmlVector2f offset)
+{
+    reinterpret_cast<Rml::Element*>(self)->AddBox(*reinterpret_cast<const Rml::Box*>(box), std::bit_cast<Rml::Vector2f>(offset));
+}
+
+RMLC_API const RmlBox* RmlElement_GetBox(RmlElement* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetBox();
+    return reinterpret_cast<const RmlBox*>(&rml_ret);
+}
+
+RMLC_API const RmlBox* RmlElement_GetBox_Int_Vector2f(RmlElement* self, int32_t index, RmlVector2f* offset)
+{
+    Rml::Vector2f offset_tmp = std::bit_cast<Rml::Vector2f>(*offset);
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetBox(index, offset_tmp);
+    *offset = std::bit_cast<RmlVector2f>(offset_tmp);
+    return reinterpret_cast<const RmlBox*>(&rml_ret);
+}
+
 RMLC_API int32_t RmlElement_GetNumBoxes(RmlElement* self)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetNumBoxes();
@@ -902,6 +1043,12 @@ RMLC_API bool RmlElement_SetProperty_String_String(RmlElement* self, const char*
     return rml_ret;
 }
 
+RMLC_API bool RmlElement_SetProperty_PropertyId_Property(RmlElement* self, RmlPropertyId id, const RmlProperty* property)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->SetProperty(static_cast<Rml::PropertyId>(id), *reinterpret_cast<const Rml::Property*>(property));
+    return rml_ret;
+}
+
 RMLC_API void RmlElement_RemoveProperty_String(RmlElement* self, const char* name)
 {
     reinterpret_cast<Rml::Element*>(self)->RemoveProperty(Rml::String(name ? name : ""));
@@ -910,6 +1057,30 @@ RMLC_API void RmlElement_RemoveProperty_String(RmlElement* self, const char* nam
 RMLC_API void RmlElement_RemoveProperty_PropertyId(RmlElement* self, RmlPropertyId id)
 {
     reinterpret_cast<Rml::Element*>(self)->RemoveProperty(static_cast<Rml::PropertyId>(id));
+}
+
+RMLC_API const RmlProperty* RmlElement_GetProperty_String(RmlElement* self, const char* name)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetProperty(Rml::String(name ? name : ""));
+    return reinterpret_cast<const RmlProperty*>(rml_ret);
+}
+
+RMLC_API const RmlProperty* RmlElement_GetProperty_PropertyId(RmlElement* self, RmlPropertyId id)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetProperty(static_cast<Rml::PropertyId>(id));
+    return reinterpret_cast<const RmlProperty*>(rml_ret);
+}
+
+RMLC_API const RmlProperty* RmlElement_GetLocalProperty_String(RmlElement* self, const char* name)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetLocalProperty(Rml::String(name ? name : ""));
+    return reinterpret_cast<const RmlProperty*>(rml_ret);
+}
+
+RMLC_API const RmlProperty* RmlElement_GetLocalProperty_PropertyId(RmlElement* self, RmlPropertyId id)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetLocalProperty(static_cast<Rml::PropertyId>(id));
+    return reinterpret_cast<const RmlProperty*>(rml_ret);
 }
 
 RMLC_API RmlVector2f RmlElement_GetContainingBlock(RmlElement* self)
@@ -1143,18 +1314,6 @@ RMLC_API void RmlElement_ProcessDefaultAction(RmlElement* self, RmlEvent* event)
     reinterpret_cast<Rml::Element*>(self)->ProcessDefaultAction(*reinterpret_cast<Rml::Event*>(event));
 }
 
-RMLC_API void* RmlElement_GetClassIdentifier(RmlElement* self)
-{
-    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetClassIdentifier();
-    return rml_ret;
-}
-
-RMLC_API bool RmlElement_IsClass(RmlElement* self, void* type_identifier)
-{
-    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->IsClass(type_identifier);
-    return rml_ret;
-}
-
 RMLC_API bool RmlElement_IsClassSet(RmlElement* self, const char* class_name)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->IsClassSet(Rml::String(class_name ? class_name : ""));
@@ -1167,6 +1326,12 @@ RMLC_API const char* RmlElement_GetClassNames(RmlElement* self)
     thread_local Rml::String rml_string_result;
     rml_string_result = std::move(rml_ret);
     return rml_string_result.c_str();
+}
+
+RMLC_API const RmlStyleSheet* RmlElement_GetStyleSheet(RmlElement* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetStyleSheet();
+    return reinterpret_cast<const RmlStyleSheet*>(rml_ret);
 }
 
 RMLC_API const char* RmlElement_GetAddress(RmlElement* self, bool include_pseudo_classes, bool include_parents)
@@ -1333,10 +1498,10 @@ RMLC_API const char* RmlElement_GetEventDispatcherSummary(RmlElement* self)
     return rml_string_result.c_str();
 }
 
-RMLC_API void* RmlElementDocument_GetStaticClassIdentifier(void)
+RMLC_API RmlElementScroll* RmlElement_GetElementScroll(RmlElement* self)
 {
-    decltype(auto) rml_ret = Rml::ElementDocument::GetStaticClassIdentifier();
-    return rml_ret;
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetElementScroll();
+    return reinterpret_cast<RmlElementScroll*>(rml_ret);
 }
 
 RMLC_API RmlContext* RmlElementDocument_GetContext(RmlElementDocument* self)
@@ -1401,18 +1566,6 @@ RMLC_API void RmlElementDocument_UpdateDocument(RmlElementDocument* self)
     reinterpret_cast<Rml::ElementDocument*>(self)->UpdateDocument();
 }
 
-RMLC_API void* RmlElementDocument_GetClassIdentifier(RmlElementDocument* self)
-{
-    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementDocument*>(self)->GetClassIdentifier();
-    return rml_ret;
-}
-
-RMLC_API bool RmlElementDocument_IsClass(RmlElementDocument* self, void* type_identifier)
-{
-    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementDocument*>(self)->IsClass(type_identifier);
-    return rml_ret;
-}
-
 RMLC_API const char* RmlElementDocument_GetTitle(RmlElementDocument* self)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::ElementDocument*>(self)->GetTitle();
@@ -1423,6 +1576,12 @@ RMLC_API const char* RmlElementDocument_GetSourceURL(RmlElementDocument* self)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::ElementDocument*>(self)->GetSourceURL();
     return rml_ret.c_str();
+}
+
+RMLC_API const RmlStyleSheet* RmlElementDocument_GetStyleSheet(RmlElementDocument* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementDocument*>(self)->GetStyleSheet();
+    return reinterpret_cast<const RmlStyleSheet*>(rml_ret);
 }
 
 RMLC_API bool RmlElementDocument_IsModal(RmlElementDocument* self)
@@ -1503,5 +1662,445 @@ RMLC_API RmlVector2f RmlEvent_GetUnprojectedMouseScreenPos(RmlEvent* self)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Event*>(self)->GetUnprojectedMouseScreenPos();
     return std::bit_cast<RmlVector2f>(rml_ret);
+}
+
+RMLC_API void RmlElementText_SetText(RmlElementText* self, const char* text)
+{
+    reinterpret_cast<Rml::ElementText*>(self)->SetText(Rml::String(text ? text : ""));
+}
+
+RMLC_API void RmlElementText_ClearLines(RmlElementText* self)
+{
+    reinterpret_cast<Rml::ElementText*>(self)->ClearLines();
+}
+
+RMLC_API void RmlElementText_AddLine(RmlElementText* self, RmlVector2f line_position, const char* line)
+{
+    reinterpret_cast<Rml::ElementText*>(self)->AddLine(std::bit_cast<Rml::Vector2f>(line_position), Rml::String(line ? line : ""));
+}
+
+RMLC_API void RmlElementText_SuppressAutoLayout(RmlElementText* self)
+{
+    reinterpret_cast<Rml::ElementText*>(self)->SuppressAutoLayout();
+}
+
+RMLC_API const char* RmlElementText_GetText(RmlElementText* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementText*>(self)->GetText();
+    return rml_ret.c_str();
+}
+
+RMLC_API void RmlElementForm_Submit(RmlElementForm* self, const char* name, const char* submit_value)
+{
+    reinterpret_cast<Rml::ElementForm*>(self)->Submit(Rml::String(name ? name : ""), Rml::String(submit_value ? submit_value : ""));
+}
+
+RMLC_API void RmlElementFormControl_SetName(RmlElementFormControl* self, const char* name)
+{
+    reinterpret_cast<Rml::ElementFormControl*>(self)->SetName(Rml::String(name ? name : ""));
+}
+
+RMLC_API void RmlElementFormControl_SetValue(RmlElementFormControl* self, const char* value)
+{
+    reinterpret_cast<Rml::ElementFormControl*>(self)->SetValue(Rml::String(value ? value : ""));
+}
+
+RMLC_API bool RmlElementFormControl_IsSubmitted(RmlElementFormControl* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControl*>(self)->IsSubmitted();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementFormControl_SetDisabled(RmlElementFormControl* self, bool disable)
+{
+    reinterpret_cast<Rml::ElementFormControl*>(self)->SetDisabled(disable);
+}
+
+RMLC_API const char* RmlElementFormControl_GetName(RmlElementFormControl* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControl*>(self)->GetName();
+    thread_local Rml::String rml_string_result;
+    rml_string_result = std::move(rml_ret);
+    return rml_string_result.c_str();
+}
+
+RMLC_API const char* RmlElementFormControl_GetValue(RmlElementFormControl* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControl*>(self)->GetValue();
+    thread_local Rml::String rml_string_result;
+    rml_string_result = std::move(rml_ret);
+    return rml_string_result.c_str();
+}
+
+RMLC_API bool RmlElementFormControl_IsDisabled(RmlElementFormControl* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControl*>(self)->IsDisabled();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementFormControlInput_SetValue(RmlElementFormControlInput* self, const char* value)
+{
+    reinterpret_cast<Rml::ElementFormControlInput*>(self)->SetValue(Rml::String(value ? value : ""));
+}
+
+RMLC_API bool RmlElementFormControlInput_IsSubmitted(RmlElementFormControlInput* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlInput*>(self)->IsSubmitted();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementFormControlInput_Select(RmlElementFormControlInput* self)
+{
+    reinterpret_cast<Rml::ElementFormControlInput*>(self)->Select();
+}
+
+RMLC_API void RmlElementFormControlInput_SetSelectionRange(RmlElementFormControlInput* self, int32_t selection_start, int32_t selection_end)
+{
+    reinterpret_cast<Rml::ElementFormControlInput*>(self)->SetSelectionRange(selection_start, selection_end);
+}
+
+RMLC_API void RmlElementFormControlInput_SetCompositionRange(RmlElementFormControlInput* self, int32_t range_start, int32_t range_end)
+{
+    reinterpret_cast<Rml::ElementFormControlInput*>(self)->SetCompositionRange(range_start, range_end);
+}
+
+RMLC_API const char* RmlElementFormControlInput_GetValue(RmlElementFormControlInput* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlInput*>(self)->GetValue();
+    thread_local Rml::String rml_string_result;
+    rml_string_result = std::move(rml_ret);
+    return rml_string_result.c_str();
+}
+
+RMLC_API void RmlElementFormControlSelect_SetValue(RmlElementFormControlSelect* self, const char* value)
+{
+    reinterpret_cast<Rml::ElementFormControlSelect*>(self)->SetValue(Rml::String(value ? value : ""));
+}
+
+RMLC_API void RmlElementFormControlSelect_SetSelection(RmlElementFormControlSelect* self, int32_t selection)
+{
+    reinterpret_cast<Rml::ElementFormControlSelect*>(self)->SetSelection(selection);
+}
+
+RMLC_API RmlElement* RmlElementFormControlSelect_GetOption(RmlElementFormControlSelect* self, int32_t index)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlSelect*>(self)->GetOption(index);
+    return reinterpret_cast<RmlElement*>(rml_ret);
+}
+
+RMLC_API int32_t RmlElementFormControlSelect_GetNumOptions(RmlElementFormControlSelect* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlSelect*>(self)->GetNumOptions();
+    return rml_ret;
+}
+
+RMLC_API int32_t RmlElementFormControlSelect_Add_String_String_Int_Bool(RmlElementFormControlSelect* self, const char* rml, const char* value, int32_t before, bool selectable)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlSelect*>(self)->Add(Rml::String(rml ? rml : ""), Rml::String(value ? value : ""), before, selectable);
+    return rml_ret;
+}
+
+RMLC_API void RmlElementFormControlSelect_Remove(RmlElementFormControlSelect* self, int32_t index)
+{
+    reinterpret_cast<Rml::ElementFormControlSelect*>(self)->Remove(index);
+}
+
+RMLC_API void RmlElementFormControlSelect_RemoveAll(RmlElementFormControlSelect* self)
+{
+    reinterpret_cast<Rml::ElementFormControlSelect*>(self)->RemoveAll();
+}
+
+RMLC_API void RmlElementFormControlSelect_ShowSelectBox(RmlElementFormControlSelect* self)
+{
+    reinterpret_cast<Rml::ElementFormControlSelect*>(self)->ShowSelectBox();
+}
+
+RMLC_API void RmlElementFormControlSelect_HideSelectBox(RmlElementFormControlSelect* self)
+{
+    reinterpret_cast<Rml::ElementFormControlSelect*>(self)->HideSelectBox();
+}
+
+RMLC_API void RmlElementFormControlSelect_CancelSelectBox(RmlElementFormControlSelect* self)
+{
+    reinterpret_cast<Rml::ElementFormControlSelect*>(self)->CancelSelectBox();
+}
+
+RMLC_API bool RmlElementFormControlSelect_IsSelectBoxVisible(RmlElementFormControlSelect* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlSelect*>(self)->IsSelectBoxVisible();
+    return rml_ret;
+}
+
+RMLC_API const char* RmlElementFormControlSelect_GetValue(RmlElementFormControlSelect* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlSelect*>(self)->GetValue();
+    thread_local Rml::String rml_string_result;
+    rml_string_result = std::move(rml_ret);
+    return rml_string_result.c_str();
+}
+
+RMLC_API int32_t RmlElementFormControlSelect_GetSelection(RmlElementFormControlSelect* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlSelect*>(self)->GetSelection();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementFormControlTextArea_SetValue(RmlElementFormControlTextArea* self, const char* value)
+{
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->SetValue(Rml::String(value ? value : ""));
+}
+
+RMLC_API void RmlElementFormControlTextArea_SetNumColumns(RmlElementFormControlTextArea* self, int32_t num_columns)
+{
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->SetNumColumns(num_columns);
+}
+
+RMLC_API void RmlElementFormControlTextArea_SetNumRows(RmlElementFormControlTextArea* self, int32_t num_rows)
+{
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->SetNumRows(num_rows);
+}
+
+RMLC_API void RmlElementFormControlTextArea_SetMaxLength(RmlElementFormControlTextArea* self, int32_t max_length)
+{
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->SetMaxLength(max_length);
+}
+
+RMLC_API void RmlElementFormControlTextArea_SetWordWrap(RmlElementFormControlTextArea* self, bool word_wrap)
+{
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->SetWordWrap(word_wrap);
+}
+
+RMLC_API bool RmlElementFormControlTextArea_GetWordWrap(RmlElementFormControlTextArea* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->GetWordWrap();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementFormControlTextArea_Select(RmlElementFormControlTextArea* self)
+{
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->Select();
+}
+
+RMLC_API void RmlElementFormControlTextArea_SetSelectionRange(RmlElementFormControlTextArea* self, int32_t selection_start, int32_t selection_end)
+{
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->SetSelectionRange(selection_start, selection_end);
+}
+
+RMLC_API void RmlElementFormControlTextArea_SetCompositionRange(RmlElementFormControlTextArea* self, int32_t range_start, int32_t range_end)
+{
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->SetCompositionRange(range_start, range_end);
+}
+
+RMLC_API bool RmlElementFormControlTextArea_GetIntrinsicDimensions(RmlElementFormControlTextArea* self, RmlVector2f* dimensions, float* ratio)
+{
+    Rml::Vector2f dimensions_tmp = std::bit_cast<Rml::Vector2f>(*dimensions);
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->GetIntrinsicDimensions(dimensions_tmp, *ratio);
+    *dimensions = std::bit_cast<RmlVector2f>(dimensions_tmp);
+    return rml_ret;
+}
+
+RMLC_API const char* RmlElementFormControlTextArea_GetValue(RmlElementFormControlTextArea* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->GetValue();
+    thread_local Rml::String rml_string_result;
+    rml_string_result = std::move(rml_ret);
+    return rml_string_result.c_str();
+}
+
+RMLC_API int32_t RmlElementFormControlTextArea_GetNumColumns(RmlElementFormControlTextArea* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->GetNumColumns();
+    return rml_ret;
+}
+
+RMLC_API int32_t RmlElementFormControlTextArea_GetNumRows(RmlElementFormControlTextArea* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->GetNumRows();
+    return rml_ret;
+}
+
+RMLC_API int32_t RmlElementFormControlTextArea_GetMaxLength(RmlElementFormControlTextArea* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->GetMaxLength();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementProgress_SetValue(RmlElementProgress* self, float value)
+{
+    reinterpret_cast<Rml::ElementProgress*>(self)->SetValue(value);
+}
+
+RMLC_API void RmlElementProgress_SetMax(RmlElementProgress* self, float max_value)
+{
+    reinterpret_cast<Rml::ElementProgress*>(self)->SetMax(max_value);
+}
+
+RMLC_API bool RmlElementProgress_GetIntrinsicDimensions(RmlElementProgress* self, RmlVector2f* dimensions, float* ratio)
+{
+    Rml::Vector2f dimensions_tmp = std::bit_cast<Rml::Vector2f>(*dimensions);
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementProgress*>(self)->GetIntrinsicDimensions(dimensions_tmp, *ratio);
+    *dimensions = std::bit_cast<RmlVector2f>(dimensions_tmp);
+    return rml_ret;
+}
+
+RMLC_API float RmlElementProgress_GetValue(RmlElementProgress* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementProgress*>(self)->GetValue();
+    return rml_ret;
+}
+
+RMLC_API float RmlElementProgress_GetMax(RmlElementProgress* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementProgress*>(self)->GetMax();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementTabSet_SetTab_Int_String(RmlElementTabSet* self, int32_t tab_index, const char* rml)
+{
+    reinterpret_cast<Rml::ElementTabSet*>(self)->SetTab(tab_index, Rml::String(rml ? rml : ""));
+}
+
+RMLC_API void RmlElementTabSet_SetPanel_Int_String(RmlElementTabSet* self, int32_t tab_index, const char* rml)
+{
+    reinterpret_cast<Rml::ElementTabSet*>(self)->SetPanel(tab_index, Rml::String(rml ? rml : ""));
+}
+
+RMLC_API void RmlElementTabSet_RemoveTab(RmlElementTabSet* self, int32_t tab_index)
+{
+    reinterpret_cast<Rml::ElementTabSet*>(self)->RemoveTab(tab_index);
+}
+
+RMLC_API int32_t RmlElementTabSet_GetNumTabs(RmlElementTabSet* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementTabSet*>(self)->GetNumTabs();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementTabSet_SetActiveTab(RmlElementTabSet* self, int32_t tab_index)
+{
+    reinterpret_cast<Rml::ElementTabSet*>(self)->SetActiveTab(tab_index);
+}
+
+RMLC_API void RmlElementTabSet_ProcessDefaultAction(RmlElementTabSet* self, RmlEvent* event)
+{
+    reinterpret_cast<Rml::ElementTabSet*>(self)->ProcessDefaultAction(*reinterpret_cast<Rml::Event*>(event));
+}
+
+RMLC_API int32_t RmlElementTabSet_GetActiveTab(RmlElementTabSet* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementTabSet*>(self)->GetActiveTab();
+    return rml_ret;
+}
+
+RMLC_API void RmlElementScroll_Update(RmlElementScroll* self)
+{
+    reinterpret_cast<Rml::ElementScroll*>(self)->Update();
+}
+
+RMLC_API void RmlElementScroll_EnableScrollbar(RmlElementScroll* self, RmlElementScrollOrientation orientation, float element_width)
+{
+    reinterpret_cast<Rml::ElementScroll*>(self)->EnableScrollbar(static_cast<Rml::ElementScroll::Orientation>(orientation), element_width);
+}
+
+RMLC_API void RmlElementScroll_DisableScrollbar(RmlElementScroll* self, RmlElementScrollOrientation orientation)
+{
+    reinterpret_cast<Rml::ElementScroll*>(self)->DisableScrollbar(static_cast<Rml::ElementScroll::Orientation>(orientation));
+}
+
+RMLC_API void RmlElementScroll_UpdateScrollbar(RmlElementScroll* self, RmlElementScrollOrientation orientation)
+{
+    reinterpret_cast<Rml::ElementScroll*>(self)->UpdateScrollbar(static_cast<Rml::ElementScroll::Orientation>(orientation));
+}
+
+RMLC_API RmlElement* RmlElementScroll_GetScrollbar(RmlElementScroll* self, RmlElementScrollOrientation orientation)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementScroll*>(self)->GetScrollbar(static_cast<Rml::ElementScroll::Orientation>(orientation));
+    return reinterpret_cast<RmlElement*>(rml_ret);
+}
+
+RMLC_API float RmlElementScroll_GetScrollbarSize(RmlElementScroll* self, RmlElementScrollOrientation orientation)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementScroll*>(self)->GetScrollbarSize(static_cast<Rml::ElementScroll::Orientation>(orientation));
+    return rml_ret;
+}
+
+RMLC_API void RmlElementScroll_FormatScrollbars(RmlElementScroll* self)
+{
+    reinterpret_cast<Rml::ElementScroll*>(self)->FormatScrollbars();
+}
+
+RMLC_API void RmlElementScroll_UpdateProperties(RmlElementScroll* self)
+{
+    reinterpret_cast<Rml::ElementScroll*>(self)->UpdateProperties();
+}
+
+RMLC_API void RmlBox_SetContent(RmlBox* self, RmlVector2f content)
+{
+    reinterpret_cast<Rml::Box*>(self)->SetContent(std::bit_cast<Rml::Vector2f>(content));
+}
+
+RMLC_API void RmlBox_SetEdge(RmlBox* self, RmlBoxArea area, RmlBoxEdge edge, float size)
+{
+    reinterpret_cast<Rml::Box*>(self)->SetEdge(static_cast<Rml::BoxArea>(area), static_cast<Rml::BoxEdge>(edge), size);
+}
+
+RMLC_API RmlVector2f RmlBox_GetPosition(RmlBox* self, RmlBoxArea area)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Box*>(self)->GetPosition(static_cast<Rml::BoxArea>(area));
+    return std::bit_cast<RmlVector2f>(rml_ret);
+}
+
+RMLC_API RmlVector2f RmlBox_GetSize(RmlBox* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Box*>(self)->GetSize();
+    return std::bit_cast<RmlVector2f>(rml_ret);
+}
+
+RMLC_API RmlVector2f RmlBox_GetSize_BoxArea(RmlBox* self, RmlBoxArea area)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Box*>(self)->GetSize(static_cast<Rml::BoxArea>(area));
+    return std::bit_cast<RmlVector2f>(rml_ret);
+}
+
+RMLC_API float RmlBox_GetEdge(RmlBox* self, RmlBoxArea area, RmlBoxEdge edge)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Box*>(self)->GetEdge(static_cast<Rml::BoxArea>(area), static_cast<Rml::BoxEdge>(edge));
+    return rml_ret;
+}
+
+RMLC_API float RmlBox_GetCumulativeEdge(RmlBox* self, RmlBoxArea area, RmlBoxEdge edge)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Box*>(self)->GetCumulativeEdge(static_cast<Rml::BoxArea>(area), static_cast<Rml::BoxEdge>(edge));
+    return rml_ret;
+}
+
+RMLC_API float RmlBox_GetSizeAcross(RmlBox* self, RmlBoxDirection direction, RmlBoxArea area, RmlBoxArea area_end)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Box*>(self)->GetSizeAcross(static_cast<Rml::BoxDirection>(direction), static_cast<Rml::BoxArea>(area), static_cast<Rml::BoxArea>(area_end));
+    return rml_ret;
+}
+
+RMLC_API RmlVector2f RmlBox_GetFrameSize(RmlBox* self, RmlBoxArea area)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Box*>(self)->GetFrameSize(static_cast<Rml::BoxArea>(area));
+    return std::bit_cast<RmlVector2f>(rml_ret);
+}
+
+RMLC_API void RmlStyleSheet_MergeStyleSheet(RmlStyleSheet* self, const RmlStyleSheet* sheet)
+{
+    reinterpret_cast<Rml::StyleSheet*>(self)->MergeStyleSheet(*reinterpret_cast<const Rml::StyleSheet*>(sheet));
+}
+
+RMLC_API void RmlStyleSheet_BuildNodeIndex(RmlStyleSheet* self)
+{
+    reinterpret_cast<Rml::StyleSheet*>(self)->BuildNodeIndex();
+}
+
+RMLC_API const char* RmlProperty_ToString(RmlProperty* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Property*>(self)->ToString();
+    thread_local Rml::String rml_string_result;
+    rml_string_result = std::move(rml_ret);
+    return rml_string_result.c_str();
 }
 

@@ -18,7 +18,11 @@ public sealed partial class ShimGenerator
 
     private sealed record CsReturn(string Type, string NativeType, Func<string, string> Convert);
 
-    private sealed record CsMethod(Wrapped F, string Name, string Key, List<CsParam> Params, List<string?> Defaults, CsReturn Return, bool IsStatic, bool HidesObjectMember);
+    private sealed record CsMethod(Wrapped F, string Name, string Key, List<CsParam> Params, List<string?> Defaults, CsReturn Return, bool IsStatic, bool HidesObjectMember)
+    {
+        /// <summary>Replaces the handle's own member of the same name (object.ToString).</summary>
+        public bool IsOverride { get; init; }
+    }
 
     private readonly List<string> csNotes = [];
 
@@ -229,6 +233,14 @@ public sealed partial class ShimGenerator
         foreach (var f in wrapped.Where(w => w.Owner == owner))
         {
             string name = f.Function.Name;
+            // A C++ String ToString() const is what a C# reader expects ToString() to return, so it replaces the
+            // handle's own, which only prints the address.
+            if (owner != null && name == "ToString" && f.Params.Count == 0 && f.Return.Base is StringBase && !f.Function.IsStatic
+                && BuildCsMethod(f, name) is { } toString && keys.Add(toString.Key))
+            {
+                methods.Add(toString with { IsOverride = true });
+                continue;
+            }
             string? why = name == typeName ? "same name as its type"
                 : owner != null && HandleMembers.Contains(name) ? "same name as a handle member"
                 : null;
@@ -263,8 +275,9 @@ public sealed partial class ShimGenerator
         var free = CsMethodsFor(null);
         var perClass = config.Classes.ToDictionary(c => c, c => CsMethodsFor(classes[c]));
         var upcasts = Upcasts().ToList();
+        var downcasts = Downcasts().ToList();
 
-        File.WriteAllText(Path.Combine(dir, "NativeMethods.cs"), WriteNativeMethods(free, perClass, upcasts));
+        File.WriteAllText(Path.Combine(dir, "NativeMethods.cs"), WriteNativeMethods(free, perClass, upcasts, downcasts));
         File.WriteAllText(Path.Combine(dir, "Rml.cs"), Wrap(w =>
         {
             w.AppendLine("/// <summary>RmlUi's free functions (namespace Rml).</summary>");
@@ -282,11 +295,19 @@ public sealed partial class ShimGenerator
             string shortName = ShortName(name);
             File.WriteAllText(Path.Combine(dir, $"{shortName}.cs"), Wrap(w =>
             {
-                WriteHandleStart(w, name, shortName);
+                bool ownToString = perClass.TryGetValue(name, out var own0) && own0.Any(m => m.IsOverride);
+                WriteHandleStart(w, name, shortName, ownToString);
                 foreach (var (from, to) in upcasts.Where(u => u.From == name))
                 {
                     w.AppendLine($"    /// <summary>Upcast to {to}.</summary>");
                     w.AppendLine($"    public static implicit operator {ShortName(to)}({shortName} value) => new(NativeMethods.{TypeMapper.HandleCName(from)}_As{ShortName(to)}(value.Handle));");
+                    w.AppendLine();
+                }
+                // A named method rather than an explicit operator: a C# cast is expected to throw, and this returns null.
+                foreach (var (_, @base) in downcasts.Where(d => d.Derived == name))
+                {
+                    w.AppendLine($"    /// <summary>The {ShortName(@base)} as a {shortName}, or a null handle when it is not one.</summary>");
+                    w.AppendLine($"    public static {shortName} From({ShortName(@base)} value) => new(NativeMethods.{TypeMapper.HandleCName(name)}_From{ShortName(@base)}(value.Handle));");
                     w.AppendLine();
                 }
                 if (perClass.TryGetValue(name, out var methods))
@@ -299,7 +320,7 @@ public sealed partial class ShimGenerator
                     var own = new HashSet<string>(methods.Select(m => m.Key));
                     foreach (var (from, to) in upcasts.Where(u => u.From == name && perClass.ContainsKey(u.To)))
                     {
-                        foreach (var m in perClass[to].Where(m => !m.IsStatic && own.Add(m.Key)))
+                        foreach (var m in perClass[to].Where(m => !m.IsStatic && !m.IsOverride && own.Add(m.Key)))
                         {
                             WriteCsForwarder(w, m, ShortName(to));
                         }
@@ -329,7 +350,7 @@ public sealed partial class ShimGenerator
         return w.ToString();
     }
 
-    private static void WriteHandleStart(StringBuilder w, string qualified, string shortName)
+    private static void WriteHandleStart(StringBuilder w, string qualified, string shortName, bool ownToString)
     {
         w.AppendLine($"/// <summary>A {qualified}*. Does not own it.</summary>");
         w.AppendLine($"public readonly unsafe partial struct {shortName} : IEquatable<{shortName}>");
@@ -347,8 +368,11 @@ public sealed partial class ShimGenerator
         w.AppendLine();
         w.AppendLine("    public override int GetHashCode() => Handle.GetHashCode();");
         w.AppendLine();
-        w.AppendLine($"    public override string ToString() => $\"{qualified}(0x{{Handle:X}})\";");
-        w.AppendLine();
+        if (!ownToString)
+        {
+            w.AppendLine($"    public override string ToString() => $\"{qualified}(0x{{Handle:X}})\";");
+            w.AppendLine();
+        }
         w.AppendLine($"    public static bool operator ==({shortName} a, {shortName} b) => a.Handle == b.Handle;");
         w.AppendLine();
         w.AppendLine($"    public static bool operator !=({shortName} a, {shortName} b) => a.Handle != b.Handle;");
@@ -376,9 +400,17 @@ public sealed partial class ShimGenerator
     private static void WriteCsMethod(StringBuilder w, CsMethod m)
     {
         WriteCsDoc(w, m.F, "    ");
-        string modifiers = "public" + (m.IsStatic ? " static" : "") + (m.HidesObjectMember ? " new" : "");
+        string modifiers = "public" + (m.IsStatic ? " static" : "") + (m.HidesObjectMember ? " new" : "") + (m.IsOverride ? " override" : "");
         w.AppendLine($"    {modifiers} {m.Return.Type} {m.Name}({DeclList(m)})");
         w.AppendLine("    {");
+        if (m.IsOverride)
+        {
+            // Interpolation and debuggers call ToString on anything, null handles included.
+            w.AppendLine("        if (IsNull)");
+            w.AppendLine("        {");
+            w.AppendLine($"            return \"{m.F.Owner!.FullName}(null)\";");
+            w.AppendLine("        }");
+        }
 
         var args = new List<string>();
         if (!m.IsStatic)
@@ -464,7 +496,8 @@ public sealed partial class ShimGenerator
         w.AppendLine();
     }
 
-    private string WriteNativeMethods(List<CsMethod> free, Dictionary<string, List<CsMethod>> perClass, List<(string From, string To)> upcasts)
+    private string WriteNativeMethods(
+        List<CsMethod> free, Dictionary<string, List<CsMethod>> perClass, List<(string From, string To)> upcasts, List<(string Derived, string Base)> downcasts)
     {
         return Wrap(w =>
         {
@@ -477,6 +510,10 @@ public sealed partial class ShimGenerator
             {
                 string entry = $"{TypeMapper.HandleCName(from)}_As{ShortName(to)}";
                 WriteImport(w, "nint", entry, "nint self");
+            }
+            foreach (var (derived, @base) in downcasts)
+            {
+                WriteImport(w, "nint", $"{TypeMapper.HandleCName(derived)}_From{ShortName(@base)}", "nint value");
             }
             foreach (var m in free.Concat(config.Classes.SelectMany(c => perClass[c])))
             {
@@ -506,10 +543,14 @@ public sealed partial class ShimGenerator
         foreach (var group in mapper.UsedEnums.Values.GroupBy(e => CsEnumName(e).Contains('.') ? CsEnumName(e)[..CsEnumName(e).LastIndexOf('.')] : ""))
         {
             var containers = group.Key.Length == 0 ? [] : group.Key.Split('.');
+            var handles = new HashSet<string>(config.Classes.Concat(config.OpaqueTypes));
             string indent = "";
-            foreach (var c in containers)
+            for (int i = 0; i < containers.Length; i++)
             {
-                w.AppendLine($"{indent}public static partial class {c}");
+                string c = containers[i];
+                // An enum declared inside a wrapped class (Rml::ElementScroll::Orientation) nests in its handle struct.
+                bool isHandle = handles.Contains("Rml::" + string.Join("::", containers[..(i + 1)]));
+                w.AppendLine(isHandle ? $"{indent}public readonly unsafe partial struct {c}" : $"{indent}public static partial class {c}");
                 w.AppendLine($"{indent}{{");
                 indent += "    ";
             }

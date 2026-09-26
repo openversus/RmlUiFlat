@@ -17,6 +17,22 @@ public enum BoxArea : int
     Auto = 4,
 }
 
+/// <summary>Rml::BoxDirection</summary>
+public enum BoxDirection : int
+{
+    Vertical = 0,
+    Horizontal = 1,
+}
+
+/// <summary>Rml::BoxEdge</summary>
+public enum BoxEdge : int
+{
+    Top = 0,
+    Right = 1,
+    Bottom = 2,
+    Left = 3,
+}
+
 /// <summary>Rml::Character</summary>
 public enum Character : int
 {
@@ -222,6 +238,17 @@ public enum ScrollFlag : int
     Auto = 1,
 }
 
+
+public readonly unsafe partial struct ElementScroll
+{
+    /// <summary>Rml::ElementScroll::Orientation</summary>
+    public enum Orientation : int
+    {
+        VERTICAL = 0,
+        HORIZONTAL = 1,
+    }
+
+}
 
 public static partial class Input
 {

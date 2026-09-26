@@ -14,6 +14,9 @@
     <ProjectReference Include="../../src/RmlUi.Net.Desktop/RmlUi.Net.Desktop.csproj" />
     <!-- The licenses of what is linked into the binaries travel with them. -->
     <None Include="../../THIRD-PARTY-NOTICES.txt" CopyToPublishDirectory="PreserveNewest" Link="THIRD-PARTY-NOTICES.txt" />
+    <!-- The fonts the document uses, in assets/ beside the executable, so a published folder runs anywhere. -->
+    <None Include="../../external/RmlUi/Samples/assets/LatoLatin-Regular.ttf" Link="assets/LatoLatin-Regular.ttf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="../../external/RmlUi/Samples/assets/LatoLatin-Bold.ttf" Link="assets/LatoLatin-Bold.ttf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
   </ItemGroup>
 
   <!-- Linux: static link. The shim, the desktop backend and RmlUi itself go into the executable. Build native/ first

@@ -27,6 +27,18 @@ typedef struct RmlContext RmlContext;
 typedef struct RmlElement RmlElement;
 typedef struct RmlElementDocument RmlElementDocument;
 typedef struct RmlEvent RmlEvent;
+typedef struct RmlElementText RmlElementText;
+typedef struct RmlElementForm RmlElementForm;
+typedef struct RmlElementFormControl RmlElementFormControl;
+typedef struct RmlElementFormControlInput RmlElementFormControlInput;
+typedef struct RmlElementFormControlSelect RmlElementFormControlSelect;
+typedef struct RmlElementFormControlTextArea RmlElementFormControlTextArea;
+typedef struct RmlElementProgress RmlElementProgress;
+typedef struct RmlElementTabSet RmlElementTabSet;
+typedef struct RmlElementScroll RmlElementScroll;
+typedef struct RmlBox RmlBox;
+typedef struct RmlStyleSheet RmlStyleSheet;
+typedef struct RmlProperty RmlProperty;
 typedef struct RmlEventListener RmlEventListener;
 typedef struct RmlRenderInterface RmlRenderInterface;
 typedef struct RmlSystemInterface RmlSystemInterface;
@@ -70,6 +82,22 @@ typedef enum RmlBoxArea
     RmlBoxArea_Auto = 4,
 } RmlBoxArea;
 
+/** Rml::BoxDirection */
+typedef enum RmlBoxDirection
+{
+    RmlBoxDirection_Vertical = 0,
+    RmlBoxDirection_Horizontal = 1,
+} RmlBoxDirection;
+
+/** Rml::BoxEdge */
+typedef enum RmlBoxEdge
+{
+    RmlBoxEdge_Top = 0,
+    RmlBoxEdge_Right = 1,
+    RmlBoxEdge_Bottom = 2,
+    RmlBoxEdge_Left = 3,
+} RmlBoxEdge;
+
 /** Rml::Character */
 typedef enum RmlCharacter
 {
@@ -84,6 +112,13 @@ typedef enum RmlDefaultActionPhase
     RmlDefaultActionPhase_Target = 2,
     RmlDefaultActionPhase_TargetAndBubble = 6,
 } RmlDefaultActionPhase;
+
+/** Rml::ElementScroll::Orientation */
+typedef enum RmlElementScrollOrientation
+{
+    RmlElementScrollOrientation_VERTICAL = 0,
+    RmlElementScrollOrientation_HORIZONTAL = 1,
+} RmlElementScrollOrientation;
 
 /** Rml::EventId */
 typedef enum RmlEventId
@@ -512,6 +547,31 @@ typedef enum RmlStylePosition
 
 /* Upcasts */
 RMLC_API RmlElement* RmlElementDocument_AsElement(RmlElementDocument* self);
+RMLC_API RmlElement* RmlElementText_AsElement(RmlElementText* self);
+RMLC_API RmlElement* RmlElementForm_AsElement(RmlElementForm* self);
+RMLC_API RmlElement* RmlElementFormControl_AsElement(RmlElementFormControl* self);
+RMLC_API RmlElementFormControl* RmlElementFormControlInput_AsElementFormControl(RmlElementFormControlInput* self);
+RMLC_API RmlElement* RmlElementFormControlInput_AsElement(RmlElementFormControlInput* self);
+RMLC_API RmlElementFormControl* RmlElementFormControlSelect_AsElementFormControl(RmlElementFormControlSelect* self);
+RMLC_API RmlElement* RmlElementFormControlSelect_AsElement(RmlElementFormControlSelect* self);
+RMLC_API RmlElementFormControl* RmlElementFormControlTextArea_AsElementFormControl(RmlElementFormControlTextArea* self);
+RMLC_API RmlElement* RmlElementFormControlTextArea_AsElement(RmlElementFormControlTextArea* self);
+RMLC_API RmlElement* RmlElementProgress_AsElement(RmlElementProgress* self);
+RMLC_API RmlElement* RmlElementTabSet_AsElement(RmlElementTabSet* self);
+
+/* Checked downcasts: null when the object is not of that type */
+RMLC_API RmlElementDocument* RmlElementDocument_FromElement(RmlElement* value);
+RMLC_API RmlElementText* RmlElementText_FromElement(RmlElement* value);
+RMLC_API RmlElementForm* RmlElementForm_FromElement(RmlElement* value);
+RMLC_API RmlElementFormControl* RmlElementFormControl_FromElement(RmlElement* value);
+RMLC_API RmlElementFormControlInput* RmlElementFormControlInput_FromElementFormControl(RmlElementFormControl* value);
+RMLC_API RmlElementFormControlInput* RmlElementFormControlInput_FromElement(RmlElement* value);
+RMLC_API RmlElementFormControlSelect* RmlElementFormControlSelect_FromElementFormControl(RmlElementFormControl* value);
+RMLC_API RmlElementFormControlSelect* RmlElementFormControlSelect_FromElement(RmlElement* value);
+RMLC_API RmlElementFormControlTextArea* RmlElementFormControlTextArea_FromElementFormControl(RmlElementFormControl* value);
+RMLC_API RmlElementFormControlTextArea* RmlElementFormControlTextArea_FromElement(RmlElement* value);
+RMLC_API RmlElementProgress* RmlElementProgress_FromElement(RmlElement* value);
+RMLC_API RmlElementTabSet* RmlElementTabSet_FromElement(RmlElement* value);
 
 /* namespace Rml */
 /**
@@ -1122,10 +1182,6 @@ RMLC_API RmlTextInputHandler* RmlContext_GetTextInputHandler(RmlContext* self);
 RMLC_API double RmlContext_GetNextUpdateDelay(RmlContext* self);
 /* Rml::Element */
 /**
- * C++: ClassId Rml::Element::GetStaticClassIdentifier()
- */
-RMLC_API void* RmlElement_GetStaticClassIdentifier(void);
-/**
  * Classes
  *
  * @
@@ -1188,6 +1244,37 @@ RMLC_API void RmlElement_SetClipArea(RmlElement* self, RmlBoxArea clip_area);
  */
 RMLC_API void RmlElement_SetScrollableOverflowRectangle(RmlElement* self, RmlVector2f scrollable_overflow_rectangle, bool clamp_scroll_offset);
 /**
+ * Sets the box describing the size of the element, and removes all others.
+ *
+ * @param box The new dimensions box for the element.
+ * C++: void Rml::Element::SetBox(const Box& box)
+ */
+RMLC_API void RmlElement_SetBox(RmlElement* self, const RmlBox* box);
+/**
+ * Adds a box to the end of the list describing this element's geometry.
+ *
+ * @param box The auxiliary box for the element.
+ * @param offset The offset of the box relative to the top left border corner of the element.
+ * C++: void Rml::Element::AddBox(const Box& box, Vector2f offset)
+ */
+RMLC_API void RmlElement_AddBox(RmlElement* self, const RmlBox* box, RmlVector2f offset);
+/**
+ * Returns the main box describing the size of the element.
+ *
+ * @return The box.
+ * C++: const Box& Rml::Element::GetBox()
+ */
+RMLC_API const RmlBox* RmlElement_GetBox(RmlElement* self);
+/**
+ * Returns one of the boxes describing the size of the element.
+ *
+ * @param index The index of the desired box, with 0 being the main box. If outside of bounds, the main box will be returned.
+ * @param offset The offset of the box relative to the element's border box.
+ * @return The requested box.
+ * C++: const Box& Rml::Element::GetBox(int index, Vector2f& offset)
+ */
+RMLC_API const RmlBox* RmlElement_GetBox_Int_Vector2f(RmlElement* self, int32_t index, RmlVector2f* offset);
+/**
  * Returns the number of boxes making up this element's geometry.
  *
  * @return the number of boxes making up this element's geometry.
@@ -1233,6 +1320,15 @@ RMLC_API bool RmlElement_IsPointWithinElement(RmlElement* self, RmlVector2f poin
  */
 RMLC_API bool RmlElement_SetProperty_String_String(RmlElement* self, const char* name, const char* value);
 /**
+ * Sets a local property override on the element to a pre-parsed value.
+ *
+ * @param id The id of the new property.
+ * @param property The parsed property to set.
+ * @return True if the property was set successfully, false otherwise.
+ * C++: bool Rml::Element::SetProperty(PropertyId id, const Property& property)
+ */
+RMLC_API bool RmlElement_SetProperty_PropertyId_Property(RmlElement* self, RmlPropertyId id, const RmlProperty* property);
+/**
  * Removes a local property override on the element; its value will revert to that defined in the style sheet.
  *
  * @param name The name of the local property definition to remove.
@@ -1243,6 +1339,34 @@ RMLC_API void RmlElement_RemoveProperty_String(RmlElement* self, const char* nam
  * C++: void Rml::Element::RemoveProperty(PropertyId id)
  */
 RMLC_API void RmlElement_RemoveProperty_PropertyId(RmlElement* self, RmlPropertyId id);
+/**
+ * Returns one of this element's properties. If the property is not defined for this element and not inherited from an ancestor,
+ * the default value will be returned. Cascading variables ("var()") are fully resolved.
+ *
+ * @param name The name of the property to fetch the value for.
+ * @return The value of this property for this element, or nullptr if no property exists with the given name.
+ * @note When resolving any cascading variables ("var()") in the property, correctness is only guaranteed after a context update.
+ * @lifetime The returned pointer is invalidated on any following call into RmlUi, please copy by value to store the property around.
+ * C++: const Property* Rml::Element::GetProperty(const String& name)
+ */
+RMLC_API const RmlProperty* RmlElement_GetProperty_String(RmlElement* self, const char* name);
+/**
+ * C++: const Property* Rml::Element::GetProperty(PropertyId id)
+ */
+RMLC_API const RmlProperty* RmlElement_GetProperty_PropertyId(RmlElement* self, RmlPropertyId id);
+/**
+ * Returns one of this element's local style properties. Cascading variables ("var()") are not resolved.
+ *
+ * @param name The name of the property to fetch the value for.
+ * @return The value of this property for this element, or nullptr if this property has not been explicitly defined for this element.
+ * @lifetime The returned pointer is invalidated on any following call into RmlUi, please copy by value to store the property around.
+ * C++: const Property* Rml::Element::GetLocalProperty(const String& name)
+ */
+RMLC_API const RmlProperty* RmlElement_GetLocalProperty_String(RmlElement* self, const char* name);
+/**
+ * C++: const Property* Rml::Element::GetLocalProperty(PropertyId id)
+ */
+RMLC_API const RmlProperty* RmlElement_GetLocalProperty_PropertyId(RmlElement* self, RmlPropertyId id);
 /**
  * Returns the size of the containing block. Often percentages are scaled relative to this.
  * C++: Vector2f Rml::Element::GetContainingBlock()
@@ -1535,14 +1659,6 @@ RMLC_API RmlElement* RmlElement_GetClosestScrollableContainer(RmlElement* self, 
  */
 RMLC_API void RmlElement_ProcessDefaultAction(RmlElement* self, RmlEvent* event);
 /**
- * C++: ClassId Rml::Element::GetClassIdentifier() const
- */
-RMLC_API void* RmlElement_GetClassIdentifier(RmlElement* self);
-/**
- * C++: bool Rml::Element::IsClass(ClassId type_identifier) const
- */
-RMLC_API bool RmlElement_IsClass(RmlElement* self, void* type_identifier);
-/**
  * Checks if a class is set on the element.
  *
  * @param class_name The name of the class to check for.
@@ -1558,6 +1674,13 @@ RMLC_API bool RmlElement_IsClassSet(RmlElement* self, const char* class_name);
  * The returned string is valid until the next call on this thread that returns a string by value.
  */
 RMLC_API const char* RmlElement_GetClassNames(RmlElement* self);
+/**
+ * Returns the active style sheet for this element. This may be nullptr.
+ *
+ * @return The element's style sheet.
+ * C++: const StyleSheet* Rml::Element::GetStyleSheet() const
+ */
+RMLC_API const RmlStyleSheet* RmlElement_GetStyleSheet(RmlElement* self);
 /**
  * Fills a string with the full address of this element.
  *
@@ -1755,11 +1878,12 @@ RMLC_API bool RmlElement_Contains(RmlElement* self, RmlElement* element);
  * The returned string is valid until the next call on this thread that returns a string by value.
  */
 RMLC_API const char* RmlElement_GetEventDispatcherSummary(RmlElement* self);
-/* Rml::ElementDocument */
 /**
- * C++: ClassId Rml::ElementDocument::GetStaticClassIdentifier()
+ * Returns the element's scrollbar functionality.
+ * C++: ElementScroll* Rml::Element::GetElementScroll() const
  */
-RMLC_API void* RmlElementDocument_GetStaticClassIdentifier(void);
+RMLC_API RmlElementScroll* RmlElement_GetElementScroll(RmlElement* self);
+/* Rml::ElementDocument */
 /**
  * Returns the document's context.
  * C++: Context* Rml::ElementDocument::GetContext()
@@ -1845,14 +1969,6 @@ RMLC_API void RmlElementDocument_LoadExternalScript(RmlElementDocument* self, co
  */
 RMLC_API void RmlElementDocument_UpdateDocument(RmlElementDocument* self);
 /**
- * C++: ClassId Rml::ElementDocument::GetClassIdentifier() const
- */
-RMLC_API void* RmlElementDocument_GetClassIdentifier(RmlElementDocument* self);
-/**
- * C++: bool Rml::ElementDocument::IsClass(ClassId type_identifier) const
- */
-RMLC_API bool RmlElementDocument_IsClass(RmlElementDocument* self, void* type_identifier);
-/**
  * Returns the title of this document.
  * C++: const String& Rml::ElementDocument::GetTitle() const
  * The returned string is owned by RmlUi and valid while its owner is.
@@ -1864,6 +1980,13 @@ RMLC_API const char* RmlElementDocument_GetTitle(RmlElementDocument* self);
  * The returned string is owned by RmlUi and valid while its owner is.
  */
 RMLC_API const char* RmlElementDocument_GetSourceURL(RmlElementDocument* self);
+/**
+ * Returns the document's compiled style sheet.
+ *
+ * @note The style sheet may be regenerated when media query parameters change, invalidating the pointer.
+ * C++: const StyleSheet* Rml::ElementDocument::GetStyleSheet() const
+ */
+RMLC_API const RmlStyleSheet* RmlElementDocument_GetStyleSheet(RmlElementDocument* self);
 /**
  * Does the document have modal display set.
  *
@@ -1939,6 +2062,563 @@ RMLC_API bool RmlEvent_IsImmediatePropagating(RmlEvent* self);
  * C++: Vector2f Rml::Event::GetUnprojectedMouseScreenPos() const
  */
 RMLC_API RmlVector2f RmlEvent_GetUnprojectedMouseScreenPos(RmlEvent* self);
+/* Rml::ElementText */
+/**
+ * Sets the raw string this text element contains. The actual rendered text may be different due to whitespace formatting.
+ * C++: void Rml::ElementText::SetText(const String& text)
+ */
+RMLC_API void RmlElementText_SetText(RmlElementText* self, const char* text);
+/**
+ * Clears all lines of generated text and prepares the element for generating new lines.
+ * C++: void Rml::ElementText::ClearLines()
+ */
+RMLC_API void RmlElementText_ClearLines(RmlElementText* self);
+/**
+ * Adds a new line into the text element.
+ *
+ * @param line_position The position of this line, as an offset from the first line.
+ * @param line The contents of the line.
+ * C++: void Rml::ElementText::AddLine(Vector2f line_position, String line)
+ */
+RMLC_API void RmlElementText_AddLine(RmlElementText* self, RmlVector2f line_position, const char* line);
+/**
+ * Prevents the element from dirtying its document's layout when its text is changed.
+ * C++: void Rml::ElementText::SuppressAutoLayout()
+ */
+RMLC_API void RmlElementText_SuppressAutoLayout(RmlElementText* self);
+/**
+ * Returns the raw string this text element contains.
+ * C++: const String& Rml::ElementText::GetText() const
+ * The returned string is owned by RmlUi and valid while its owner is.
+ */
+RMLC_API const char* RmlElementText_GetText(RmlElementText* self);
+/* Rml::ElementForm */
+/**
+ * Submits the form.
+ *
+ * @param name The name of the item doing the submit
+ * @param submit_value The value to send through as the 'submit' parameter.
+ * C++: void Rml::ElementForm::Submit(const String& name = "", const String& submit_value = "")
+ */
+RMLC_API void RmlElementForm_Submit(RmlElementForm* self, const char* name, const char* submit_value);
+/* Rml::ElementFormControl */
+/**
+ * Sets the name of the form control.
+ *
+ * @param name The new name of the form control.
+ * C++: void Rml::ElementFormControl::SetName(const String& name)
+ */
+RMLC_API void RmlElementFormControl_SetName(RmlElementFormControl* self, const char* name);
+/**
+ * Sets the current value of the form control.
+ *
+ * @param value The new value of the form control.
+ * C++: void Rml::ElementFormControl::SetValue(const String& value)
+ */
+RMLC_API void RmlElementFormControl_SetValue(RmlElementFormControl* self, const char* value);
+/**
+ * Returns if this value should be submitted with the form.
+ *
+ * @return True if the value should be submitted with the form, false otherwise.
+ * C++: bool Rml::ElementFormControl::IsSubmitted()
+ */
+RMLC_API bool RmlElementFormControl_IsSubmitted(RmlElementFormControl* self);
+/**
+ * Sets the disabled status of the form control.
+ *
+ * @param disable True to disable the element, false to enable.
+ * C++: void Rml::ElementFormControl::SetDisabled(bool disable)
+ */
+RMLC_API void RmlElementFormControl_SetDisabled(RmlElementFormControl* self, bool disable);
+/**
+ * Returns the name of the form control. This is not guaranteed to be unique, and in the case of some form
+ * controls (such as radio buttons) most likely will not be.
+ *
+ * @return The name of the form control.
+ * C++: String Rml::ElementFormControl::GetName() const
+ * The returned string is valid until the next call on this thread that returns a string by value.
+ */
+RMLC_API const char* RmlElementFormControl_GetName(RmlElementFormControl* self);
+/**
+ * Returns a string representation of the current value of the form control.
+ *
+ * @return The value of the form control.
+ * C++: String Rml::ElementFormControl::GetValue() const
+ * The returned string is valid until the next call on this thread that returns a string by value.
+ */
+RMLC_API const char* RmlElementFormControl_GetValue(RmlElementFormControl* self);
+/**
+ * Returns the disabled status of the form control.
+ *
+ * @return True if the element is disabled, false otherwise.
+ * C++: bool Rml::ElementFormControl::IsDisabled() const
+ */
+RMLC_API bool RmlElementFormControl_IsDisabled(RmlElementFormControl* self);
+/* Rml::ElementFormControlInput */
+/**
+ * Sets the current value of the form control.
+ *
+ * @param value[in] The new value of the form control.
+ * C++: void Rml::ElementFormControlInput::SetValue(const String& value)
+ */
+RMLC_API void RmlElementFormControlInput_SetValue(RmlElementFormControlInput* self, const char* value);
+/**
+ * Returns if this value's type should be submitted with the form.
+ *
+ * @return True if the form control is to be submitted, false otherwise.
+ * C++: bool Rml::ElementFormControlInput::IsSubmitted()
+ */
+RMLC_API bool RmlElementFormControlInput_IsSubmitted(RmlElementFormControlInput* self);
+/**
+ * Selects all text.
+ *
+ * @note Only applies to text and password input types.
+ * C++: void Rml::ElementFormControlInput::Select()
+ */
+RMLC_API void RmlElementFormControlInput_Select(RmlElementFormControlInput* self);
+/**
+ * Selects the text in the given character range.
+ *
+ * @param selection_start The first character to be selected.
+ * @param selection_end The first character *after* the selection.
+ * @note Only applies to text and password input types.
+ * C++: void Rml::ElementFormControlInput::SetSelectionRange(int selection_start, int selection_end)
+ */
+RMLC_API void RmlElementFormControlInput_SetSelectionRange(RmlElementFormControlInput* self, int32_t selection_start, int32_t selection_end);
+/**
+ * Sets visual feedback used for the IME composition in the range.
+ *
+ * @param range_start The first character to be selected.
+ * @param range_end The first character *after* the selection.
+ * @note Only applies to text and password input types.
+ * C++: void Rml::ElementFormControlInput::SetCompositionRange(int range_start, int range_end)
+ */
+RMLC_API void RmlElementFormControlInput_SetCompositionRange(RmlElementFormControlInput* self, int32_t range_start, int32_t range_end);
+/**
+ * Returns a string representation of the current value of the form control.
+ *
+ * @return The value of the form control.
+ * C++: String Rml::ElementFormControlInput::GetValue() const
+ * The returned string is valid until the next call on this thread that returns a string by value.
+ */
+RMLC_API const char* RmlElementFormControlInput_GetValue(RmlElementFormControlInput* self);
+/* Rml::ElementFormControlSelect */
+/**
+ * Sets the current value of the form control.
+ *
+ * @param value The new value of the form control.
+ * C++: void Rml::ElementFormControlSelect::SetValue(const String& value)
+ */
+RMLC_API void RmlElementFormControlSelect_SetValue(RmlElementFormControlSelect* self, const char* value);
+/**
+ * Sets the index of the selection. If the new index lies outside the bounds, it will be clamped.
+ *
+ * @param selection The new selection index.
+ * C++: void Rml::ElementFormControlSelect::SetSelection(int selection)
+ */
+RMLC_API void RmlElementFormControlSelect_SetSelection(RmlElementFormControlSelect* self, int32_t selection);
+/**
+ * Returns one of the select control's option elements.
+ *
+ * @param index The index of the desired option.
+ * @return The option element or nullptr if the index was out of bounds.
+ * C++: Element* Rml::ElementFormControlSelect::GetOption(int index)
+ */
+RMLC_API RmlElement* RmlElementFormControlSelect_GetOption(RmlElementFormControlSelect* self, int32_t index);
+/**
+ * Returns the number of options in the select control.
+ *
+ * @return The number of options.
+ * C++: int Rml::ElementFormControlSelect::GetNumOptions()
+ */
+RMLC_API int32_t RmlElementFormControlSelect_GetNumOptions(RmlElementFormControlSelect* self);
+/**
+ * Adds a new option to the select control.
+ *
+ * @param rml The RML content used to represent the option. This is usually a simple string, but can include RML tags.
+ * @param value The value of the option. This is used to identify the option, but does not necessarily need to be unique.
+ * @param before The index of the element to insert the new option before. If out of bounds of the control's option list (the default), the
+ * new option will be added at the end of the list.
+ * @param selectable If true, this option can be selected. If false, this option is not selectable.
+ * @return The index of the new option.
+ * C++: int Rml::ElementFormControlSelect::Add(const String& rml, const String& value, int before = -1, bool selectable = true)
+ */
+RMLC_API int32_t RmlElementFormControlSelect_Add_String_String_Int_Bool(RmlElementFormControlSelect* self, const char* rml, const char* value, int32_t before, bool selectable);
+/**
+ * Removes an option from the select control.
+ *
+ * @param index The index of the option to remove. If this is outside of the bounds of the control's option list, no option will be removed.
+ * C++: void Rml::ElementFormControlSelect::Remove(int index)
+ */
+RMLC_API void RmlElementFormControlSelect_Remove(RmlElementFormControlSelect* self, int32_t index);
+/**
+ * Removes all options from the select control.
+ * C++: void Rml::ElementFormControlSelect::RemoveAll()
+ */
+RMLC_API void RmlElementFormControlSelect_RemoveAll(RmlElementFormControlSelect* self);
+/**
+ * Show the selection box.
+ * C++: void Rml::ElementFormControlSelect::ShowSelectBox()
+ */
+RMLC_API void RmlElementFormControlSelect_ShowSelectBox(RmlElementFormControlSelect* self);
+/**
+ * Hide the selection box.
+ * C++: void Rml::ElementFormControlSelect::HideSelectBox()
+ */
+RMLC_API void RmlElementFormControlSelect_HideSelectBox(RmlElementFormControlSelect* self);
+/**
+ * Revert to the value selected when the selection box was opened, then hide the box.
+ * C++: void Rml::ElementFormControlSelect::CancelSelectBox()
+ */
+RMLC_API void RmlElementFormControlSelect_CancelSelectBox(RmlElementFormControlSelect* self);
+/**
+ * Check whether the select box is opened or not.
+ * C++: bool Rml::ElementFormControlSelect::IsSelectBoxVisible()
+ */
+RMLC_API bool RmlElementFormControlSelect_IsSelectBoxVisible(RmlElementFormControlSelect* self);
+/**
+ * Returns a string representation of the current value of the form control.
+ *
+ * @return The value of the form control.
+ * C++: String Rml::ElementFormControlSelect::GetValue() const
+ * The returned string is valid until the next call on this thread that returns a string by value.
+ */
+RMLC_API const char* RmlElementFormControlSelect_GetValue(RmlElementFormControlSelect* self);
+/**
+ * Returns the index of the currently selected item.
+ *
+ * @return The index of the currently selected item.
+ * C++: int Rml::ElementFormControlSelect::GetSelection() const
+ */
+RMLC_API int32_t RmlElementFormControlSelect_GetSelection(RmlElementFormControlSelect* self);
+/* Rml::ElementFormControlTextArea */
+/**
+ * Sets the current value of the form control.
+ *
+ * @param value The new value of the form control.
+ * C++: void Rml::ElementFormControlTextArea::SetValue(const String& value)
+ */
+RMLC_API void RmlElementFormControlTextArea_SetValue(RmlElementFormControlTextArea* self, const char* value);
+/**
+ * Sets the number of characters visible across the text area. Note that this will only be precise when using
+ * a fixed-width font.
+ *
+ * @param num_columns The number of visible columns (characters).
+ * C++: void Rml::ElementFormControlTextArea::SetNumColumns(int num_columns)
+ */
+RMLC_API void RmlElementFormControlTextArea_SetNumColumns(RmlElementFormControlTextArea* self, int32_t num_columns);
+/**
+ * Sets the number of visible lines of text in the text area.
+ *
+ * @param num_rows The new number of visible lines of text.
+ * C++: void Rml::ElementFormControlTextArea::SetNumRows(int num_rows)
+ */
+RMLC_API void RmlElementFormControlTextArea_SetNumRows(RmlElementFormControlTextArea* self, int32_t num_rows);
+/**
+ * Sets the maximum length (in characters) of this text area.
+ *
+ * @param max_length The new maximum length of the text area. A number lower than zero will mean infinite
+ * characters.
+ * C++: void Rml::ElementFormControlTextArea::SetMaxLength(int max_length)
+ */
+RMLC_API void RmlElementFormControlTextArea_SetMaxLength(RmlElementFormControlTextArea* self, int32_t max_length);
+/**
+ * Enables or disables word-wrapping in the text area.
+ *
+ * @param word_wrap True to enable word-wrapping, false to disable.
+ * C++: void Rml::ElementFormControlTextArea::SetWordWrap(bool word_wrap)
+ */
+RMLC_API void RmlElementFormControlTextArea_SetWordWrap(RmlElementFormControlTextArea* self, bool word_wrap);
+/**
+ * Returns the state of word-wrapping in the text area.
+ *
+ * @return True if the text area is word-wrapping, false otherwise.
+ * C++: bool Rml::ElementFormControlTextArea::GetWordWrap()
+ */
+RMLC_API bool RmlElementFormControlTextArea_GetWordWrap(RmlElementFormControlTextArea* self);
+/**
+ * Selects all text.
+ * C++: void Rml::ElementFormControlTextArea::Select()
+ */
+RMLC_API void RmlElementFormControlTextArea_Select(RmlElementFormControlTextArea* self);
+/**
+ * Selects the text in the given character range.
+ *
+ * @param selection_start The first character to be selected.
+ * @param selection_end The first character *after* the selection.
+ * C++: void Rml::ElementFormControlTextArea::SetSelectionRange(int selection_start, int selection_end)
+ */
+RMLC_API void RmlElementFormControlTextArea_SetSelectionRange(RmlElementFormControlTextArea* self, int32_t selection_start, int32_t selection_end);
+/**
+ * Sets visual feedback used for the IME composition in the range.
+ *
+ * @param range_start The first character to be selected.
+ * @param range_end The first character *after* the selection.
+ * C++: void Rml::ElementFormControlTextArea::SetCompositionRange(int range_start, int range_end)
+ */
+RMLC_API void RmlElementFormControlTextArea_SetCompositionRange(RmlElementFormControlTextArea* self, int32_t range_start, int32_t range_end);
+/**
+ * Returns the control's inherent size, based on the length of the input field and the current font size.
+ *
+ * @return True.
+ * C++: bool Rml::ElementFormControlTextArea::GetIntrinsicDimensions(Vector2f& dimensions, float& ratio)
+ */
+RMLC_API bool RmlElementFormControlTextArea_GetIntrinsicDimensions(RmlElementFormControlTextArea* self, RmlVector2f* dimensions, float* ratio);
+/**
+ * Returns a string representation of the current value of the form control. This is the value of the control
+ * regardless of whether it has been selected / checked (as appropriate for the control).
+ *
+ * @return The value of the form control.
+ * C++: String Rml::ElementFormControlTextArea::GetValue() const
+ * The returned string is valid until the next call on this thread that returns a string by value.
+ */
+RMLC_API const char* RmlElementFormControlTextArea_GetValue(RmlElementFormControlTextArea* self);
+/**
+ * Returns the approximate number of characters visible at once.
+ *
+ * @return The number of visible characters.
+ * C++: int Rml::ElementFormControlTextArea::GetNumColumns() const
+ */
+RMLC_API int32_t RmlElementFormControlTextArea_GetNumColumns(RmlElementFormControlTextArea* self);
+/**
+ * Returns the number of visible lines of text in the text area.
+ *
+ * @return The number of visible lines of text.
+ * C++: int Rml::ElementFormControlTextArea::GetNumRows() const
+ */
+RMLC_API int32_t RmlElementFormControlTextArea_GetNumRows(RmlElementFormControlTextArea* self);
+/**
+ * Returns the maximum length (in characters) of this text area.
+ *
+ * @return The maximum number of characters allowed in this text area.
+ * C++: int Rml::ElementFormControlTextArea::GetMaxLength() const
+ */
+RMLC_API int32_t RmlElementFormControlTextArea_GetMaxLength(RmlElementFormControlTextArea* self);
+/* Rml::ElementProgress */
+/**
+ * Sets the value of the progress bar.
+ * C++: void Rml::ElementProgress::SetValue(float value)
+ */
+RMLC_API void RmlElementProgress_SetValue(RmlElementProgress* self, float value);
+/**
+ * Sets the maximum value of the progress bar.
+ * C++: void Rml::ElementProgress::SetMax(float max_value)
+ */
+RMLC_API void RmlElementProgress_SetMax(RmlElementProgress* self, float max_value);
+/**
+ * Returns the element's inherent size.
+ * C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f& dimensions, float& ratio)
+ */
+RMLC_API bool RmlElementProgress_GetIntrinsicDimensions(RmlElementProgress* self, RmlVector2f* dimensions, float* ratio);
+/**
+ * Returns the value of the progress bar.
+ * C++: float Rml::ElementProgress::GetValue() const
+ */
+RMLC_API float RmlElementProgress_GetValue(RmlElementProgress* self);
+/**
+ * Returns the maximum value of the progress bar.
+ * C++: float Rml::ElementProgress::GetMax() const
+ */
+RMLC_API float RmlElementProgress_GetMax(RmlElementProgress* self);
+/* Rml::ElementTabSet */
+/**
+ * Sets the specified tab index's tab title RML.
+ *
+ * @param tab_index The tab index to set. If it doesn't already exist, it will be created.
+ * @param rml The RML to set on the tab title.
+ * C++: void Rml::ElementTabSet::SetTab(int tab_index, const String& rml)
+ */
+RMLC_API void RmlElementTabSet_SetTab_Int_String(RmlElementTabSet* self, int32_t tab_index, const char* rml);
+/**
+ * Sets the specified tab index's tab panel RML.
+ *
+ * @param tab_index The tab index to set. If it doesn't already exist, it will be created.
+ * @param rml The RML to set on the tab panel.
+ * C++: void Rml::ElementTabSet::SetPanel(int tab_index, const String& rml)
+ */
+RMLC_API void RmlElementTabSet_SetPanel_Int_String(RmlElementTabSet* self, int32_t tab_index, const char* rml);
+/**
+ * Remove one of the tab set's panels and its corresponding tab.
+ *
+ * @param tab_index The tab index to remove. If no tab matches this index, nothing will be removed.
+ * C++: void Rml::ElementTabSet::RemoveTab(int tab_index)
+ */
+RMLC_API void RmlElementTabSet_RemoveTab(RmlElementTabSet* self, int32_t tab_index);
+/**
+ * Retrieve the number of tabs in the tabset.
+ *
+ * @return The number of tabs.
+ * C++: int Rml::ElementTabSet::GetNumTabs()
+ */
+RMLC_API int32_t RmlElementTabSet_GetNumTabs(RmlElementTabSet* self);
+/**
+ * Sets the currently active (visible) tab index.
+ *
+ * @param tab_index Index of the tab to display.
+ * C++: void Rml::ElementTabSet::SetActiveTab(int tab_index)
+ */
+RMLC_API void RmlElementTabSet_SetActiveTab(RmlElementTabSet* self, int32_t tab_index);
+/**
+ * Capture clicks on our tabs.
+ * C++: void Rml::ElementTabSet::ProcessDefaultAction(Event& event)
+ */
+RMLC_API void RmlElementTabSet_ProcessDefaultAction(RmlElementTabSet* self, RmlEvent* event);
+/**
+ * Get the current active tab index.
+ *
+ * @return The index of the active tab.
+ * C++: int Rml::ElementTabSet::GetActiveTab() const
+ */
+RMLC_API int32_t RmlElementTabSet_GetActiveTab(RmlElementTabSet* self);
+/* Rml::ElementScroll */
+/**
+ * Updates the increment / decrement arrows.
+ * C++: void Rml::ElementScroll::Update()
+ */
+RMLC_API void RmlElementScroll_Update(RmlElementScroll* self);
+/**
+ * Enables and sizes one of the scrollbars.
+ *
+ * @param orientation Which scrollbar (vertical or horizontal) to enable.
+ * @param element_width The current computed width of the element, used only to resolve percentage properties.
+ * C++: void Rml::ElementScroll::EnableScrollbar(Orientation orientation, float element_width)
+ */
+RMLC_API void RmlElementScroll_EnableScrollbar(RmlElementScroll* self, RmlElementScrollOrientation orientation, float element_width);
+/**
+ * Disables and hides one of the scrollbars.
+ *
+ * @param orientation Which scrollbar (vertical or horizontal) to disable.
+ * C++: void Rml::ElementScroll::DisableScrollbar(Orientation orientation)
+ */
+RMLC_API void RmlElementScroll_DisableScrollbar(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+/**
+ * Updates the position of the scrollbar.
+ *
+ * @param orientation Which scrollbar (vertical or horizontal) to update).
+ * C++: void Rml::ElementScroll::UpdateScrollbar(Orientation orientation)
+ */
+RMLC_API void RmlElementScroll_UpdateScrollbar(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+/**
+ * Returns one of the scrollbar elements.
+ *
+ * @param orientation Which scrollbar to return.
+ * @return The requested scrollbar, or nullptr if it does not exist.
+ * C++: Element* Rml::ElementScroll::GetScrollbar(Orientation orientation)
+ */
+RMLC_API RmlElement* RmlElementScroll_GetScrollbar(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+/**
+ * Returns the size, in pixels, of one of the scrollbars; for a vertical scrollbar, this is width, for a horizontal scrollbar, this is height.
+ *
+ * @param orientation Which scrollbar (vertical or horizontal) to query.
+ * @return The size of the scrollbar, or 0 if the scrollbar is disabled.
+ * C++: float Rml::ElementScroll::GetScrollbarSize(Orientation orientation)
+ */
+RMLC_API float RmlElementScroll_GetScrollbarSize(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+/**
+ * Formats the enabled scrollbars based on the current size of the host element.
+ * C++: void Rml::ElementScroll::FormatScrollbars()
+ */
+RMLC_API void RmlElementScroll_FormatScrollbars(RmlElementScroll* self);
+/**
+ * Updates the scrollbar elements to reflect their current state.
+ * C++: void Rml::ElementScroll::UpdateProperties()
+ */
+RMLC_API void RmlElementScroll_UpdateProperties(RmlElementScroll* self);
+/* Rml::Box */
+/**
+ * Sets the size of the content area.
+ *
+ * @param content[in] The size of the new content area.
+ * C++: void Rml::Box::SetContent(Vector2f content)
+ */
+RMLC_API void RmlBox_SetContent(RmlBox* self, RmlVector2f content);
+/**
+ * Sets the size of one of the edges of one of the box's outer areas.
+ *
+ * @param area[in] The area to change.
+ * @param edge[in] The area edge to change.
+ * @param size[in] The new size of the area segment.
+ * C++: void Rml::Box::SetEdge(BoxArea area, BoxEdge edge, float size)
+ */
+RMLC_API void RmlBox_SetEdge(RmlBox* self, RmlBoxArea area, RmlBoxEdge edge, float size);
+/**
+ * Returns the top-left position of one of the box's areas, relative to the top-left of the border area. This
+ * means the position of the margin area is likely to be negative.
+ *
+ * @param area[in] The desired area.
+ * @return The position of the area.
+ * C++: Vector2f Rml::Box::GetPosition(BoxArea area = BoxArea::Content) const
+ */
+RMLC_API RmlVector2f RmlBox_GetPosition(RmlBox* self, RmlBoxArea area);
+/**
+ * Returns the size of the box's content area.
+ *
+ * @return The size of the content area.
+ * C++: Vector2f Rml::Box::GetSize() const
+ */
+RMLC_API RmlVector2f RmlBox_GetSize(RmlBox* self);
+/**
+ * Returns the size of one of the box's areas. This will include all inner areas.
+ *
+ * @param area[in] The desired area.
+ * @return The size of the requested area.
+ * C++: Vector2f Rml::Box::GetSize(BoxArea area) const
+ */
+RMLC_API RmlVector2f RmlBox_GetSize_BoxArea(RmlBox* self, RmlBoxArea area);
+/**
+ * Returns the size of one of the area edges.
+ *
+ * @param area[in] The desired area.
+ * @param edge[in] The desired edge.
+ * @return The size of the requested area edge.
+ * C++: float Rml::Box::GetEdge(BoxArea area, BoxEdge edge) const
+ */
+RMLC_API float RmlBox_GetEdge(RmlBox* self, RmlBoxArea area, RmlBoxEdge edge);
+/**
+ * Returns the cumulative size of one edge up to one of the box's areas.
+ *
+ * @param area[in] The area to measure up to (and including). So, Margin will return the width of the margin, and Padding will be the sum of the
+ * margin, border and padding.
+ * @param edge[in] The desired edge.
+ * @return The cumulative size of the edge.
+ * C++: float Rml::Box::GetCumulativeEdge(BoxArea area, BoxEdge edge) const
+ */
+RMLC_API float RmlBox_GetCumulativeEdge(RmlBox* self, RmlBoxArea area, RmlBoxEdge edge);
+/**
+ * Returns the size along a single direction of the given 'area', including all inner areas up-to and including 'area_end'.
+ *
+ * @param direction The desired direction.
+ * @param area The widest area to include.
+ * @param area_end The last area to include, anything inside this is excluded.
+ *  GetSizeAcross(Horizontal, Border, Padding) returns the total width of the horizontal borders and paddings.
+ * C++: float Rml::Box::GetSizeAcross(BoxDirection direction, BoxArea area, BoxArea area_end = BoxArea::Content) const
+ */
+RMLC_API float RmlBox_GetSizeAcross(RmlBox* self, RmlBoxDirection direction, RmlBoxArea area, RmlBoxArea area_end);
+/**
+ * Returns the size of the frame defined by the given area, not including inner areas.
+ *
+ * @param area The area to use.
+ * C++: Vector2f Rml::Box::GetFrameSize(BoxArea area) const
+ */
+RMLC_API RmlVector2f RmlBox_GetFrameSize(RmlBox* self, RmlBoxArea area);
+/* Rml::StyleSheet */
+/**
+ * Merges another style sheet into this.
+ * C++: void Rml::StyleSheet::MergeStyleSheet(const StyleSheet& sheet)
+ */
+RMLC_API void RmlStyleSheet_MergeStyleSheet(RmlStyleSheet* self, const RmlStyleSheet* sheet);
+/**
+ * Builds the node index for a combined style sheet.
+ * C++: void Rml::StyleSheet::BuildNodeIndex()
+ */
+RMLC_API void RmlStyleSheet_BuildNodeIndex(RmlStyleSheet* self);
+/* Rml::Property */
+/**
+ * Get the value of the property as a string.
+ * C++: String Rml::Property::ToString() const
+ * The returned string is valid until the next call on this thread that returns a string by value.
+ */
+RMLC_API const char* RmlProperty_ToString(RmlProperty* self);
 
 #ifdef __cplusplus
 }

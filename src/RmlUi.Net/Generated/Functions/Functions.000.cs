@@ -47,6 +47,650 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementText_AsElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementTextAsElementNative(RmlElementText* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementTextAsElement(RmlElementTextPtr self)
+		{
+			RmlElementPtr ret = RmlElementTextAsElementNative((RmlElementText*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementTextAsElement(ref RmlElementText self)
+		{
+			fixed (RmlElementText* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementTextAsElementNative((RmlElementText*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementForm_AsElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementFormAsElementNative(RmlElementForm* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormAsElement(RmlElementFormPtr self)
+		{
+			RmlElementPtr ret = RmlElementFormAsElementNative((RmlElementForm*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormAsElement(ref RmlElementForm self)
+		{
+			fixed (RmlElementForm* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementFormAsElementNative((RmlElementForm*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControl_AsElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementFormControlAsElementNative(RmlElementFormControl* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlAsElement(RmlElementFormControlPtr self)
+		{
+			RmlElementPtr ret = RmlElementFormControlAsElementNative((RmlElementFormControl*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlAsElement(ref RmlElementFormControl self)
+		{
+			fixed (RmlElementFormControl* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementFormControlAsElementNative((RmlElementFormControl*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlInput_AsElementFormControl")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControl* RmlElementFormControlInputAsElementFormControlNative(RmlElementFormControlInput* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlPtr RmlElementFormControlInputAsElementFormControl(RmlElementFormControlInputPtr self)
+		{
+			RmlElementFormControlPtr ret = RmlElementFormControlInputAsElementFormControlNative((RmlElementFormControlInput*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlPtr RmlElementFormControlInputAsElementFormControl(ref RmlElementFormControlInput self)
+		{
+			fixed (RmlElementFormControlInput* pself = &self)
+			{
+				RmlElementFormControlPtr ret = RmlElementFormControlInputAsElementFormControlNative((RmlElementFormControlInput*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlInput_AsElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementFormControlInputAsElementNative(RmlElementFormControlInput* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlInputAsElement(RmlElementFormControlInputPtr self)
+		{
+			RmlElementPtr ret = RmlElementFormControlInputAsElementNative((RmlElementFormControlInput*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlInputAsElement(ref RmlElementFormControlInput self)
+		{
+			fixed (RmlElementFormControlInput* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementFormControlInputAsElementNative((RmlElementFormControlInput*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_AsElementFormControl")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControl* RmlElementFormControlSelectAsElementFormControlNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlPtr RmlElementFormControlSelectAsElementFormControl(RmlElementFormControlSelectPtr self)
+		{
+			RmlElementFormControlPtr ret = RmlElementFormControlSelectAsElementFormControlNative((RmlElementFormControlSelect*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlPtr RmlElementFormControlSelectAsElementFormControl(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementFormControlPtr ret = RmlElementFormControlSelectAsElementFormControlNative((RmlElementFormControlSelect*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_AsElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementFormControlSelectAsElementNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlSelectAsElement(RmlElementFormControlSelectPtr self)
+		{
+			RmlElementPtr ret = RmlElementFormControlSelectAsElementNative((RmlElementFormControlSelect*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlSelectAsElement(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementFormControlSelectAsElementNative((RmlElementFormControlSelect*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_AsElementFormControl")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControl* RmlElementFormControlTextAreaAsElementFormControlNative(RmlElementFormControlTextArea* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlPtr RmlElementFormControlTextAreaAsElementFormControl(RmlElementFormControlTextAreaPtr self)
+		{
+			RmlElementFormControlPtr ret = RmlElementFormControlTextAreaAsElementFormControlNative((RmlElementFormControlTextArea*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlPtr RmlElementFormControlTextAreaAsElementFormControl(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlPtr ret = RmlElementFormControlTextAreaAsElementFormControlNative((RmlElementFormControlTextArea*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_AsElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementFormControlTextAreaAsElementNative(RmlElementFormControlTextArea* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlTextAreaAsElement(RmlElementFormControlTextAreaPtr self)
+		{
+			RmlElementPtr ret = RmlElementFormControlTextAreaAsElementNative((RmlElementFormControlTextArea*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlTextAreaAsElement(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementFormControlTextAreaAsElementNative((RmlElementFormControlTextArea*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_AsElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementProgressAsElementNative(RmlElementProgress* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementProgressAsElement(RmlElementProgressPtr self)
+		{
+			RmlElementPtr ret = RmlElementProgressAsElementNative((RmlElementProgress*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementProgressAsElement(ref RmlElementProgress self)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementProgressAsElementNative((RmlElementProgress*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_AsElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementTabSetAsElementNative(RmlElementTabSet* self);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementTabSetAsElement(RmlElementTabSetPtr self)
+		{
+			RmlElementPtr ret = RmlElementTabSetAsElementNative((RmlElementTabSet*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementPtr RmlElementTabSetAsElement(ref RmlElementTabSet self)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementTabSetAsElementNative((RmlElementTabSet*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Checked downcasts: null when the object is not of that type <br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementDocument* RmlElementDocumentFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// Checked downcasts: null when the object is not of that type <br/>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlElementDocumentFromElement(RmlElementPtr value)
+		{
+			RmlElementDocumentPtr ret = RmlElementDocumentFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// Checked downcasts: null when the object is not of that type <br/>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlElementDocumentFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementDocumentPtr ret = RmlElementDocumentFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementText_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementText* RmlElementTextFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementTextPtr RmlElementTextFromElement(RmlElementPtr value)
+		{
+			RmlElementTextPtr ret = RmlElementTextFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementTextPtr RmlElementTextFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementTextPtr ret = RmlElementTextFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementForm_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementForm* RmlElementFormFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormPtr RmlElementFormFromElement(RmlElementPtr value)
+		{
+			RmlElementFormPtr ret = RmlElementFormFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormPtr RmlElementFormFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementFormPtr ret = RmlElementFormFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControl_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControl* RmlElementFormControlFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlPtr RmlElementFormControlFromElement(RmlElementPtr value)
+		{
+			RmlElementFormControlPtr ret = RmlElementFormControlFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlPtr RmlElementFormControlFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementFormControlPtr ret = RmlElementFormControlFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlInput_FromElementFormControl")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControlInput* RmlElementFormControlInputFromElementFormControlNative(RmlElementFormControl* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlInputPtr RmlElementFormControlInputFromElementFormControl(RmlElementFormControlPtr value)
+		{
+			RmlElementFormControlInputPtr ret = RmlElementFormControlInputFromElementFormControlNative((RmlElementFormControl*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlInputPtr RmlElementFormControlInputFromElementFormControl(ref RmlElementFormControl value)
+		{
+			fixed (RmlElementFormControl* pvalue = &value)
+			{
+				RmlElementFormControlInputPtr ret = RmlElementFormControlInputFromElementFormControlNative((RmlElementFormControl*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlInput_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControlInput* RmlElementFormControlInputFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlInputPtr RmlElementFormControlInputFromElement(RmlElementPtr value)
+		{
+			RmlElementFormControlInputPtr ret = RmlElementFormControlInputFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlInputPtr RmlElementFormControlInputFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementFormControlInputPtr ret = RmlElementFormControlInputFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_FromElementFormControl")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControlSelect* RmlElementFormControlSelectFromElementFormControlNative(RmlElementFormControl* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlSelectPtr RmlElementFormControlSelectFromElementFormControl(RmlElementFormControlPtr value)
+		{
+			RmlElementFormControlSelectPtr ret = RmlElementFormControlSelectFromElementFormControlNative((RmlElementFormControl*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlSelectPtr RmlElementFormControlSelectFromElementFormControl(ref RmlElementFormControl value)
+		{
+			fixed (RmlElementFormControl* pvalue = &value)
+			{
+				RmlElementFormControlSelectPtr ret = RmlElementFormControlSelectFromElementFormControlNative((RmlElementFormControl*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControlSelect* RmlElementFormControlSelectFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlSelectPtr RmlElementFormControlSelectFromElement(RmlElementPtr value)
+		{
+			RmlElementFormControlSelectPtr ret = RmlElementFormControlSelectFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlSelectPtr RmlElementFormControlSelectFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementFormControlSelectPtr ret = RmlElementFormControlSelectFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_FromElementFormControl")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControlTextArea* RmlElementFormControlTextAreaFromElementFormControlNative(RmlElementFormControl* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlTextAreaPtr RmlElementFormControlTextAreaFromElementFormControl(RmlElementFormControlPtr value)
+		{
+			RmlElementFormControlTextAreaPtr ret = RmlElementFormControlTextAreaFromElementFormControlNative((RmlElementFormControl*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlTextAreaPtr RmlElementFormControlTextAreaFromElementFormControl(ref RmlElementFormControl value)
+		{
+			fixed (RmlElementFormControl* pvalue = &value)
+			{
+				RmlElementFormControlTextAreaPtr ret = RmlElementFormControlTextAreaFromElementFormControlNative((RmlElementFormControl*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementFormControlTextArea* RmlElementFormControlTextAreaFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlTextAreaPtr RmlElementFormControlTextAreaFromElement(RmlElementPtr value)
+		{
+			RmlElementFormControlTextAreaPtr ret = RmlElementFormControlTextAreaFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementFormControlTextAreaPtr RmlElementFormControlTextAreaFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementFormControlTextAreaPtr ret = RmlElementFormControlTextAreaFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementProgress* RmlElementProgressFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementProgressPtr RmlElementProgressFromElement(RmlElementPtr value)
+		{
+			RmlElementProgressPtr ret = RmlElementProgressFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementProgressPtr RmlElementProgressFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementProgressPtr ret = RmlElementProgressFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_FromElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementTabSet* RmlElementTabSetFromElementNative(RmlElement* value);
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementTabSetPtr RmlElementTabSetFromElement(RmlElementPtr value)
+		{
+			RmlElementTabSetPtr ret = RmlElementTabSetFromElementNative((RmlElement*)value);
+			return ret;
+		}
+
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		public static RmlElementTabSetPtr RmlElementTabSetFromElement(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementTabSetPtr ret = RmlElementTabSetFromElementNative((RmlElement*)pvalue);
+				return ret;
+			}
+		}
+
+		/// <summary>
 		/// namespace Rml <br/>
 		/// Initialises RmlUi.<br/>
 		/// C++: bool Rml::Initialise()<br/>
@@ -4374,664 +5018,6 @@ namespace RmlUi.Interop
 		{
 			RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, id);
 			return ret;
-		}
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, byte* id)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)pself, id);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentString(RmlContextPtr self, in byte id)
-		{
-			fixed (byte* pid = &id)
-			{
-				RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, (byte*)pid);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentString(RmlContextPtr self, ReadOnlySpan<byte> id)
-		{
-			fixed (byte* pid = id)
-			{
-				RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, (byte*)pid);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentString(RmlContextPtr self, string id)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (id != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(id);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(id, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, in byte id)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				fixed (byte* pid = &id)
-				{
-					RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)pself, (byte*)pid);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, ReadOnlySpan<byte> id)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				fixed (byte* pid = id)
-				{
-					RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)pself, (byte*)pid);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, string id)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (id != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(id);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(id, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)pself, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns a document in the context by index.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_GetDocument_Int")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElementDocument* RmlContextGetDocumentIntNative(RmlContext* self, int index);
-
-		/// <summary>
-		/// Returns a document in the context by index.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentInt(RmlContextPtr self, int index)
-		{
-			RmlElementDocumentPtr ret = RmlContextGetDocumentIntNative((RmlContext*)self, index);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns a document in the context by index.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentInt(ref RmlContext self, int index)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlElementDocumentPtr ret = RmlContextGetDocumentIntNative((RmlContext*)pself, index);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns the hover element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_GetHoverElement")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElement* RmlContextGetHoverElementNative(RmlContext* self);
-
-		/// <summary>
-		/// Returns the hover element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlContextGetHoverElement(RmlContextPtr self)
-		{
-			RmlElementPtr ret = RmlContextGetHoverElementNative((RmlContext*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns the hover element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlContextGetHoverElement(ref RmlContext self)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlElementPtr ret = RmlContextGetHoverElementNative((RmlContext*)pself);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns the focus element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_GetFocusElement")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElement* RmlContextGetFocusElementNative(RmlContext* self);
-
-		/// <summary>
-		/// Returns the focus element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlContextGetFocusElement(RmlContextPtr self)
-		{
-			RmlElementPtr ret = RmlContextGetFocusElementNative((RmlContext*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns the focus element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlContextGetFocusElement(ref RmlContext self)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlElementPtr ret = RmlContextGetFocusElementNative((RmlContext*)pself);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns the root element that holds all the documents<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_GetRootElement")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElement* RmlContextGetRootElementNative(RmlContext* self);
-
-		/// <summary>
-		/// Returns the root element that holds all the documents<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlContextGetRootElement(RmlContextPtr self)
-		{
-			RmlElementPtr ret = RmlContextGetRootElementNative((RmlContext*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns the root element that holds all the documents<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlContextGetRootElement(ref RmlContext self)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlElementPtr ret = RmlContextGetRootElementNative((RmlContext*)pself);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Brings the document to the front of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_PullDocumentToFront")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlContextPullDocumentToFrontNative(RmlContext* self, RmlElementDocument* document);
-
-		/// <summary>
-		/// Brings the document to the front of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextPullDocumentToFront(RmlContextPtr self, RmlElementDocumentPtr document)
-		{
-			RmlContextPullDocumentToFrontNative((RmlContext*)self, (RmlElementDocument*)document);
-		}
-
-		/// <summary>
-		/// Brings the document to the front of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextPullDocumentToFront(ref RmlContext self, RmlElementDocumentPtr document)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlContextPullDocumentToFrontNative((RmlContext*)pself, (RmlElementDocument*)document);
-			}
-		}
-
-		/// <summary>
-		/// Brings the document to the front of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextPullDocumentToFront(RmlContextPtr self, ref RmlElementDocument document)
-		{
-			fixed (RmlElementDocument* pdocument = &document)
-			{
-				RmlContextPullDocumentToFrontNative((RmlContext*)self, (RmlElementDocument*)pdocument);
-			}
-		}
-
-		/// <summary>
-		/// Brings the document to the front of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextPullDocumentToFront(ref RmlContext self, ref RmlElementDocument document)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				fixed (RmlElementDocument* pdocument = &document)
-				{
-					RmlContextPullDocumentToFrontNative((RmlContext*)pself, (RmlElementDocument*)pdocument);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Sends the document to the back of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_PushDocumentToBack")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlContextPushDocumentToBackNative(RmlContext* self, RmlElementDocument* document);
-
-		/// <summary>
-		/// Sends the document to the back of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextPushDocumentToBack(RmlContextPtr self, RmlElementDocumentPtr document)
-		{
-			RmlContextPushDocumentToBackNative((RmlContext*)self, (RmlElementDocument*)document);
-		}
-
-		/// <summary>
-		/// Sends the document to the back of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextPushDocumentToBack(ref RmlContext self, RmlElementDocumentPtr document)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlContextPushDocumentToBackNative((RmlContext*)pself, (RmlElementDocument*)document);
-			}
-		}
-
-		/// <summary>
-		/// Sends the document to the back of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextPushDocumentToBack(RmlContextPtr self, ref RmlElementDocument document)
-		{
-			fixed (RmlElementDocument* pdocument = &document)
-			{
-				RmlContextPushDocumentToBackNative((RmlContext*)self, (RmlElementDocument*)pdocument);
-			}
-		}
-
-		/// <summary>
-		/// Sends the document to the back of the document stack.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextPushDocumentToBack(ref RmlContext self, ref RmlElementDocument document)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				fixed (RmlElementDocument* pdocument = &document)
-				{
-					RmlContextPushDocumentToBackNative((RmlContext*)pself, (RmlElementDocument*)pdocument);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Remove the document from the focus history and focus the previous document.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_UnfocusDocument")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlContextUnfocusDocumentNative(RmlContext* self, RmlElementDocument* document);
-
-		/// <summary>
-		/// Remove the document from the focus history and focus the previous document.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextUnfocusDocument(RmlContextPtr self, RmlElementDocumentPtr document)
-		{
-			RmlContextUnfocusDocumentNative((RmlContext*)self, (RmlElementDocument*)document);
-		}
-
-		/// <summary>
-		/// Remove the document from the focus history and focus the previous document.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextUnfocusDocument(ref RmlContext self, RmlElementDocumentPtr document)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlContextUnfocusDocumentNative((RmlContext*)pself, (RmlElementDocument*)document);
-			}
-		}
-
-		/// <summary>
-		/// Remove the document from the focus history and focus the previous document.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextUnfocusDocument(RmlContextPtr self, ref RmlElementDocument document)
-		{
-			fixed (RmlElementDocument* pdocument = &document)
-			{
-				RmlContextUnfocusDocumentNative((RmlContext*)self, (RmlElementDocument*)pdocument);
-			}
-		}
-
-		/// <summary>
-		/// Remove the document from the focus history and focus the previous document.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextUnfocusDocument(ref RmlContext self, ref RmlElementDocument document)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				fixed (RmlElementDocument* pdocument = &document)
-				{
-					RmlContextUnfocusDocumentNative((RmlContext*)pself, (RmlElementDocument*)pdocument);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds an event listener to the context's root element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_AddEventListener")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlContextAddEventListenerNative(RmlContext* self, byte* evnt, RmlEventListener* listener, byte inCapturePhase);
-
-		/// <summary>
-		/// Adds an event listener to the context's root element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextAddEventListener(RmlContextPtr self, byte* evnt, RmlEventListenerPtr listener, bool inCapturePhase)
-		{
-			RmlContextAddEventListenerNative((RmlContext*)self, evnt, (RmlEventListener*)listener, inCapturePhase ? (byte)1 : (byte)0);
-		}
-
-		/// <summary>
-		/// Adds an event listener to the context's root element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextAddEventListener(ref RmlContext self, byte* evnt, RmlEventListenerPtr listener, bool inCapturePhase)
-		{
-			fixed (RmlContext* pself = &self)
-			{
-				RmlContextAddEventListenerNative((RmlContext*)pself, evnt, (RmlEventListener*)listener, inCapturePhase ? (byte)1 : (byte)0);
-			}
-		}
-
-		/// <summary>
-		/// Adds an event listener to the context's root element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextAddEventListener(RmlContextPtr self, in byte evnt, RmlEventListenerPtr listener, bool inCapturePhase)
-		{
-			fixed (byte* pevnt = &evnt)
-			{
-				RmlContextAddEventListenerNative((RmlContext*)self, (byte*)pevnt, (RmlEventListener*)listener, inCapturePhase ? (byte)1 : (byte)0);
-			}
-		}
-
-		/// <summary>
-		/// Adds an event listener to the context's root element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlContextAddEventListener(RmlContextPtr self, ReadOnlySpan<byte> evnt, RmlEventListenerPtr listener, bool inCapturePhase)
-		{
-			fixed (byte* pevnt = evnt)
-			{
-				RmlContextAddEventListenerNative((RmlContext*)self, (byte*)pevnt, (RmlEventListener*)listener, inCapturePhase ? (byte)1 : (byte)0);
-			}
 		}
 	}
 }

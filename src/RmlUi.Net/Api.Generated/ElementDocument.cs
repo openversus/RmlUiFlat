@@ -32,13 +32,8 @@ public readonly unsafe partial struct ElementDocument : IEquatable<ElementDocume
     /// <summary>Upcast to Rml::Element.</summary>
     public static implicit operator Element(ElementDocument value) => new(NativeMethods.RmlElementDocument_AsElement(value.Handle));
 
-    /// <summary>
-    /// </summary>
-    /// <remarks>C++: <c>ClassId Rml::ElementDocument::GetStaticClassIdentifier()</c></remarks>
-    public static void* GetStaticClassIdentifier()
-    {
-        return NativeMethods.RmlElementDocument_GetStaticClassIdentifier();
-    }
+    /// <summary>The Element as a ElementDocument, or a null handle when it is not one.</summary>
+    public static ElementDocument From(Element value) => new(NativeMethods.RmlElementDocument_FromElement(value.Handle));
 
     /// <summary>
     /// Returns the document&apos;s context.<br/>
@@ -203,22 +198,6 @@ public readonly unsafe partial struct ElementDocument : IEquatable<ElementDocume
     }
 
     /// <summary>
-    /// </summary>
-    /// <remarks>C++: <c>ClassId Rml::ElementDocument::GetClassIdentifier() const</c></remarks>
-    public void* GetClassIdentifier()
-    {
-        return NativeMethods.RmlElementDocument_GetClassIdentifier(Handle);
-    }
-
-    /// <summary>
-    /// </summary>
-    /// <remarks>C++: <c>bool Rml::ElementDocument::IsClass(ClassId type_identifier) const</c></remarks>
-    public bool IsClass(void* typeIdentifier)
-    {
-        return NativeMethods.RmlElementDocument_IsClass(Handle, typeIdentifier) != 0;
-    }
-
-    /// <summary>
     /// Returns the title of this document.<br/>
     /// </summary>
     /// <remarks>C++: <c>const String&amp; Rml::ElementDocument::GetTitle() const</c></remarks>
@@ -234,6 +213,17 @@ public readonly unsafe partial struct ElementDocument : IEquatable<ElementDocume
     public string GetSourceURL()
     {
         return Utf8StringMarshaller.ConvertToManaged(NativeMethods.RmlElementDocument_GetSourceURL(Handle)) ?? "";
+    }
+
+    /// <summary>
+    /// Returns the document&apos;s compiled style sheet.<br/>
+    /// 
+    /// @note The style sheet may be regenerated when media query parameters change, invalidating the pointer.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const StyleSheet* Rml::ElementDocument::GetStyleSheet() const</c></remarks>
+    public StyleSheet GetStyleSheet()
+    {
+        return new StyleSheet(NativeMethods.RmlElementDocument_GetStyleSheet(Handle));
     }
 
     /// <summary>
@@ -317,6 +307,41 @@ public readonly unsafe partial struct ElementDocument : IEquatable<ElementDocume
     public void SetScrollableOverflowRectangle(Vector2f scrollableOverflowRectangle, bool clampScrollOffset) => ((Element)this).SetScrollableOverflowRectangle(scrollableOverflowRectangle, clampScrollOffset);
 
     /// <summary>
+    /// Sets the box describing the size of the element, and removes all others.<br/>
+    /// 
+    /// @param box The new dimensions box for the element.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>void Rml::Element::SetBox(const Box&amp; box)</c></remarks>
+    public void SetBox(Box box) => ((Element)this).SetBox(box);
+
+    /// <summary>
+    /// Adds a box to the end of the list describing this element&apos;s geometry.<br/>
+    /// 
+    /// @param box The auxiliary box for the element.<br/>
+    /// @param offset The offset of the box relative to the top left border corner of the element.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>void Rml::Element::AddBox(const Box&amp; box, Vector2f offset)</c></remarks>
+    public void AddBox(Box box, Vector2f offset) => ((Element)this).AddBox(box, offset);
+
+    /// <summary>
+    /// Returns the main box describing the size of the element.<br/>
+    /// 
+    /// @return The box.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Box&amp; Rml::Element::GetBox()</c></remarks>
+    public Box GetBox() => ((Element)this).GetBox();
+
+    /// <summary>
+    /// Returns one of the boxes describing the size of the element.<br/>
+    /// 
+    /// @param index The index of the desired box, with 0 being the main box. If outside of bounds, the main box will be returned.<br/>
+    /// @param offset The offset of the box relative to the element&apos;s border box.<br/>
+    /// @return The requested box.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Box&amp; Rml::Element::GetBox(int index, Vector2f&amp; offset)</c></remarks>
+    public Box GetBox(int index, ref Vector2f offset) => ((Element)this).GetBox(index, ref offset);
+
+    /// <summary>
     /// Returns the number of boxes making up this element&apos;s geometry.<br/>
     /// 
     /// @return the number of boxes making up this element&apos;s geometry.<br/>
@@ -367,6 +392,16 @@ public readonly unsafe partial struct ElementDocument : IEquatable<ElementDocume
     public bool SetProperty(string name, string value) => ((Element)this).SetProperty(name, value);
 
     /// <summary>
+    /// Sets a local property override on the element to a pre-parsed value.<br/>
+    /// 
+    /// @param id The id of the new property.<br/>
+    /// @param property The parsed property to set.<br/>
+    /// @return True if the property was set successfully, false otherwise.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>bool Rml::Element::SetProperty(PropertyId id, const Property&amp; property)</c></remarks>
+    public bool SetProperty(PropertyId id, Property property) => ((Element)this).SetProperty(id, property);
+
+    /// <summary>
     /// Removes a local property override on the element; its value will revert to that defined in the style sheet.<br/>
     /// 
     /// @param name The name of the local property definition to remove.<br/>
@@ -378,6 +413,38 @@ public readonly unsafe partial struct ElementDocument : IEquatable<ElementDocume
     /// </summary>
     /// <remarks>C++: <c>void Rml::Element::RemoveProperty(PropertyId id)</c></remarks>
     public void RemoveProperty(PropertyId id) => ((Element)this).RemoveProperty(id);
+
+    /// <summary>
+    /// Returns one of this element&apos;s properties. If the property is not defined for this element and not inherited from an ancestor,<br/>
+    /// the default value will be returned. Cascading variables (&quot;var()&quot;) are fully resolved.<br/>
+    /// 
+    /// @param name The name of the property to fetch the value for.<br/>
+    /// @return The value of this property for this element, or nullptr if no property exists with the given name.<br/>
+    /// @note When resolving any cascading variables (&quot;var()&quot;) in the property, correctness is only guaranteed after a context update.<br/>
+    /// @lifetime The returned pointer is invalidated on any following call into RmlUi, please copy by value to store the property around.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Property* Rml::Element::GetProperty(const String&amp; name)</c></remarks>
+    public Property GetProperty(string name) => ((Element)this).GetProperty(name);
+
+    /// <summary>
+    /// </summary>
+    /// <remarks>C++: <c>const Property* Rml::Element::GetProperty(PropertyId id)</c></remarks>
+    public Property GetProperty(PropertyId id) => ((Element)this).GetProperty(id);
+
+    /// <summary>
+    /// Returns one of this element&apos;s local style properties. Cascading variables (&quot;var()&quot;) are not resolved.<br/>
+    /// 
+    /// @param name The name of the property to fetch the value for.<br/>
+    /// @return The value of this property for this element, or nullptr if this property has not been explicitly defined for this element.<br/>
+    /// @lifetime The returned pointer is invalidated on any following call into RmlUi, please copy by value to store the property around.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Property* Rml::Element::GetLocalProperty(const String&amp; name)</c></remarks>
+    public Property GetLocalProperty(string name) => ((Element)this).GetLocalProperty(name);
+
+    /// <summary>
+    /// </summary>
+    /// <remarks>C++: <c>const Property* Rml::Element::GetLocalProperty(PropertyId id)</c></remarks>
+    public Property GetLocalProperty(PropertyId id) => ((Element)this).GetLocalProperty(id);
 
     /// <summary>
     /// Returns the size of the containing block. Often percentages are scaled relative to this.<br/>
@@ -937,5 +1004,11 @@ public readonly unsafe partial struct ElementDocument : IEquatable<ElementDocume
     /// </summary>
     /// <remarks>C++: <c>String Rml::Element::GetEventDispatcherSummary() const</c></remarks>
     public string GetEventDispatcherSummary() => ((Element)this).GetEventDispatcherSummary();
+
+    /// <summary>
+    /// Returns the element&apos;s scrollbar functionality.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>ElementScroll* Rml::Element::GetElementScroll() const</c></remarks>
+    public ElementScroll GetElementScroll() => ((Element)this).GetElementScroll();
 
 }

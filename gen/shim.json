@@ -18,7 +18,19 @@
     "Rml::Context",
     "Rml::Element",
     "Rml::ElementDocument",
-    "Rml::Event"
+    "Rml::Event",
+    "Rml::ElementText",
+    "Rml::ElementForm",
+    "Rml::ElementFormControl",
+    "Rml::ElementFormControlInput",
+    "Rml::ElementFormControlSelect",
+    "Rml::ElementFormControlTextArea",
+    "Rml::ElementProgress",
+    "Rml::ElementTabSet",
+    "Rml::ElementScroll",
+    "Rml::Box",
+    "Rml::StyleSheet",
+    "Rml::Property"
   ],
   "OpaqueTypes": [
     "Rml::EventListener",

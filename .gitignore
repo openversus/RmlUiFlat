@@ -2,7 +2,7 @@ bin/
 obj/
 native/build/
 gen/gen.log
-demo/Demo/demo-selftest.*
+demo-selftest.*
 /.codegraph/
 /graphify-out/
 /local/

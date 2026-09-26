@@ -27,11 +27,14 @@ internal static unsafe partial class Program
                 button:hover { background-color: #4c6ef5; }
                 button:active { background-color: #364fc7; }
                 #status { margin-top: 24dp; color: #a5d8ff; }
+                input { display: inline-block; width: 240dp; padding: 6dp 10dp; margin-bottom: 16dp; color: #ffffff;
+                        background-color: #2a2d3e; border: 1dp #4c6ef5; border-radius: 4dp; }
             </style>
         </head>
         <body>
             <h1>RmlUi from C#</h1>
             <p>Generated bindings, NativeAOT, one static link.</p>
+            <div><input type="text" id="name" value="OpenVersus"/></div>
             <button id="hello">Click me</button>
             <div id="status">Not clicked yet.</div>
         </body>
@@ -42,7 +45,7 @@ internal static unsafe partial class Program
     {
         bool selfTest = args.Contains("--selftest");
         string assets = args.FirstOrDefault(a => !a.StartsWith("--", StringComparison.Ordinal))
-            ?? Path.Combine(AppContext.BaseDirectory, "../../../../external/RmlUi/Samples/assets");
+            ?? Path.Combine(AppContext.BaseDirectory, "assets");
         var renderer = Enum.Parse<RmlRenderer>(Option(args, "--renderer") ?? "auto", ignoreCase: true);
         string? expectRenderer = Option(args, "--expect-renderer");
 
@@ -63,12 +66,13 @@ internal static unsafe partial class Program
         document.Show();
         var button = document.GetElementById("hello");
         var status = document.GetElementById("status");
+        var name = ElementFormControlInput.From(document.GetElementById("name"));
 
         int clicks = 0;
         window.Listen(button, "click", _ =>
         {
             clicks++;
-            status.SetInnerRML($"Clicked {clicks} time{(clicks == 1 ? "" : "s")} — handled in C#.");
+            status.SetInnerRML($"Clicked {clicks} time{(clicks == 1 ? "" : "s")} — handled in C#. Name: {name.GetValue()}");
         });
 
         if (!selfTest)
@@ -131,9 +135,27 @@ internal static unsafe partial class Program
             exitCode = 1;
         }
 
+        // Downcasts are checked: an element of another type, or no element, comes back null.
+        bool buttonIsInput = !ElementFormControlInput.From(button).IsNull;
+        bool nothingIsInput = !ElementFormControlInput.From(default(Element)).IsNull;
+        if (buttonIsInput || nothingIsInput)
+        {
+            Console.Error.WriteLine($"FAIL: From accepted the wrong element (button: {buttonIsInput}, null: {nothingIsInput})");
+            exitCode = 1;
+        }
+
+        // A Property prints as RmlUi writes it.
+        string display = button.GetProperty("display").ToString();
+        Console.WriteLine($"button display: {display}");
+        if (display != "inline-block")
+        {
+            Console.Error.WriteLine("FAIL: expected the button's display property to read inline-block");
+            exitCode = 1;
+        }
+
         string text = status.GetInnerRML();
         Console.WriteLine($"status: {text}");
-        const string expected = "Clicked 1 time — handled in C#.";
+        const string expected = "Clicked 1 time — handled in C#. Name: OpenVersus";
         if (clicks() != 1 || text != expected)
         {
             Console.Error.WriteLine($"FAIL: expected one click and \"{expected}\"");
