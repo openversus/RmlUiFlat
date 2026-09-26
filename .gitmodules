@@ -1,0 +1,16 @@
+[submodule "RmlUi"]
+	path = external/RmlUi
+	url = https://github.com/mikke89/RmlUi.git
+	shallow = true
+[submodule "freetype"]
+	path = external/freetype
+	url = https://gitlab.freedesktop.org/freetype/freetype.git
+	shallow = true
+[submodule "SDL"]
+	path = external/SDL
+	url = https://github.com/libsdl-org/SDL.git
+	shallow = true
+[submodule "stb"]
+	path = external/stb
+	url = https://github.com/nothings/stb.git
+	shallow = true

@@ -12,6 +12,8 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/RmlUi.Net.Desktop/RmlUi.Net.Desktop.csproj" />
+    <!-- The licenses of what is linked into the binaries travel with them. -->
+    <None Include="../../THIRD-PARTY-NOTICES.txt" CopyToPublishDirectory="PreserveNewest" Link="THIRD-PARTY-NOTICES.txt" />
   </ItemGroup>
 
   <!-- Linux: static link. The shim, the desktop backend and RmlUi itself go into the executable. Build native/ first

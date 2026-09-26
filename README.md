@@ -137,7 +137,12 @@ under it (HexaGen.CppAst) and the C-to-C# generator are what this repository use
 
 ## Dependencies
 
-Cloned into `external/` (gitignored), at these versions:
+Git submodules under `external/`, pinned to these commits (shallow, so a clone fetches only the pinned commit):
+
+```sh
+git clone --recurse-submodules <this repository>
+git submodule update --init          # in an existing clone
+```
 
 | | Version | Used by |
 |---|---|---|
@@ -146,7 +151,9 @@ Cloned into `external/` (gitignored), at these versions:
 | [SDL](https://github.com/libsdl-org/SDL) | release-3.4.16 | the desktop backend |
 | [stb](https://github.com/nothings/stb) | 2c980bb (stb_image 2.30) | the desktop backend |
 
-HexaGen, HexaGen.CppAst and HexaGen.Runtime come from NuGet.
+HexaGen, HexaGen.CppAst and HexaGen.Runtime come from NuGet. `THIRD-PARTY-NOTICES.txt` has the license of everything
+that ends up in a binary built here (including what RmlUi and SDL bundle), and which binaries contain it; ship it
+with them. Moving a submodule to another version means checking its license text there too.
 
 ## Regenerate
 
