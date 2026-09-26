@@ -4,3 +4,6 @@ obj/
 native/build/
 gen/gen.log
 demo/Demo/demo-selftest.*
+/.codegraph/
+/graphify-out/
+
