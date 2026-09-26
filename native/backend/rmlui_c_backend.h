@@ -1,5 +1,6 @@
-/* C API over RmlUi's sample desktop backends (Backends/RmlUi_Backend.h): a window, input, and a render interface.
-   For standalone windows only; the game overlay supplies its own render interface. */
+/* C API for a standalone RmlUi window: SDL3 for the window and input, RmlUi's Vulkan renderer when the machine can run
+   it and its OpenGL 3 renderer otherwise. For standalone windows only (installer, tools); the game overlay supplies its
+   own render interface. */
 #ifndef RMLUI_C_BACKEND_H
 #define RMLUI_C_BACKEND_H
 
@@ -9,14 +10,39 @@
 extern "C" {
 #endif
 
-RMLC_API bool RmlBackend_Initialize(const char* window_name, int32_t width, int32_t height, bool allow_resize);
+/** A renderer: what to prefer when initialising, and which one is in use. */
+typedef enum RmlBackendRenderer
+{
+    /** Preference: Vulkan if this machine can run RmlUi's Vulkan renderer, otherwise OpenGL. As a result: none. */
+    RmlBackendRenderer_Auto = 0,
+    RmlBackendRenderer_Vulkan = 1,
+    RmlBackendRenderer_OpenGL = 2,
+} RmlBackendRenderer;
+
+/**
+ * Opens a window and brings up a renderer. width and height are in density-independent pixels; the window is scaled by
+ * the display's content scale. With a specific renderer, fails rather than falling back to the other.
+ */
+RMLC_API bool RmlBackend_Initialize(const char* window_name, int32_t width, int32_t height, bool allow_resize, RmlBackendRenderer renderer);
 RMLC_API void RmlBackend_Shutdown(void);
+/** The renderer in use, or RmlBackendRenderer_Auto before Initialize succeeds. */
+RMLC_API RmlBackendRenderer RmlBackend_GetRenderer(void);
+/** The window's size in physical pixels: the size to give the RmlUi context. */
+RMLC_API void RmlBackend_GetPixelSize(int32_t* width, int32_t* height);
+/** Physical pixels per density-independent pixel: the context's density-independent pixel ratio. */
+RMLC_API float RmlBackend_GetDisplayScale(void);
 RMLC_API RmlSystemInterface* RmlBackend_GetSystemInterface(void);
 RMLC_API RmlRenderInterface* RmlBackend_GetRenderInterface(void);
 /** Returns false when the window has been asked to close. */
 RMLC_API bool RmlBackend_ProcessEvents(RmlContext* context, bool power_save);
 RMLC_API void RmlBackend_RequestExit(void);
 RMLC_API void RmlBackend_BeginFrame(void);
+/**
+ * Finishes the frame: composites RmlUi's layers into the window's back buffer. For OpenGL the frame is then complete but
+ * not yet shown; RmlUi's Vulkan renderer also presents here.
+ */
+RMLC_API void RmlBackend_EndFrame(void);
+/** Shows the finished frame (for OpenGL, swaps buffers; for Vulkan, already done by EndFrame). */
 RMLC_API void RmlBackend_PresentFrame(void);
 
 #ifdef __cplusplus

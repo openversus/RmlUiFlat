@@ -7,23 +7,32 @@ namespace RmlUi.Desktop;
 /// <see cref="RmlHost"/>'s; this adds the window, the backend's renderer and the frame loop. Build one with
 /// <see cref="RmlWindowBuilder"/>.
 /// </summary>
-public sealed class RmlWindow : RmlHost
+public sealed unsafe class RmlWindow : RmlHost
 {
     private bool backendUp;
 
-    internal RmlWindow(RmlHostSettings settings, string title, int width, int height, bool resizable, bool powerSave)
+    internal RmlWindow(RmlHostSettings settings, string title, int width, int height, bool resizable, bool powerSave, RmlRenderer renderer)
     {
         try
         {
-            if (!NativeBackend.Initialize(title, width, height, resizable))
+            if (!NativeBackend.Initialize(title, width, height, resizable, renderer))
             {
-                throw new InvalidOperationException("RmlUi's desktop backend could not open a window.");
+                throw new InvalidOperationException(renderer == RmlRenderer.Auto
+                    ? "RmlUi's desktop backend could not open a window with Vulkan or OpenGL."
+                    : $"RmlUi's desktop backend could not open a window with {renderer}.");
             }
             backendUp = true;
+            Renderer = NativeBackend.GetRenderer();
+
+            // The context works in physical pixels; RmlUi's dp unit scales by the display, as the platform layer does
+            // again when the window moves to a display with another scale.
+            int pixelWidth, pixelHeight;
+            NativeBackend.GetPixelSize(&pixelWidth, &pixelHeight);
             InitialiseRml(settings,
                 new SystemInterface(NativeBackend.GetSystemInterface()),
                 new RenderInterface(NativeBackend.GetRenderInterface()),
-                new Vector2i(width, height));
+                new Vector2i(pixelWidth, pixelHeight));
+            Context.SetDensityIndependentPixelRatio(NativeBackend.GetDisplayScale());
             PowerSave = powerSave;
         }
         catch
@@ -33,10 +42,16 @@ public sealed class RmlWindow : RmlHost
         }
     }
 
+    /// <summary>The renderer in use: <see cref="RmlRenderer.Vulkan"/> or <see cref="RmlRenderer.OpenGL"/>.</summary>
+    public RmlRenderer Renderer { get; }
+
     /// <summary>Whether each frame waits for input before running.</summary>
     public bool PowerSave { get; set; }
 
-    /// <summary>Raised each frame after the context is rendered and before it is presented.</summary>
+    /// <summary>
+    /// Raised each frame once the frame is complete in the back buffer. With OpenGL that is before it is shown, so the
+    /// back buffer can be read; RmlUi's Vulkan renderer presents as it completes the frame.
+    /// </summary>
     public event Action? AfterRender;
 
     /// <summary>Runs one frame: input, update, render, present. Returns false once the window has been closed.</summary>
@@ -50,6 +65,7 @@ public sealed class RmlWindow : RmlHost
         Context.Update();
         NativeBackend.BeginFrame();
         Context.Render();
+        NativeBackend.EndFrame();
         AfterRender?.Invoke();
         NativeBackend.PresentFrame();
         return true;

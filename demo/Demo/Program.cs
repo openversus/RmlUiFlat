@@ -41,15 +41,23 @@ internal static unsafe partial class Program
     private static int Main(string[] args)
     {
         bool selfTest = args.Contains("--selftest");
-        string assets = args.FirstOrDefault(a => !a.StartsWith("--"))
+        string assets = args.FirstOrDefault(a => !a.StartsWith("--", StringComparison.Ordinal))
             ?? Path.Combine(AppContext.BaseDirectory, "../../../../external/RmlUi/Samples/assets");
+        var renderer = Enum.Parse<RmlRenderer>(Option(args, "--renderer") ?? "auto", ignoreCase: true);
+        string? expectRenderer = Option(args, "--expect-renderer");
 
         using var window = new RmlWindowBuilder("RmlUi from C#", Width, Height)
+            .Renderer(renderer)
             .PowerSave(!selfTest)
             .AddFont(File.ReadAllBytes(Path.Combine(assets, "LatoLatin-Regular.ttf")), "Lato", weight: Style.FontWeight.Normal)
             .AddFont(File.ReadAllBytes(Path.Combine(assets, "LatoLatin-Bold.ttf")), "Lato", weight: Style.FontWeight.Bold)
             .Build();
-        Console.WriteLine($"RmlUi {Rml.GetVersion()}");
+        Console.WriteLine($"RmlUi {Rml.GetVersion()}, renderer {window.Renderer}, {window.Context.GetDimensions()} px");
+        if (expectRenderer != null && !string.Equals(window.Renderer.ToString(), expectRenderer, StringComparison.OrdinalIgnoreCase))
+        {
+            Console.Error.WriteLine($"FAIL: expected renderer {expectRenderer}, got {window.Renderer}");
+            return 1;
+        }
 
         var document = window.Context.LoadDocumentFromMemory(Document, "[demo]");
         document.Show();
@@ -104,9 +112,11 @@ internal static unsafe partial class Program
         window.Context.ProcessMouseButtonUp(0, 0);
         Console.WriteLine($"clicked at ({x}, {y})");
 
-        if (OperatingSystem.IsLinux())
+        // glReadPixels reads the OpenGL back buffer; there is no equivalent here for Vulkan.
+        if (OperatingSystem.IsLinux() && window.Renderer == RmlRenderer.OpenGL)
         {
-            window.AfterRender += () => SaveScreenshot("demo-selftest.ppm");
+            var size = window.Context.GetDimensions();
+            window.AfterRender += () => SaveScreenshot("demo-selftest.ppm", size.X, size.Y);
         }
         window.RunFrame();
 
@@ -133,23 +143,30 @@ internal static unsafe partial class Program
     }
 
     /// <summary>Reads the back buffer before it is presented and writes a binary PPM, top row first.</summary>
-    private static void SaveScreenshot(string path)
+    private static void SaveScreenshot(string path, int width, int height)
     {
-        const uint GL_RGB = 0x1907, GL_UNSIGNED_BYTE = 0x1401;
-        var pixels = new byte[Width * Height * 3];
+        const uint GL_RGB = 0x1907, GL_UNSIGNED_BYTE = 0x1401, GL_PACK_ALIGNMENT = 0x0D05;
+        var pixels = new byte[width * height * 3];
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
         fixed (byte* p = pixels)
         {
-            glReadPixels(0, 0, Width, Height, GL_RGB, GL_UNSIGNED_BYTE, p);
+            glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, p);
         }
         using var file = File.Create(path);
-        file.Write(Encoding.ASCII.GetBytes($"P6\n{Width} {Height}\n255\n"));
-        for (int row = Height - 1; row >= 0; row--)
+        file.Write(Encoding.ASCII.GetBytes($"P6\n{width} {height}\n255\n"));
+        for (int row = height - 1; row >= 0; row--)
         {
-            file.Write(pixels, row * Width * 3, Width * 3);
+            file.Write(pixels, row * width * 3, width * 3);
         }
         Console.WriteLine($"screenshot: {Path.GetFullPath(path)}");
     }
 
+    private static string? Option(string[] args, string name) =>
+        args.FirstOrDefault(a => a.StartsWith(name + "=", StringComparison.Ordinal))?[(name.Length + 1)..];
+
     [LibraryImport("libGL.so.1")]
     private static partial void glReadPixels(int x, int y, int width, int height, uint format, uint type, void* data);
+
+    [LibraryImport("libGL.so.1")]
+    private static partial void glPixelStorei(uint pname, int param);
 }

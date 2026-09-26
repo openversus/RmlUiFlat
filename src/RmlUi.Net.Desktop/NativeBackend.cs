@@ -9,7 +9,19 @@ internal static unsafe partial class NativeBackend
     [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_Initialize", StringMarshalling = StringMarshalling.Utf8)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     [return: MarshalAs(UnmanagedType.U1)]
-    public static partial bool Initialize(string windowName, int width, int height, [MarshalAs(UnmanagedType.U1)] bool allowResize);
+    public static partial bool Initialize(string windowName, int width, int height, [MarshalAs(UnmanagedType.U1)] bool allowResize, RmlRenderer renderer);
+
+    [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_GetRenderer")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial RmlRenderer GetRenderer();
+
+    [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_GetPixelSize")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void GetPixelSize(int* width, int* height);
+
+    [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_GetDisplayScale")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial float GetDisplayScale();
 
     [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_Shutdown")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -35,6 +47,10 @@ internal static unsafe partial class NativeBackend
     [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_BeginFrame")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void BeginFrame();
+
+    [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_EndFrame")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void EndFrame();
 
     [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_PresentFrame")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

@@ -44,8 +44,28 @@ window.Listen(document.GetElementById("install"), "click", e => StartInstall());
 window.Run();
 ```
 
-`RunFrame` and `AfterRender` are there for driving it from code. It needs an `rmlui_c` built with a backend
-(`RMLC_BACKEND` on Linux, `cross/build-windows.sh Win32_DX11`).
+`RunFrame` and `AfterRender` are there for driving it from code. It needs an `rmlui_c` built with the desktop backend
+(`-DRMLC_DESKTOP=ON` on Linux, `cross/build-windows.sh desktop`).
+
+**Renderer.** The window is SDL3 with RmlUi's Vulkan renderer when the machine can run it and its OpenGL 3 renderer
+otherwise; `.Renderer(RmlRenderer.Vulkan | OpenGL)` forces one (failing rather than falling back) and
+`window.Renderer` says which was chosen. RmlUi's Vulkan renderer cannot fail cleanly (its `Initialize` returns true
+unconditionally and its checks compile out in release), so the backend runs a preflight first: loader, instance at
+RmlUi's API version, a device of the type RmlUi picks, a queue that can present, `VK_KHR_swapchain`, and a throwaway
+`vkCreateDevice` with RmlUi's features. It mirrors `RmlUi_Renderer_VK.cpp`'s `Initialize_*` functions; after an RmlUi
+update, compare `Initialize_Device`'s request with `ProbeVulkan` in `native/backend/rmlui_c_backend.cpp`. Images: PNG
+and JPEG through stb_image for both renderers (RmlUi's own loaders read only TGA). The context is sized in physical
+pixels and `dp` follows the display scale.
+
+**Both renderers in one binary.** RmlUi's sample renderers are meant to be linked one at a time, and
+`RmlUi_Renderer_GL3.cpp` and `RmlUi_Renderer_VK.cpp` define different types under the same names
+(`Gfx::FramebufferData`, `CompiledFilter`, `ProgramId`, ...). Linked together, the linker keeps one copy of each
+same-named inline function, and under MSVC's ABI the Vulkan renderer ran the OpenGL one's vector code for its
+framebuffers and crashed on its first frame (Linux happened to keep compatible copies). `native/backend/gl3_renderer.cpp`
+compiles the OpenGL renderer inside its own namespace (`rmlc_gl3`), using RmlUi's `RMLUI_GL3_CUSTOM_LOADER` hook for the
+glad loader, and `gl3_renderer.h` is the only way in, so anything a future RmlUi adds to that renderer is isolated
+too. The Vulkan renderer and `RmlUi_Platform_SDL.cpp` share no names with each other today (checked as of RmlUi
+3045e6e); that is the pairing to recheck after an update.
 
 ### Hosts
 
@@ -60,7 +80,7 @@ built on the same thing rather than one bent to fit the other:
   derives from it and chains its own options.
 
 A host brings up its window and renderer, calls `InitialiseRml`, and releases its own resources in `ShutdownHost`.
-`RmlWindow` does that with RmlUi's desktop backend and adds the frame loop. The in-game overlay will do it with the
+`RmlWindow` does that with the desktop backend and adds the frame loop. The in-game overlay will do it with the
 game's swap chain from a Present hook, the game's window messages, and RmlUi's DX11 or DX12 renderer.
 
 ## How it fits together
@@ -115,6 +135,19 @@ emitted `0xff` in a `uint8_t` enum as `-1`, copied classes with `std::string` me
 an unhandled template parameter after four patches. It is a proof of concept for one project's headers. The parser
 under it (HexaGen.CppAst) and the C-to-C# generator are what this repository uses, both from NuGet.
 
+## Dependencies
+
+Cloned into `external/` (gitignored), at these versions:
+
+| | Version | Used by |
+|---|---|---|
+| [RmlUi](https://github.com/mikke89/RmlUi) | 3045e6e (2026-09-13, 6.4-dev) | everything |
+| [FreeType](https://gitlab.freedesktop.org/freetype/freetype) | VER-2-14-3 | Windows builds (Linux uses the system one) |
+| [SDL](https://github.com/libsdl-org/SDL) | release-3.4.16 | the desktop backend |
+| [stb](https://github.com/nothings/stb) | 2c980bb (stb_image 2.30) | the desktop backend |
+
+HexaGen, HexaGen.CppAst and HexaGen.Runtime come from NuGet.
+
 ## Regenerate
 
 ```sh
@@ -130,21 +163,29 @@ survive the load.
 ## Build and run the demo (Linux)
 
 ```sh
-cmake -S native -B native/build/linux -G Ninja -DCMAKE_BUILD_TYPE=Release -DRMLC_BACKEND=X11_GL2
-cmake --build native/build/linux --target rmlui_c rmlui_c_backend
+cmake -S native -B native/build/linux -G Ninja -DCMAKE_BUILD_TYPE=Release -DRMLC_DESKTOP=ON
+cmake --build native/build/linux --target rmlui_c rmlui_c_backend SDL3-static
 dotnet publish demo/Demo -c Release -r linux-x64 -o demo/Demo/bin/publish
-demo/Demo/bin/publish/Demo external/RmlUi/Samples/assets              # a window
-demo/Demo/bin/publish/Demo --selftest external/RmlUi/Samples/assets   # clicks the button, checks the result, saves a screenshot
+demo/Demo/bin/publish/Demo                                  # a window
+demo/Demo/bin/publish/Demo --selftest                       # clicks the button, checks the result; OpenGL also saves a screenshot
+demo/Demo/bin/publish/Demo --selftest --renderer=opengl --expect-renderer=opengl
 ```
 
-`RMLC_BACKEND` builds one of RmlUi's sample desktop backends (window, input, renderer) as `rmlui_c_backend`, for
-standalone windows. The in-game overlay will not use it; it needs a render interface for the game's own device.
+`RMLC_DESKTOP` builds the standalone window backend as `rmlui_c_backend` (with SDL3 static, from `external/SDL`, and
+stb from `external/stb`). SDL3 is trimmed to video, events, audio, gamepad (with HIDAPI) and file dialogs, and loads
+X11/Wayland, Vulkan, GL and the audio backends at run time. The in-game overlay does not use it; it needs a render
+interface for the game's own device.
+
+Checked on Linux (NVIDIA): Vulkan by default; OpenGL when forced; Auto falls back to OpenGL without a Vulkan loader
+(`SDL_VULKAN_LIBRARY=/nonexistent`), without a driver (`VK_DRIVER_FILES=/dev/null`), and with every device filtered
+out (`VK_LOADER_DEVICE_ID_FILTER=0xdead`, the case only the preflight catches: with it disabled, this crashes inside
+RmlUi); lavapipe's CPU device is accepted; forcing Vulkan where there is none is a managed exception, not a crash.
 
 ## Build for Windows (cross-compiled from Linux)
 
 ```sh
 cross/build-windows.sh              # native/build/win/rmlui_c.dll: RmlUi + FreeType + the shim, for a client to load
-cross/build-windows.sh Win32_DX11   # native/build/win-Win32_DX11/rmlui_c.dll: the same plus RmlUi's Win32/DX11 window backend
+cross/build-windows.sh desktop      # native/build/win-desktop/rmlui_c.dll: the same plus the standalone window backend
 dotnet publish demo/Demo -c Release -r win-x64 -p:AcceptVSBuildToolsLicense=true -o demo/Demo/bin/publish-win
 wine demo/Demo/bin/publish-win/Demo.exe --selftest
 ```
@@ -153,11 +194,16 @@ clang-cl and lld-link against an xwin splat (`cross/xwin-clang-cl.cmake`, found 
 `~/.xwin-cache/splat` or `~/.cache/xwin/splat`). FreeType is built from `external/freetype` (2.14.3) without zlib,
 png, bzip2, brotli or harfbuzz. The C and C++ runtimes are linked statically: the DLL imports only Windows system DLLs,
 so players need no VC++ redistributable. The demo on Windows loads `rmlui_c.dll` from beside the executable at run
-time, the way the client would; on Linux it links everything statically. Checked under Wine 11.13: the self-test
-passes, and the window renders as it does on Linux. The .NET side cross-compiles with
+time, the way the client would; on Linux it links everything statically. Checked under Wine 11.13 with Vulkan: the
+self-test passes, and the window renders and responds to clicks as on Linux. The in-game DLL has no SDL in it and imports only KERNEL32 and USER32. The .NET side cross-compiles with
 `PublishAotCrossXWin`, as ovs-client does.
 
 ## Not done yet
+
+- OpenGL under Wine: Wine 11.13 Staging's EGL-backed WGL offers SDL no pixel format for a window, so the forced-OpenGL
+  path fails there (Vulkan, which Wine and Proton always have, works). Not yet tried on real Windows, where the
+  OpenGL fallback is the path that matters.
+- Nothing has been run on real Windows yet; everything Windows was checked under Wine.
 
 - In-game: a DXGI Present hook and RmlUi's DX11 renderer (the game's default) and DX12 renderer (`-d3d12`), chosen
   from the device the game created.

@@ -36,7 +36,8 @@ set(_XWIN_INCLUDES
     "/imsvc${XWIN_SPLAT}/crt/include"
     "/imsvc${XWIN_SPLAT}/sdk/include/ucrt"
     "/imsvc${XWIN_SPLAT}/sdk/include/um"
-    "/imsvc${XWIN_SPLAT}/sdk/include/shared")
+    "/imsvc${XWIN_SPLAT}/sdk/include/shared"
+    "/imsvc${XWIN_SPLAT}/sdk/include/winrt")
 
 # DirectX-Headers, if given, shadows the SDK's older d3d12.h. Not needed for DX11.
 set(_DX_INCLUDES "")

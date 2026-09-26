@@ -10,6 +10,7 @@ public sealed class RmlWindowBuilder : RmlHostBuilder<RmlWindowBuilder>
     private readonly int height;
     private bool resizable = true;
     private bool powerSave = true;
+    private RmlRenderer renderer = RmlRenderer.Auto;
 
     public RmlWindowBuilder(string title, int width, int height)
     {
@@ -38,7 +39,18 @@ public sealed class RmlWindowBuilder : RmlHostBuilder<RmlWindowBuilder>
         return this;
     }
 
+    /// <summary>
+    /// Which renderer to use. Default <see cref="RmlRenderer.Auto"/>: Vulkan when this machine can run it, OpenGL 3
+    /// otherwise. A specific renderer fails the build rather than falling back. <see cref="RmlWindow.Renderer"/> says
+    /// which one was chosen.
+    /// </summary>
+    public RmlWindowBuilder Renderer(RmlRenderer renderer)
+    {
+        this.renderer = renderer;
+        return this;
+    }
+
     /// <summary>Opens the window, initialises RmlUi, loads the fonts and creates the context.</summary>
     /// <exception cref="InvalidOperationException">Another RmlUi host exists, or a step fails; nothing is left initialised.</exception>
-    public RmlWindow Build() => new(Settings, title, width, height, resizable, powerSave);
+    public RmlWindow Build() => new(Settings, title, width, height, resizable, powerSave, renderer);
 }

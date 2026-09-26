@@ -21,13 +21,15 @@
     <NativeLibrary Include="$(NativeBuildDir)librmlui_c_backend.a" />
     <NativeLibrary Include="$(NativeBuildDir)librmlui_c.a" />
     <NativeLibrary Include="$(NativeBuildDir)librmlui.a" />
-    <LinkerArg Include="-lfreetype -lX11 -lXext -lGL -lstdc++ -ldl -lm" />
+    <NativeLibrary Include="$(NativeBuildDir)SDL/libSDL3.a" />
+    <!-- SDL3 and RmlUi's renderers load X11/Wayland, Vulkan, GL and audio at run time; only these are linked. -->
+    <LinkerArg Include="-lfreetype -lstdc++ -ldl -lm -lpthread" />
   </ItemGroup>
 
   <!-- Windows: rmlui_c.dll loaded at runtime from beside the executable, as the client would load it. Build it with
-       cross/build-windows.sh Win32_DX11 first. -->
+       cross/build-windows.sh desktop first. -->
   <PropertyGroup>
-    <WinDllDir>$(MSBuildThisFileDirectory)../../native/build/win-Win32_DX11/</WinDllDir>
+    <WinDllDir>$(MSBuildThisFileDirectory)../../native/build/win-desktop/</WinDllDir>
     <!-- As in ovs-client: keep PublishAotCrossXWin's xwin cache out of its NuGet folder (restore loops on the
          splat's self-referencing symlink). -->
     <XWinCache Condition="'$(XWinCache)' == ''">$(HOME)/.cache/xwin/</XWinCache>
@@ -37,7 +39,7 @@
     <PackageReference Include="PublishAotCrossXWin" Version="1.2.0" />
   </ItemGroup>
   <Target Name="CopyRmlUiDll" AfterTargets="Publish" Condition="$(RuntimeIdentifier.StartsWith('win'))">
-    <Error Condition="!Exists('$(WinDllDir)rmlui_c.dll')" Text="No $(WinDllDir)rmlui_c.dll; run cross/build-windows.sh Win32_DX11" />
+    <Error Condition="!Exists('$(WinDllDir)rmlui_c.dll')" Text="No $(WinDllDir)rmlui_c.dll; run cross/build-windows.sh desktop" />
     <Copy SourceFiles="$(WinDllDir)rmlui_c.dll" DestinationFolder="$(PublishDir)" />
   </Target>
 

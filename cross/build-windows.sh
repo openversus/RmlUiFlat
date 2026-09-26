@@ -1,23 +1,35 @@
 #!/bin/bash
 # Cross-compile rmlui_c.dll (RmlUi + FreeType + the C shim, static CRT) for Windows x64 from Linux.
 # Needs clang-cl, lld-link, llvm-lib, llvm-rc, llvm-mt, cmake, ninja, an xwin splat (see xwin-clang-cl.cmake),
-# RmlUi at external/RmlUi and FreeType at external/freetype.
+# RmlUi at external/RmlUi and FreeType at external/freetype; the desktop build also SDL3 at external/SDL and stb at
+# external/stb.
 #
-# Usage: cross/build-windows.sh [backend]
-#   backend: one of RmlUi's Win32 desktop backends (e.g. Win32_DX11) to include, for a standalone window.
-#            Omit for the in-game build.
+# Usage: cross/build-windows.sh [desktop] [extra cmake arguments...]
+#   desktop: include the standalone window backend (SDL3; Vulkan, else OpenGL 3) -> native/build/win-desktop.
+#            Omit for the in-game build -> native/build/win, which has no SDL in it.
 #
 # CMAKE_*_FLAGS_INIT only seeds a fresh cache, so both build directories are recreated every run.
 set -euo pipefail
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BACKEND="${1:-}"
-BUILD="$REPO/native/build/win${BACKEND:+-$BACKEND}"
+DESKTOP=OFF
+if [ "${1:-}" = "desktop" ]; then
+    DESKTOP=ON
+    shift
+fi
+BUILD="$REPO/native/build/win"
+if [ "$DESKTOP" = ON ]; then
+    BUILD="$REPO/native/build/win-desktop"
+fi
 TOOLCHAIN="$REPO/cross/xwin-clang-cl.cmake"
 FT_BUILD="$BUILD/freetype"
 FT_PREFIX="$BUILD/freetype-install"
 
 [ -f "$REPO/external/freetype/CMakeLists.txt" ] || { echo "no FreeType at external/freetype" >&2; exit 1; }
+if [ "$DESKTOP" = ON ]; then
+    [ -f "$REPO/external/SDL/CMakeLists.txt" ] || { echo "no SDL3 at external/SDL" >&2; exit 1; }
+    [ -f "$REPO/external/stb/stb_image.h" ] || { echo "no stb at external/stb" >&2; exit 1; }
+fi
 
 rm -rf "$BUILD"
 
@@ -31,10 +43,11 @@ cmake --build "$FT_BUILD" --target install
 echo "==> rmlui_c.dll"
 cmake -S "$REPO/native" -B "$BUILD" -G Ninja \
     -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN" -DCMAKE_BUILD_TYPE=Release \
-    -DRMLC_SHARED=ON -DRMLC_BACKEND="$BACKEND" \
+    -DRMLC_SHARED=ON -DRMLC_DESKTOP="$DESKTOP" \
     -DFREETYPE_LIBRARY="$FT_PREFIX/lib/freetype.lib" \
     -DFREETYPE_INCLUDE_DIR_ft2build="$FT_PREFIX/include/freetype2" \
-    -DFREETYPE_INCLUDE_DIR_freetype2="$FT_PREFIX/include/freetype2"
+    -DFREETYPE_INCLUDE_DIR_freetype2="$FT_PREFIX/include/freetype2" \
+    "$@"
 cmake --build "$BUILD" --target rmlui_c
 
 echo
