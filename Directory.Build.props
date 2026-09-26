@@ -1,4 +1,19 @@
 <Project>
+  <!-- The one version number for the repository lives in VERSION at its root, as in ovs-client. It becomes the
+       assemblies' version (and so the version resource of the NativeAOT executables); native/CMakeLists.txt reads the
+       same file for rmlui_c.dll. -->
+  <PropertyGroup>
+    <RmlcVersionFile>$(MSBuildThisFileDirectory)VERSION</RmlcVersionFile>
+    <RmlcVersion Condition="Exists('$(RmlcVersionFile)')">$([System.IO.File]::ReadAllText('$(RmlcVersionFile)').Trim())</RmlcVersion>
+    <Version Condition="'$(RmlcVersion)' != ''">$(RmlcVersion)</Version>
+    <InformationalVersion Condition="'$(RmlcVersion)' != ''">$(RmlcVersion)</InformationalVersion>
+    <Copyright>Copyright (c) 2026 Christopher Conley</Copyright>
+  </PropertyGroup>
+
+  <Target Name="RequireVersionFile" BeforeTargets="BeforeBuild">
+    <Error Condition="'$(RmlcVersion)' == ''" Text="VERSION file not found at $(RmlcVersionFile)." />
+  </Target>
+
   <PropertyGroup>
     <!-- Matches ovs-client, which will reference RmlUi.Net. -->
     <TargetFramework>net10.0</TargetFramework>
