@@ -80,14 +80,14 @@ internal static unsafe partial class Program
             window.Run();
             return 0;
         }
-        return SelfTest(window, button, status, () => clicks);
+        return SelfTest(window, document, button, name, status, () => clicks);
     }
 
     /// <summary>
     /// Clicks the button through RmlUi's own input path, then checks what the handler wrote back and a C bool round trip,
     /// and on Linux saves a screenshot. Returns the exit code.
     /// </summary>
-    private static int SelfTest(RmlWindow window, Element button, Element status, Func<int> clicks)
+    private static int SelfTest(RmlWindow window, ElementDocument document, Element button, ElementFormControlInput name, Element status, Func<int> clicks)
     {
         int exitCode = 0;
 
@@ -141,6 +141,38 @@ internal static unsafe partial class Program
         if (buttonIsInput || nothingIsInput)
         {
             Console.Error.WriteLine($"FAIL: From accepted the wrong element (button: {buttonIsInput}, null: {nothingIsInput})");
+            exitCode = 1;
+        }
+
+        // Lists come back as arrays and go in as any IEnumerable. The mouse is still over the button.
+        Element[] found = document.QuerySelectorAll("input, button");
+        string[] active = button.GetActivePseudoClasses();
+        bool hovered = button.ArePseudoClassesSet(["hover"]);
+        bool hoveredAndMissing = button.ArePseudoClassesSet(["hover", "no-such-class"]);
+        Console.WriteLine($"QuerySelectorAll: {found.Length} elements; button pseudo-classes: [{string.Join(", ", active)}]");
+        if (found.Length != 2 || found[0] != name || found[1] != button || !active.Contains("hover") || !hovered || hoveredAndMissing)
+        {
+            Console.Error.WriteLine($"FAIL: lists (hover: {hovered}, hover and a missing class: {hoveredAndMissing})");
+            exitCode = 1;
+        }
+
+        // Out parameters: RmlUi's int* and String* outputs. RmlUi only selects in a focused input.
+        name.Focus();
+        name.SetSelectionRange(0, 4);
+        name.GetSelection(out int selectionStart, out int selectionEnd, out string selected);
+        Console.WriteLine($"selection: {selectionStart}..{selectionEnd} \"{selected}\"");
+        if (selectionStart != 0 || selectionEnd != 4 || selected != "Open")
+        {
+            Console.Error.WriteLine("FAIL: expected the selection 0..4 \"Open\"");
+            exitCode = 1;
+        }
+
+        // A value-type output (Vector2f&, documented [out]).
+        var box = button.GetBox(0, out Vector2f boxOffset);
+        Console.WriteLine($"box 0 at {boxOffset}, {box.GetSize(BoxArea.Border)}");
+        if (box.IsNull || box.GetSize(BoxArea.Border).X <= 0)
+        {
+            Console.Error.WriteLine("FAIL: expected the button's first box");
             exitCode = 1;
         }
 

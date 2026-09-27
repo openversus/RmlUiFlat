@@ -662,6 +662,17 @@ RMLC_API RmlEventId RmlRegisterEventType(const char* type, bool interruptible, b
     return static_cast<RmlEventId>(rml_ret);
 }
 
+RMLC_API RmlStringArray RmlGetTextureSourceList(void)
+{
+    decltype(auto) rml_ret = Rml::GetTextureSourceList();
+    thread_local Rml::Vector<Rml::String> rml_list;
+    rml_list = std::move(rml_ret);
+    thread_local Rml::Vector<const char*> rml_list_ptrs;
+    rml_list_ptrs.clear();
+    for (const auto& rml_item : rml_list) rml_list_ptrs.push_back(rml_item.c_str());
+    return RmlStringArray{ rml_list_ptrs.data(), rml_list_ptrs.size() };
+}
+
 RMLC_API void RmlReleaseTextures(RmlRenderInterface* render_interface)
 {
     Rml::ReleaseTextures(reinterpret_cast<Rml::RenderInterface*>(render_interface));
@@ -1291,10 +1302,37 @@ RMLC_API RmlElement* RmlElement_GetElementById(RmlElement* self, const char* id)
     return reinterpret_cast<RmlElement*>(rml_ret);
 }
 
+RMLC_API void RmlElement_GetElementsByTagName(RmlElement* self, RmlElementArray* elements, const char* tag)
+{
+    Rml::Vector<Rml::Element*> elements_tmp;
+    reinterpret_cast<Rml::Element*>(self)->GetElementsByTagName(elements_tmp, Rml::String(tag ? tag : ""));
+    thread_local Rml::Vector<Rml::Element*> elements_out;
+    elements_out = std::move(elements_tmp);
+    if (elements) *elements = RmlElementArray{ reinterpret_cast<void* const*>(elements_out.data()), elements_out.size() };
+}
+
+RMLC_API void RmlElement_GetElementsByClassName(RmlElement* self, RmlElementArray* elements, const char* class_name)
+{
+    Rml::Vector<Rml::Element*> elements_tmp;
+    reinterpret_cast<Rml::Element*>(self)->GetElementsByClassName(elements_tmp, Rml::String(class_name ? class_name : ""));
+    thread_local Rml::Vector<Rml::Element*> elements_out;
+    elements_out = std::move(elements_tmp);
+    if (elements) *elements = RmlElementArray{ reinterpret_cast<void* const*>(elements_out.data()), elements_out.size() };
+}
+
 RMLC_API RmlElement* RmlElement_QuerySelector(RmlElement* self, const char* selector)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->QuerySelector(Rml::String(selector ? selector : ""));
     return reinterpret_cast<RmlElement*>(rml_ret);
+}
+
+RMLC_API void RmlElement_QuerySelectorAll(RmlElement* self, RmlElementArray* elements, const char* selector)
+{
+    Rml::Vector<Rml::Element*> elements_tmp;
+    reinterpret_cast<Rml::Element*>(self)->QuerySelectorAll(elements_tmp, Rml::String(selector ? selector : ""));
+    thread_local Rml::Vector<Rml::Element*> elements_out;
+    elements_out = std::move(elements_tmp);
+    if (elements) *elements = RmlElementArray{ reinterpret_cast<void* const*>(elements_out.data()), elements_out.size() };
 }
 
 RMLC_API bool RmlElement_Matches(RmlElement* self, const char* selector)
@@ -1384,6 +1422,26 @@ RMLC_API bool RmlElement_IsPseudoClassSet(RmlElement* self, const char* pseudo_c
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->IsPseudoClassSet(Rml::String(pseudo_class ? pseudo_class : ""));
     return rml_ret;
+}
+
+RMLC_API bool RmlElement_ArePseudoClassesSet(RmlElement* self, RmlStringArray pseudo_classes)
+{
+    Rml::Vector<Rml::String> pseudo_classes_tmp;
+    pseudo_classes_tmp.reserve(pseudo_classes.count);
+    for (size_t rml_i = 0; rml_i < pseudo_classes.count; rml_i++) pseudo_classes_tmp.emplace_back(pseudo_classes.data[rml_i] ? pseudo_classes.data[rml_i] : "");
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->ArePseudoClassesSet(pseudo_classes_tmp);
+    return rml_ret;
+}
+
+RMLC_API RmlStringArray RmlElement_GetActivePseudoClasses(RmlElement* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetActivePseudoClasses();
+    thread_local Rml::Vector<Rml::String> rml_list;
+    rml_list = std::move(rml_ret);
+    thread_local Rml::Vector<const char*> rml_list_ptrs;
+    rml_list_ptrs.clear();
+    for (const auto& rml_item : rml_list) rml_list_ptrs.push_back(rml_item.c_str());
+    return RmlStringArray{ rml_list_ptrs.data(), rml_list_ptrs.size() };
 }
 
 RMLC_API bool RmlElement_HasAttribute(RmlElement* self, const char* name)
@@ -1669,6 +1727,16 @@ RMLC_API void RmlElementText_SetText(RmlElementText* self, const char* text)
     reinterpret_cast<Rml::ElementText*>(self)->SetText(Rml::String(text ? text : ""));
 }
 
+RMLC_API bool RmlElementText_GenerateLine(RmlElementText* self, const char** line, int32_t* line_length, float* line_width, int32_t line_begin, float maximum_line_width, float right_spacing_width, bool trim_whitespace_prefix, bool decode_escape_characters, bool allow_empty)
+{
+    Rml::String line_tmp;
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementText*>(self)->GenerateLine(line_tmp, *line_length, *line_width, line_begin, maximum_line_width, right_spacing_width, trim_whitespace_prefix, decode_escape_characters, allow_empty);
+    thread_local Rml::String line_out;
+    line_out = std::move(line_tmp);
+    if (line) *line = line_out.c_str();
+    return rml_ret;
+}
+
 RMLC_API void RmlElementText_ClearLines(RmlElementText* self)
 {
     reinterpret_cast<Rml::ElementText*>(self)->ClearLines();
@@ -1770,6 +1838,15 @@ RMLC_API const char* RmlElementFormControlInput_GetValue(RmlElementFormControlIn
     thread_local Rml::String rml_string_result;
     rml_string_result = std::move(rml_ret);
     return rml_string_result.c_str();
+}
+
+RMLC_API void RmlElementFormControlInput_GetSelection(RmlElementFormControlInput* self, int32_t* selection_start, int32_t* selection_end, const char** selected_text)
+{
+    Rml::String selected_text_tmp;
+    reinterpret_cast<Rml::ElementFormControlInput*>(self)->GetSelection(selection_start, selection_end, &selected_text_tmp);
+    thread_local Rml::String selected_text_out;
+    selected_text_out = std::move(selected_text_tmp);
+    if (selected_text) *selected_text = selected_text_out.c_str();
 }
 
 RMLC_API void RmlElementFormControlSelect_SetValue(RmlElementFormControlSelect* self, const char* value)
@@ -1923,6 +2000,15 @@ RMLC_API int32_t RmlElementFormControlTextArea_GetMaxLength(RmlElementFormContro
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->GetMaxLength();
     return rml_ret;
+}
+
+RMLC_API void RmlElementFormControlTextArea_GetSelection(RmlElementFormControlTextArea* self, int32_t* selection_start, int32_t* selection_end, const char** selected_text)
+{
+    Rml::String selected_text_tmp;
+    reinterpret_cast<Rml::ElementFormControlTextArea*>(self)->GetSelection(selection_start, selection_end, &selected_text_tmp);
+    thread_local Rml::String selected_text_out;
+    selected_text_out = std::move(selected_text_tmp);
+    if (selected_text) *selected_text = selected_text_out.c_str();
 }
 
 RMLC_API void RmlElementProgress_SetValue(RmlElementProgress* self, float value)

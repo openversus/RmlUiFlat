@@ -46,7 +46,8 @@
     "Rml::Vector2i",
     "Rml::Colourb"
   ],
-  "IgnoredFunctions": [],
+  // String GetInnerRML() already covers it; C# would give both the same signature.
+  "IgnoredFunctions": [ "RmlElement_GetInnerRML_String" ],
   "Renames": {},
 
   "NativeOutput": "../native/generated",

@@ -119,12 +119,19 @@ How a C++ type crosses:
 | `ValueTypes` (Vector2f, Colourb, ...) | C struct, copied by `std::bit_cast` | struct of the same fields | size, alignment and field offsets `static_assert`ed against RmlUi's type |
 | enum | C enum | `enum : int` | every value `static_assert`ed against RmlUi's |
 | `Span<const T>` (T primitive) | `const T*, size_t` | `T*, nuint` | a pointer, not a span: RmlUi may keep it (LoadFontFace does, until Shutdown) |
+| `StringList`, `ElementList` return (a `std::vector` of `String` or of a handle pointer) | `RmlStringArray`, `Rml{Name}Array`: data and count | `string[]`, `Element[]` (copied) | per-thread copy in C, valid until the same function is next called on the thread; handle items are `void*` in C, because HexaGen's raw layer cannot wrap a handle-pointer-pointer field |
+| list parameter | the same struct, by value | `IEnumerable<string>`, `IEnumerable<Element>` | copied into a C++ list for the call |
+| `@param[out]` `String&`, `String*` | `const char**` | `out string` | per-thread copy in C |
+| `@param[out]` list | `Rml{Name}Array*` | `out T[]` | |
+| other `@param[out]` references and pointers | `T*` | `out T` | a non-const reference RmlUi does not document as `[out]` stays `ref` |
 | `bool` | `bool` | `bool` (one byte on the wire) | |
 | `long` | `int64_t` | `long` | 32-bit on Windows, 64-bit on Linux |
 
 C names for overloads come from their C++ parameter types (`RmlGetContext_String`, `RmlGetContext_Int`), counting
 every overload, so a new mapping rule never renames an existing function. C# uses the C++ name and overloading. A
-class's `String ToString() const` becomes its C# `ToString()` override. RmlUi's RTTI methods (`IsClass`,
+class's `String ToString() const` becomes its C# `ToString()` override. Whether a parameter is an output comes from
+RmlUi's own `@param[out]` doc comments (an override inherits the comment of the method it overrides), and a `void`
+function whose only output is a string or a list returns it: `QuerySelectorAll(selector)` returns `Element[]`. RmlUi's RTTI methods (`IsClass`,
 `GetClassIdentifier`, `GetStaticClassIdentifier`) are not wrapped: `From` is what they are for.
 
 Code style is ovs-client's `.editorconfig`; `Directory.Build.props` makes its rules build errors, and the generated
@@ -220,6 +227,5 @@ the demo runs with Vulkan and with `--renderer=opengl`. The in-game DLL has no S
 
 - In-game: a DXGI Present hook and RmlUi's DX11 renderer (the game's default) and DX12 renderer (`-d3d12`), chosen
   from the device the game created.
-- Unmapped in scope (see shim-report.md): `ElementPtr` ownership (`CreateElement`, `AppendChild`), `Dictionary`
-  and `Variant` (event parameters, attribute values, and what setting a `Property` takes), the containers
-  (`StringList`, `ElementList`), and `String&`/`String*` out-parameters (`GetInnerRML`, a text box's selection).
+- Unmapped in scope (see shim-report.md): `ElementPtr` ownership (`CreateElement`, `AppendChild`), and `Dictionary`
+  and `Variant` (event parameters, attribute values, and what setting a `Property` takes).

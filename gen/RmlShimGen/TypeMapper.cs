@@ -13,6 +13,8 @@ public sealed record HandleBase(CppClass Class) : Base;
 public sealed record ValueBase(string CppName, string CName) : Base;
 public sealed record EnumBase(CppEnum Enum) : Base;
 public sealed record SpanBase(string ElementCName) : Base;
+/// <summary>A std::vector of String or of a handle pointer (StringList, ElementList).</summary>
+public sealed record ListBase(Base Element) : Base;
 
 /// <summary>How one C++ parameter crosses: its C declarations, and the C++ that rebuilds the argument.</summary>
 public sealed record ParamMap(List<string> CDecls, string CppArg, List<string> Pre, List<string> Post)
@@ -21,6 +23,8 @@ public sealed record ParamMap(List<string> CDecls, string CppArg, List<string> P
     public Indirection Ind { get; init; }
     public bool PointeeConst { get; init; }
     public string Name { get; init; } = "";
+    /// <summary>Written by the callee, never read: documented <c>@param[out]</c> in RmlUi's header.</summary>
+    public bool IsOut { get; init; }
 }
 
 /// <summary>How a C++ return value crosses: its C type, and the statements that return it given the value in <c>rml_ret</c>.</summary>
@@ -52,6 +56,9 @@ public sealed class TypeMapper
         valueTypes = [.. config.ValueTypes];
     }
 
+    /// <summary>List structs reached by any mapped signature: C name to the C type of its items.</summary>
+    public SortedDictionary<string, string> UsedLists { get; } = new(StringComparer.Ordinal);
+
     /// <summary>Enums reached by any mapped signature, keyed by qualified name.</summary>
     public SortedDictionary<string, CppEnum> UsedEnums { get; } = new(StringComparer.Ordinal);
 
@@ -63,13 +70,14 @@ public sealed class TypeMapper
 
     private static string StripRml(string qualified) => qualified.StartsWith("Rml::") ? qualified[5..] : qualified;
 
-    public ParamMap MapParam(CppType type, string name)
+    public ParamMap MapParam(CppType type, string name, bool documentedOut)
     {
         var (b, ind, pointeeConst) = Classify(type);
-        return MapParam(b, ind, pointeeConst, name) with { Base = b, Ind = ind, PointeeConst = pointeeConst, Name = name };
+        bool isOut = documentedOut && ind != Indirection.None && !pointeeConst;
+        return MapParam(b, ind, pointeeConst, isOut, name) with { Base = b, Ind = ind, PointeeConst = pointeeConst, Name = name, IsOut = isOut };
     }
 
-    private ParamMap MapParam(Base b, Indirection ind, bool pointeeConst, string name)
+    private ParamMap MapParam(Base b, Indirection ind, bool pointeeConst, bool isOut, string name)
     {
         string c = pointeeConst ? "const " : "";
         switch (b)
@@ -77,8 +85,30 @@ public sealed class TypeMapper
             case StringBase when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
                 return new([$"const char* {name}"], $"Rml::String({name} ? {name} : \"\")", [], []);
 
-            case StringBase when ind == Indirection.Ref:
-                throw new UnmappedException("String& out-parameter");
+            case StringBase when isOut:
+                // Parked per thread like a String return: valid until this function is next called on the thread.
+                return new(
+                    [$"const char** {name}"],
+                    ind == Indirection.Ref ? $"{name}_tmp" : $"&{name}_tmp",
+                    [$"Rml::String {name}_tmp;"],
+                    [
+                        $"thread_local Rml::String {name}_out;",
+                        $"{name}_out = std::move({name}_tmp);",
+                        $"if ({name}) *{name} = {name}_out.c_str();",
+                    ]);
+
+            case StringBase when ind != Indirection.None:
+                throw new UnmappedException($"String {ind} parameter not documented @param[out]");
+
+            case ListBase l when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
+                return new([$"{UseList(l)} {name}"], $"{name}_tmp", ListFromC(l, name), []);
+
+            case ListBase l when isOut && ind == Indirection.Ref:
+                return new(
+                    [$"{UseList(l)}* {name}"],
+                    $"{name}_tmp",
+                    [$"{ListCppType(l)} {name}_tmp;"],
+                    [.. ListToC(l, $"{name}_tmp", $"{name}_out", out var expr), $"if ({name}) *{name} = {expr};"]);
 
             case HandleBase h when ind == Indirection.Ptr:
                 return new([$"{c}{HandleCName(h.Class.FullName)}* {name}"], $"reinterpret_cast<{c}{h.Class.FullName}*>({name})", [], []);
@@ -171,6 +201,9 @@ public sealed class TypeMapper
                 UsedEnums[e.Enum.FullName] = e.Enum;
                 return new(EnumCName(e.Enum), false, [$"return static_cast<{EnumCName(e.Enum)}>(rml_ret);"]);
 
+            case ListBase l when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
+                return new(UseList(l), false, [.. ListToC(l, "rml_ret", "rml_list", out var expr), $"return {expr};"]);
+
             default:
                 throw new UnmappedException($"{Describe(b)} {ind}{(pointeeConst ? " const" : "")} return");
         }
@@ -185,6 +218,7 @@ public sealed class TypeMapper
         ValueBase v => v.CppName,
         EnumBase e => e.Enum.FullName,
         SpanBase s => $"Span<{s.ElementCName}>",
+        ListBase l => $"List<{Describe(l.Element)}>",
         _ => b.ToString(),
     };
 
@@ -285,6 +319,12 @@ public sealed class TypeMapper
                     return new HandleBase(cls);
                 case CppClass cls when cls.FullName.StartsWith("Rml::Span<", StringComparison.Ordinal):
                     return MapSpan(cls);
+                // Template arguments arrive with RmlUi's String typedef already looked through.
+                case CppClass cls when cls.Name == "basic_string"
+                    && cls.TemplateSpecializedArguments.FirstOrDefault()?.ArgAsType is CppPrimitiveType { Kind: CppPrimitiveKind.Char }:
+                    return new StringBase();
+                case CppClass cls when cls.Name == "vector" && cls.TemplateSpecializedArguments.Count > 0:
+                    return MapList(cls, viaTypedef);
                 case CppClass cls:
                     throw new UnmappedException(viaTypedef ?? cls.FullName);
                 default:
@@ -308,6 +348,80 @@ public sealed class TypeMapper
             return new SpanBase(p.CName);
         }
         throw new UnmappedException($"Span<const {Describe(element)}>");
+    }
+
+    private ListBase MapList(CppClass vector, string? viaTypedef)
+    {
+        string what = viaTypedef ?? vector.FullName;
+        var arg = vector.TemplateSpecializedArguments[0].ArgAsType ?? throw new UnmappedException($"{what} (no template argument exposed)");
+        arg = ResolveTransparentTypedefs(StripQualifiers(arg, out _));
+        Base element;
+        try
+        {
+            element = arg is CppPointerType p ? ClassifyBase(p.ElementType) : ClassifyBase(arg);
+        }
+        catch (UnmappedException)
+        {
+            throw new UnmappedException(what);
+        }
+        return (element, arg is CppPointerType) switch
+        {
+            (HandleBase, true) or (StringBase, false) => new ListBase(element),
+            _ => throw new UnmappedException(what),
+        };
+    }
+
+    public static string ListCName(ListBase l) => l.Element switch
+    {
+        StringBase => "RmlStringArray",
+        HandleBase h => HandleCName(h.Class.FullName) + "Array",
+        _ => throw new InvalidOperationException(Describe(l)),
+    };
+
+    private string UseList(ListBase l)
+    {
+        string cName = ListCName(l);
+        UsedLists[cName] = l.Element is HandleBase h ? $"{HandleCName(h.Class.FullName)}*" : "const char*";
+        return cName;
+    }
+
+    private static string ListCppType(ListBase l) => l.Element is HandleBase h ? $"Rml::Vector<{h.Class.FullName}*>" : "Rml::Vector<Rml::String>";
+
+    /// <summary>Statements that build the C++ list <c>{name}_tmp</c> from the C list <c>name</c>.</summary>
+    private static List<string> ListFromC(ListBase l, string name) => l.Element switch
+    {
+        HandleBase h =>
+        [
+            $"auto {name}_data = reinterpret_cast<{h.Class.FullName}* const*>({name}.data);",
+            $"{ListCppType(l)} {name}_tmp({name}_data, {name}_data + {name}.count);",
+        ],
+        _ =>
+        [
+            $"{ListCppType(l)} {name}_tmp;",
+            $"{name}_tmp.reserve({name}.count);",
+            $"for (size_t rml_i = 0; rml_i < {name}.count; rml_i++) {name}_tmp.emplace_back({name}.data[rml_i] ? {name}.data[rml_i] : \"\");",
+        ],
+    };
+
+    /// <summary>
+    /// Statements that park a C++ list per thread (valid until this function is next called on the thread), and the
+    /// C struct expression that points at it.
+    /// </summary>
+    private static List<string> ListToC(ListBase l, string source, string storage, out string expr)
+    {
+        var lines = new List<string> { $"thread_local {ListCppType(l)} {storage};", $"{storage} = std::move({source});" };
+        if (l.Element is HandleBase h)
+        {
+            expr = $"{ListCName(l)}{{ reinterpret_cast<void* const*>({storage}.data()), {storage}.size() }}";
+        }
+        else
+        {
+            lines.Add($"thread_local Rml::Vector<const char*> {storage}_ptrs;");
+            lines.Add($"{storage}_ptrs.clear();");
+            lines.Add($"for (const auto& rml_item : {storage}) {storage}_ptrs.push_back(rml_item.c_str());");
+            expr = $"{ListCName(l)}{{ {storage}_ptrs.data(), {storage}_ptrs.size() }}";
+        }
+        return lines;
     }
 
     private static Base MapPrimitive(CppPrimitiveType p) => p.Kind switch

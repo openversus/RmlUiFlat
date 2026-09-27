@@ -147,11 +147,12 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
             try
             {
                 var ret = mapper.MapReturn(f.ReturnType);
+                var outs = DocumentedOut(f, owner);
                 var ps = new List<ParamMap>();
                 for (int i = 0; i < f.Parameters.Count; i++)
                 {
                     var p = f.Parameters[i];
-                    ps.Add(mapper.MapParam(p.Type, ParamName(p, i)));
+                    ps.Add(mapper.MapParam(p.Type, ParamName(p, i), outs.Contains(p.Name)));
                 }
                 wrapped.Add(new(cName, cppName, f, owner, ret, ps));
             }
@@ -162,8 +163,51 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         }
     }
 
+    /// <summary>Parameters RmlUi's doc comment marks <c>@param[out]</c>: written by the callee, never read.</summary>
+    private HashSet<string> DocumentedOut(CppFunction f, CppClass? owner)
+    {
+        var result = DocumentedOut(f);
+        // An override often has no comment of its own; the one it overrides documents its parameters.
+        for (var cls = owner; result.Count == 0 && cls != null;)
+        {
+            cls = cls.BaseTypes.Select(b => b.Type as CppClass).FirstOrDefault(b => b != null) is { } b0 ? classes.GetValueOrDefault(b0.FullName) ?? b0 : null;
+            var overridden = cls?.Functions.FirstOrDefault(g => g.Name == f.Name && g.Parameters.Count == f.Parameters.Count);
+            if (overridden != null)
+            {
+                // Parameter names can differ between the declarations; the position is what carries over.
+                var names = DocumentedOut(overridden);
+                result = [.. f.Parameters.Where((p, i) => names.Contains(overridden.Parameters[i].Name)).Select(p => p.Name)];
+                break;
+            }
+        }
+        return result;
+    }
+
+    private static HashSet<string> DocumentedOut(CppFunction f)
+    {
+        var result = new HashSet<string>(StringComparer.Ordinal);
+        var pending = new Stack<CppComment>();
+        if (f.Comment != null)
+        {
+            pending.Push(f.Comment);
+        }
+        while (pending.Count > 0)
+        {
+            var comment = pending.Pop();
+            if (comment is CppCommentParamCommand { IsDirectionExplicit: true, Direction: CppCommentParamDirection.Out } param)
+            {
+                result.Add(param.ParamName);
+            }
+            foreach (var child in comment.Children ?? [])
+            {
+                pending.Push(child);
+            }
+        }
+        return result;
+    }
+
     // Names that would collide with the shim's own locals, or with C, get a suffix.
-    private static readonly HashSet<string> ReservedNames = ["self", "rml_ret", "rml_string_result"];
+    private static readonly HashSet<string> ReservedNames = ["self", "rml_ret", "rml_string_result", "rml_list", "rml_i", "rml_item"];
 
     private static string ParamName(CppParameter p, int index)
     {
@@ -225,7 +269,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
                 foreach (var field in template.Fields.Where(f => (f.StorageQualifier & CppStorageQualifier.Static) == 0))
                 {
                     var type = SubstituteTemplateArgument(field.Type, template, cls);
-                    var map = mapper.MapParam(type, field.Name);
+                    var map = mapper.MapParam(type, field.Name, documentedOut: false);
                     if (map.CDecls.Count != 1 || map.CppArg != field.Name)
                     {
                         throw new UnmappedException($"field {field.Name} is not primitive");
@@ -320,6 +364,21 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
             {
                 w.AppendLine($"    {type} {field};");
             }
+            w.AppendLine($"}} {cName};");
+            w.AppendLine();
+        }
+
+        w.AppendLine("/* Lists */");
+        foreach (var (cName, itemType) in mapper.UsedLists)
+        {
+            // Handle items are void* because HexaGen's raw layer cannot wrap a handle** field (it names a type it never
+            // generates); the C# API reads them as nint either way.
+            string dataType = itemType == "const char*" ? "const char* const*" : "void* const*";
+            w.AppendLine($"/** A list of {itemType}: points into a per-thread copy, valid until the same function is next called on the thread. */");
+            w.AppendLine($"typedef struct {cName}");
+            w.AppendLine("{");
+            w.AppendLine($"    {dataType} data;");
+            w.AppendLine("    size_t count;");
             w.AppendLine($"}} {cName};");
             w.AppendLine();
         }

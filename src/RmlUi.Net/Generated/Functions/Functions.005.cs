@@ -18,6 +18,2985 @@ namespace RmlUi.Interop
 	{
 
 		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, in byte rml, in byte value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (byte* prml = &rml)
+				{
+					fixed (byte* pvalue = &value)
+					{
+						int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, (byte*)prml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, ReadOnlySpan<byte> rml, ReadOnlySpan<byte> value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (byte* prml = rml)
+				{
+					fixed (byte* pvalue = value)
+					{
+						int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, (byte*)prml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, string rml, string value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (rml != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(rml);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* pStr1 = null;
+				int pStrSize1 = 0;
+				if (value != null)
+				{
+					pStrSize1 = Utils.GetByteCountUTF8(value);
+					if (pStrSize1 >= Utils.MaxStackallocSize)
+					{
+						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+					}
+					else
+					{
+						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+						pStr1 = pStrStack1;
+					}
+					int pStrOffset1 = Utils.EncodeStringUTF8(value, pStr1, pStrSize1);
+					pStr1[pStrOffset1] = 0;
+				}
+				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, pStr0, pStr1, before, selectable ? (byte)1 : (byte)0);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr1);
+				}
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Removes an option from the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_Remove")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlSelectRemoveNative(RmlElementFormControlSelect* self, int index);
+
+		/// <summary>
+		/// Removes an option from the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectRemove(RmlElementFormControlSelectPtr self, int index)
+		{
+			RmlElementFormControlSelectRemoveNative((RmlElementFormControlSelect*)self, index);
+		}
+
+		/// <summary>
+		/// Removes an option from the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectRemove(ref RmlElementFormControlSelect self, int index)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementFormControlSelectRemoveNative((RmlElementFormControlSelect*)pself, index);
+			}
+		}
+
+		/// <summary>
+		/// Removes all options from the select control.<br/>
+		/// C++: void Rml::ElementFormControlSelect::RemoveAll()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_RemoveAll")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlSelectRemoveAllNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// Removes all options from the select control.<br/>
+		/// C++: void Rml::ElementFormControlSelect::RemoveAll()<br/>
+		/// </summary>
+		public static void RmlElementFormControlSelectRemoveAll(RmlElementFormControlSelectPtr self)
+		{
+			RmlElementFormControlSelectRemoveAllNative((RmlElementFormControlSelect*)self);
+		}
+
+		/// <summary>
+		/// Removes all options from the select control.<br/>
+		/// C++: void Rml::ElementFormControlSelect::RemoveAll()<br/>
+		/// </summary>
+		public static void RmlElementFormControlSelectRemoveAll(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementFormControlSelectRemoveAllNative((RmlElementFormControlSelect*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Show the selection box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::ShowSelectBox()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_ShowSelectBox")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlSelectShowSelectBoxNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// Show the selection box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::ShowSelectBox()<br/>
+		/// </summary>
+		public static void RmlElementFormControlSelectShowSelectBox(RmlElementFormControlSelectPtr self)
+		{
+			RmlElementFormControlSelectShowSelectBoxNative((RmlElementFormControlSelect*)self);
+		}
+
+		/// <summary>
+		/// Show the selection box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::ShowSelectBox()<br/>
+		/// </summary>
+		public static void RmlElementFormControlSelectShowSelectBox(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementFormControlSelectShowSelectBoxNative((RmlElementFormControlSelect*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Hide the selection box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::HideSelectBox()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_HideSelectBox")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlSelectHideSelectBoxNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// Hide the selection box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::HideSelectBox()<br/>
+		/// </summary>
+		public static void RmlElementFormControlSelectHideSelectBox(RmlElementFormControlSelectPtr self)
+		{
+			RmlElementFormControlSelectHideSelectBoxNative((RmlElementFormControlSelect*)self);
+		}
+
+		/// <summary>
+		/// Hide the selection box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::HideSelectBox()<br/>
+		/// </summary>
+		public static void RmlElementFormControlSelectHideSelectBox(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementFormControlSelectHideSelectBoxNative((RmlElementFormControlSelect*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Revert to the value selected when the selection box was opened, then hide the box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::CancelSelectBox()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_CancelSelectBox")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlSelectCancelSelectBoxNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// Revert to the value selected when the selection box was opened, then hide the box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::CancelSelectBox()<br/>
+		/// </summary>
+		public static void RmlElementFormControlSelectCancelSelectBox(RmlElementFormControlSelectPtr self)
+		{
+			RmlElementFormControlSelectCancelSelectBoxNative((RmlElementFormControlSelect*)self);
+		}
+
+		/// <summary>
+		/// Revert to the value selected when the selection box was opened, then hide the box.<br/>
+		/// C++: void Rml::ElementFormControlSelect::CancelSelectBox()<br/>
+		/// </summary>
+		public static void RmlElementFormControlSelectCancelSelectBox(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementFormControlSelectCancelSelectBoxNative((RmlElementFormControlSelect*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Check whether the select box is opened or not.<br/>
+		/// C++: bool Rml::ElementFormControlSelect::IsSelectBoxVisible()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_IsSelectBoxVisible")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial byte RmlElementFormControlSelectIsSelectBoxVisibleNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// Check whether the select box is opened or not.<br/>
+		/// C++: bool Rml::ElementFormControlSelect::IsSelectBoxVisible()<br/>
+		/// </summary>
+		public static bool RmlElementFormControlSelectIsSelectBoxVisible(RmlElementFormControlSelectPtr self)
+		{
+			byte ret = RmlElementFormControlSelectIsSelectBoxVisibleNative((RmlElementFormControlSelect*)self);
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// Check whether the select box is opened or not.<br/>
+		/// C++: bool Rml::ElementFormControlSelect::IsSelectBoxVisible()<br/>
+		/// </summary>
+		public static bool RmlElementFormControlSelectIsSelectBoxVisible(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				byte ret = RmlElementFormControlSelectIsSelectBoxVisibleNative((RmlElementFormControlSelect*)pself);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_GetValue")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial byte* RmlElementFormControlSelectGetValueNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlElementFormControlSelectGetValue(RmlElementFormControlSelectPtr self)
+		{
+			byte* ret = RmlElementFormControlSelectGetValueNative((RmlElementFormControlSelect*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlElementFormControlSelectGetValueS(RmlElementFormControlSelectPtr self)
+		{
+			string ret = Utils.DecodeStringUTF8(RmlElementFormControlSelectGetValueNative((RmlElementFormControlSelect*)self));
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlElementFormControlSelectGetValue(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				byte* ret = RmlElementFormControlSelectGetValueNative((RmlElementFormControlSelect*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlElementFormControlSelectGetValueS(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				string ret = Utils.DecodeStringUTF8(RmlElementFormControlSelectGetValueNative((RmlElementFormControlSelect*)pself));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the index of the currently selected item.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_GetSelection")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementFormControlSelectGetSelectionNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// Returns the index of the currently selected item.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectGetSelection(RmlElementFormControlSelectPtr self)
+		{
+			int ret = RmlElementFormControlSelectGetSelectionNative((RmlElementFormControlSelect*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the index of the currently selected item.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectGetSelection(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				int ret = RmlElementFormControlSelectGetSelectionNative((RmlElementFormControlSelect*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_SetValue")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaSetValueNative(RmlElementFormControlTextArea* self, byte* value);
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetValue(RmlElementFormControlTextAreaPtr self, byte* value)
+		{
+			RmlElementFormControlTextAreaSetValueNative((RmlElementFormControlTextArea*)self, value);
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetValue(ref RmlElementFormControlTextArea self, byte* value)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaSetValueNative((RmlElementFormControlTextArea*)pself, value);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetValue(RmlElementFormControlTextAreaPtr self, in byte value)
+		{
+			fixed (byte* pvalue = &value)
+			{
+				RmlElementFormControlTextAreaSetValueNative((RmlElementFormControlTextArea*)self, (byte*)pvalue);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetValue(RmlElementFormControlTextAreaPtr self, ReadOnlySpan<byte> value)
+		{
+			fixed (byte* pvalue = value)
+			{
+				RmlElementFormControlTextAreaSetValueNative((RmlElementFormControlTextArea*)self, (byte*)pvalue);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetValue(RmlElementFormControlTextAreaPtr self, string value)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (value != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(value);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementFormControlTextAreaSetValueNative((RmlElementFormControlTextArea*)self, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetValue(ref RmlElementFormControlTextArea self, in byte value)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (byte* pvalue = &value)
+				{
+					RmlElementFormControlTextAreaSetValueNative((RmlElementFormControlTextArea*)pself, (byte*)pvalue);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetValue(ref RmlElementFormControlTextArea self, ReadOnlySpan<byte> value)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (byte* pvalue = value)
+				{
+					RmlElementFormControlTextAreaSetValueNative((RmlElementFormControlTextArea*)pself, (byte*)pvalue);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlTextArea <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetValue(ref RmlElementFormControlTextArea self, string value)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (value != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(value);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementFormControlTextAreaSetValueNative((RmlElementFormControlTextArea*)pself, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the number of characters visible across the text area. Note that this will only be precise when using<br/>
+		/// a fixed-width font.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_SetNumColumns")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaSetNumColumnsNative(RmlElementFormControlTextArea* self, int numColumns);
+
+		/// <summary>
+		/// Sets the number of characters visible across the text area. Note that this will only be precise when using<br/>
+		/// a fixed-width font.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetNumColumns(RmlElementFormControlTextAreaPtr self, int numColumns)
+		{
+			RmlElementFormControlTextAreaSetNumColumnsNative((RmlElementFormControlTextArea*)self, numColumns);
+		}
+
+		/// <summary>
+		/// Sets the number of characters visible across the text area. Note that this will only be precise when using<br/>
+		/// a fixed-width font.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetNumColumns(ref RmlElementFormControlTextArea self, int numColumns)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaSetNumColumnsNative((RmlElementFormControlTextArea*)pself, numColumns);
+			}
+		}
+
+		/// <summary>
+		/// Sets the number of visible lines of text in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_SetNumRows")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaSetNumRowsNative(RmlElementFormControlTextArea* self, int numRows);
+
+		/// <summary>
+		/// Sets the number of visible lines of text in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetNumRows(RmlElementFormControlTextAreaPtr self, int numRows)
+		{
+			RmlElementFormControlTextAreaSetNumRowsNative((RmlElementFormControlTextArea*)self, numRows);
+		}
+
+		/// <summary>
+		/// Sets the number of visible lines of text in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetNumRows(ref RmlElementFormControlTextArea self, int numRows)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaSetNumRowsNative((RmlElementFormControlTextArea*)pself, numRows);
+			}
+		}
+
+		/// <summary>
+		/// Sets the maximum length (in characters) of this text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_SetMaxLength")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaSetMaxLengthNative(RmlElementFormControlTextArea* self, int maxLength);
+
+		/// <summary>
+		/// Sets the maximum length (in characters) of this text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetMaxLength(RmlElementFormControlTextAreaPtr self, int maxLength)
+		{
+			RmlElementFormControlTextAreaSetMaxLengthNative((RmlElementFormControlTextArea*)self, maxLength);
+		}
+
+		/// <summary>
+		/// Sets the maximum length (in characters) of this text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetMaxLength(ref RmlElementFormControlTextArea self, int maxLength)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaSetMaxLengthNative((RmlElementFormControlTextArea*)pself, maxLength);
+			}
+		}
+
+		/// <summary>
+		/// Enables or disables word-wrapping in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_SetWordWrap")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaSetWordWrapNative(RmlElementFormControlTextArea* self, byte wordWrap);
+
+		/// <summary>
+		/// Enables or disables word-wrapping in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetWordWrap(RmlElementFormControlTextAreaPtr self, bool wordWrap)
+		{
+			RmlElementFormControlTextAreaSetWordWrapNative((RmlElementFormControlTextArea*)self, wordWrap ? (byte)1 : (byte)0);
+		}
+
+		/// <summary>
+		/// Enables or disables word-wrapping in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetWordWrap(ref RmlElementFormControlTextArea self, bool wordWrap)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaSetWordWrapNative((RmlElementFormControlTextArea*)pself, wordWrap ? (byte)1 : (byte)0);
+			}
+		}
+
+		/// <summary>
+		/// Returns the state of word-wrapping in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_GetWordWrap")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial byte RmlElementFormControlTextAreaGetWordWrapNative(RmlElementFormControlTextArea* self);
+
+		/// <summary>
+		/// Returns the state of word-wrapping in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetWordWrap(RmlElementFormControlTextAreaPtr self)
+		{
+			byte ret = RmlElementFormControlTextAreaGetWordWrapNative((RmlElementFormControlTextArea*)self);
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// Returns the state of word-wrapping in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetWordWrap(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				byte ret = RmlElementFormControlTextAreaGetWordWrapNative((RmlElementFormControlTextArea*)pself);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Selects all text.<br/>
+		/// C++: void Rml::ElementFormControlTextArea::Select()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_Select")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaSelectNative(RmlElementFormControlTextArea* self);
+
+		/// <summary>
+		/// Selects all text.<br/>
+		/// C++: void Rml::ElementFormControlTextArea::Select()<br/>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSelect(RmlElementFormControlTextAreaPtr self)
+		{
+			RmlElementFormControlTextAreaSelectNative((RmlElementFormControlTextArea*)self);
+		}
+
+		/// <summary>
+		/// Selects all text.<br/>
+		/// C++: void Rml::ElementFormControlTextArea::Select()<br/>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSelect(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaSelectNative((RmlElementFormControlTextArea*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Selects the text in the given character range.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_SetSelectionRange")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaSetSelectionRangeNative(RmlElementFormControlTextArea* self, int selectionStart, int selectionEnd);
+
+		/// <summary>
+		/// Selects the text in the given character range.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetSelectionRange(RmlElementFormControlTextAreaPtr self, int selectionStart, int selectionEnd)
+		{
+			RmlElementFormControlTextAreaSetSelectionRangeNative((RmlElementFormControlTextArea*)self, selectionStart, selectionEnd);
+		}
+
+		/// <summary>
+		/// Selects the text in the given character range.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetSelectionRange(ref RmlElementFormControlTextArea self, int selectionStart, int selectionEnd)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaSetSelectionRangeNative((RmlElementFormControlTextArea*)pself, selectionStart, selectionEnd);
+			}
+		}
+
+		/// <summary>
+		/// Sets visual feedback used for the IME composition in the range.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_SetCompositionRange")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaSetCompositionRangeNative(RmlElementFormControlTextArea* self, int rangeStart, int rangeEnd);
+
+		/// <summary>
+		/// Sets visual feedback used for the IME composition in the range.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetCompositionRange(RmlElementFormControlTextAreaPtr self, int rangeStart, int rangeEnd)
+		{
+			RmlElementFormControlTextAreaSetCompositionRangeNative((RmlElementFormControlTextArea*)self, rangeStart, rangeEnd);
+		}
+
+		/// <summary>
+		/// Sets visual feedback used for the IME composition in the range.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaSetCompositionRange(ref RmlElementFormControlTextArea self, int rangeStart, int rangeEnd)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaSetCompositionRangeNative((RmlElementFormControlTextArea*)pself, rangeStart, rangeEnd);
+			}
+		}
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_GetIntrinsicDimensions")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial byte RmlElementFormControlTextAreaGetIntrinsicDimensionsNative(RmlElementFormControlTextArea* self, RmlVector2F* dimensions, float* ratio);
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetIntrinsicDimensions(RmlElementFormControlTextAreaPtr self, RmlVector2FPtr dimensions, float* ratio)
+		{
+			byte ret = RmlElementFormControlTextAreaGetIntrinsicDimensionsNative((RmlElementFormControlTextArea*)self, (RmlVector2F*)dimensions, ratio);
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetIntrinsicDimensions(ref RmlElementFormControlTextArea self, RmlVector2FPtr dimensions, float* ratio)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				byte ret = RmlElementFormControlTextAreaGetIntrinsicDimensionsNative((RmlElementFormControlTextArea*)pself, (RmlVector2F*)dimensions, ratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetIntrinsicDimensions(RmlElementFormControlTextAreaPtr self, ref RmlVector2F dimensions, float* ratio)
+		{
+			fixed (RmlVector2F* pdimensions = &dimensions)
+			{
+				byte ret = RmlElementFormControlTextAreaGetIntrinsicDimensionsNative((RmlElementFormControlTextArea*)self, (RmlVector2F*)pdimensions, ratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetIntrinsicDimensions(ref RmlElementFormControlTextArea self, ref RmlVector2F dimensions, float* ratio)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (RmlVector2F* pdimensions = &dimensions)
+				{
+					byte ret = RmlElementFormControlTextAreaGetIntrinsicDimensionsNative((RmlElementFormControlTextArea*)pself, (RmlVector2F*)pdimensions, ratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetIntrinsicDimensions(RmlElementFormControlTextAreaPtr self, RmlVector2FPtr dimensions, ref float ratio)
+		{
+			fixed (float* pratio = &ratio)
+			{
+				byte ret = RmlElementFormControlTextAreaGetIntrinsicDimensionsNative((RmlElementFormControlTextArea*)self, (RmlVector2F*)dimensions, (float*)pratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetIntrinsicDimensions(ref RmlElementFormControlTextArea self, RmlVector2FPtr dimensions, ref float ratio)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (float* pratio = &ratio)
+				{
+					byte ret = RmlElementFormControlTextAreaGetIntrinsicDimensionsNative((RmlElementFormControlTextArea*)pself, (RmlVector2F*)dimensions, (float*)pratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetIntrinsicDimensions(RmlElementFormControlTextAreaPtr self, ref RmlVector2F dimensions, ref float ratio)
+		{
+			fixed (RmlVector2F* pdimensions = &dimensions)
+			{
+				fixed (float* pratio = &ratio)
+				{
+					byte ret = RmlElementFormControlTextAreaGetIntrinsicDimensionsNative((RmlElementFormControlTextArea*)self, (RmlVector2F*)pdimensions, (float*)pratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the control's inherent size, based on the length of the input field and the current font size.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static bool RmlElementFormControlTextAreaGetIntrinsicDimensions(ref RmlElementFormControlTextArea self, ref RmlVector2F dimensions, ref float ratio)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (RmlVector2F* pdimensions = &dimensions)
+				{
+					fixed (float* pratio = &ratio)
+					{
+						byte ret = RmlElementFormControlTextAreaGetIntrinsicDimensionsNative((RmlElementFormControlTextArea*)pself, (RmlVector2F*)pdimensions, (float*)pratio);
+						return ret != 0;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control. This is the value of the control<br/>
+		/// regardless of whether it has been selected / checked (as appropriate for the control).<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_GetValue")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial byte* RmlElementFormControlTextAreaGetValueNative(RmlElementFormControlTextArea* self);
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control. This is the value of the control<br/>
+		/// regardless of whether it has been selected / checked (as appropriate for the control).<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlElementFormControlTextAreaGetValue(RmlElementFormControlTextAreaPtr self)
+		{
+			byte* ret = RmlElementFormControlTextAreaGetValueNative((RmlElementFormControlTextArea*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control. This is the value of the control<br/>
+		/// regardless of whether it has been selected / checked (as appropriate for the control).<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlElementFormControlTextAreaGetValueS(RmlElementFormControlTextAreaPtr self)
+		{
+			string ret = Utils.DecodeStringUTF8(RmlElementFormControlTextAreaGetValueNative((RmlElementFormControlTextArea*)self));
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control. This is the value of the control<br/>
+		/// regardless of whether it has been selected / checked (as appropriate for the control).<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlElementFormControlTextAreaGetValue(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				byte* ret = RmlElementFormControlTextAreaGetValueNative((RmlElementFormControlTextArea*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns a string representation of the current value of the form control. This is the value of the control<br/>
+		/// regardless of whether it has been selected / checked (as appropriate for the control).<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlElementFormControlTextAreaGetValueS(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				string ret = Utils.DecodeStringUTF8(RmlElementFormControlTextAreaGetValueNative((RmlElementFormControlTextArea*)pself));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the approximate number of characters visible at once.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_GetNumColumns")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementFormControlTextAreaGetNumColumnsNative(RmlElementFormControlTextArea* self);
+
+		/// <summary>
+		/// Returns the approximate number of characters visible at once.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlTextAreaGetNumColumns(RmlElementFormControlTextAreaPtr self)
+		{
+			int ret = RmlElementFormControlTextAreaGetNumColumnsNative((RmlElementFormControlTextArea*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the approximate number of characters visible at once.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlTextAreaGetNumColumns(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				int ret = RmlElementFormControlTextAreaGetNumColumnsNative((RmlElementFormControlTextArea*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the number of visible lines of text in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_GetNumRows")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementFormControlTextAreaGetNumRowsNative(RmlElementFormControlTextArea* self);
+
+		/// <summary>
+		/// Returns the number of visible lines of text in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlTextAreaGetNumRows(RmlElementFormControlTextAreaPtr self)
+		{
+			int ret = RmlElementFormControlTextAreaGetNumRowsNative((RmlElementFormControlTextArea*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the number of visible lines of text in the text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlTextAreaGetNumRows(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				int ret = RmlElementFormControlTextAreaGetNumRowsNative((RmlElementFormControlTextArea*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the maximum length (in characters) of this text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_GetMaxLength")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementFormControlTextAreaGetMaxLengthNative(RmlElementFormControlTextArea* self);
+
+		/// <summary>
+		/// Returns the maximum length (in characters) of this text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlTextAreaGetMaxLength(RmlElementFormControlTextAreaPtr self)
+		{
+			int ret = RmlElementFormControlTextAreaGetMaxLengthNative((RmlElementFormControlTextArea*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the maximum length (in characters) of this text area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlTextAreaGetMaxLength(ref RmlElementFormControlTextArea self)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				int ret = RmlElementFormControlTextAreaGetMaxLengthNative((RmlElementFormControlTextArea*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlTextArea_GetSelection")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlTextAreaGetSelectionNative(RmlElementFormControlTextArea* self, int* selectionStart, int* selectionEnd, byte** selectedText);
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, int* selectionStart, int* selectionEnd, byte** selectedText)
+		{
+			RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, selectionStart, selectionEnd, selectedText);
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, int* selectionStart, int* selectionEnd, byte** selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, selectionStart, selectionEnd, selectedText);
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, ref int selectionStart, int* selectionEnd, byte** selectedText)
+		{
+			fixed (int* pselectionStart = &selectionStart)
+			{
+				RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, (int*)pselectionStart, selectionEnd, selectedText);
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, ref int selectionStart, int* selectionEnd, byte** selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (int* pselectionStart = &selectionStart)
+				{
+					RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, (int*)pselectionStart, selectionEnd, selectedText);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, int* selectionStart, ref int selectionEnd, byte** selectedText)
+		{
+			fixed (int* pselectionEnd = &selectionEnd)
+			{
+				RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, selectionStart, (int*)pselectionEnd, selectedText);
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, int* selectionStart, ref int selectionEnd, byte** selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (int* pselectionEnd = &selectionEnd)
+				{
+					RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, selectionStart, (int*)pselectionEnd, selectedText);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, ref int selectionStart, ref int selectionEnd, byte** selectedText)
+		{
+			fixed (int* pselectionStart = &selectionStart)
+			{
+				fixed (int* pselectionEnd = &selectionEnd)
+				{
+					RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, (int*)pselectionStart, (int*)pselectionEnd, selectedText);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, ref int selectionStart, ref int selectionEnd, byte** selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (int* pselectionStart = &selectionStart)
+				{
+					fixed (int* pselectionEnd = &selectionEnd)
+					{
+						RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, (int*)pselectionStart, (int*)pselectionEnd, selectedText);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, int* selectionStart, int* selectionEnd, ref byte* selectedText)
+		{
+			fixed (byte** pselectedText = &selectedText)
+			{
+				RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, selectionStart, selectionEnd, (byte**)pselectedText);
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, int* selectionStart, int* selectionEnd, ref byte* selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (byte** pselectedText = &selectedText)
+				{
+					RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, selectionStart, selectionEnd, (byte**)pselectedText);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, ref int selectionStart, int* selectionEnd, ref byte* selectedText)
+		{
+			fixed (int* pselectionStart = &selectionStart)
+			{
+				fixed (byte** pselectedText = &selectedText)
+				{
+					RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, (int*)pselectionStart, selectionEnd, (byte**)pselectedText);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, ref int selectionStart, int* selectionEnd, ref byte* selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (int* pselectionStart = &selectionStart)
+				{
+					fixed (byte** pselectedText = &selectedText)
+					{
+						RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, (int*)pselectionStart, selectionEnd, (byte**)pselectedText);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, int* selectionStart, ref int selectionEnd, ref byte* selectedText)
+		{
+			fixed (int* pselectionEnd = &selectionEnd)
+			{
+				fixed (byte** pselectedText = &selectedText)
+				{
+					RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, selectionStart, (int*)pselectionEnd, (byte**)pselectedText);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, int* selectionStart, ref int selectionEnd, ref byte* selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (int* pselectionEnd = &selectionEnd)
+				{
+					fixed (byte** pselectedText = &selectedText)
+					{
+						RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, selectionStart, (int*)pselectionEnd, (byte**)pselectedText);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, ref int selectionStart, ref int selectionEnd, ref byte* selectedText)
+		{
+			fixed (int* pselectionStart = &selectionStart)
+			{
+				fixed (int* pselectionEnd = &selectionEnd)
+				{
+					fixed (byte** pselectedText = &selectedText)
+					{
+						RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, (int*)pselectionStart, (int*)pselectionEnd, (byte**)pselectedText);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, ref int selectionStart, ref int selectionEnd, ref byte* selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (int* pselectionStart = &selectionStart)
+				{
+					fixed (int* pselectionEnd = &selectionEnd)
+					{
+						fixed (byte** pselectedText = &selectedText)
+						{
+							RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, (int*)pselectionStart, (int*)pselectionEnd, (byte**)pselectedText);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementProgress <br/>
+		/// Sets the value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetValue(float value)<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_SetValue")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementProgressSetValueNative(RmlElementProgress* self, float value);
+
+		/// <summary>
+		/// Rml::ElementProgress <br/>
+		/// Sets the value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetValue(float value)<br/>
+		/// </summary>
+		public static void RmlElementProgressSetValue(RmlElementProgressPtr self, float value)
+		{
+			RmlElementProgressSetValueNative((RmlElementProgress*)self, value);
+		}
+
+		/// <summary>
+		/// Rml::ElementProgress <br/>
+		/// Sets the value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetValue(float value)<br/>
+		/// </summary>
+		public static void RmlElementProgressSetValue(ref RmlElementProgress self, float value)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				RmlElementProgressSetValueNative((RmlElementProgress*)pself, value);
+			}
+		}
+
+		/// <summary>
+		/// Sets the maximum value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetMax(float max_value)<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_SetMax")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementProgressSetMaxNative(RmlElementProgress* self, float maxValue);
+
+		/// <summary>
+		/// Sets the maximum value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetMax(float max_value)<br/>
+		/// </summary>
+		public static void RmlElementProgressSetMax(RmlElementProgressPtr self, float maxValue)
+		{
+			RmlElementProgressSetMaxNative((RmlElementProgress*)self, maxValue);
+		}
+
+		/// <summary>
+		/// Sets the maximum value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetMax(float max_value)<br/>
+		/// </summary>
+		public static void RmlElementProgressSetMax(ref RmlElementProgress self, float maxValue)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				RmlElementProgressSetMaxNative((RmlElementProgress*)pself, maxValue);
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_GetIntrinsicDimensions")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial byte RmlElementProgressGetIntrinsicDimensionsNative(RmlElementProgress* self, RmlVector2F* dimensions, float* ratio);
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(RmlElementProgressPtr self, RmlVector2FPtr dimensions, float* ratio)
+		{
+			byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)self, (RmlVector2F*)dimensions, ratio);
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(ref RmlElementProgress self, RmlVector2FPtr dimensions, float* ratio)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)pself, (RmlVector2F*)dimensions, ratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(RmlElementProgressPtr self, ref RmlVector2F dimensions, float* ratio)
+		{
+			fixed (RmlVector2F* pdimensions = &dimensions)
+			{
+				byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)self, (RmlVector2F*)pdimensions, ratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(ref RmlElementProgress self, ref RmlVector2F dimensions, float* ratio)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				fixed (RmlVector2F* pdimensions = &dimensions)
+				{
+					byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)pself, (RmlVector2F*)pdimensions, ratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(RmlElementProgressPtr self, RmlVector2FPtr dimensions, ref float ratio)
+		{
+			fixed (float* pratio = &ratio)
+			{
+				byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)self, (RmlVector2F*)dimensions, (float*)pratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(ref RmlElementProgress self, RmlVector2FPtr dimensions, ref float ratio)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				fixed (float* pratio = &ratio)
+				{
+					byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)pself, (RmlVector2F*)dimensions, (float*)pratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(RmlElementProgressPtr self, ref RmlVector2F dimensions, ref float ratio)
+		{
+			fixed (RmlVector2F* pdimensions = &dimensions)
+			{
+				fixed (float* pratio = &ratio)
+				{
+					byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)self, (RmlVector2F*)pdimensions, (float*)pratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(ref RmlElementProgress self, ref RmlVector2F dimensions, ref float ratio)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				fixed (RmlVector2F* pdimensions = &dimensions)
+				{
+					fixed (float* pratio = &ratio)
+					{
+						byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)pself, (RmlVector2F*)pdimensions, (float*)pratio);
+						return ret != 0;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetValue() const<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_GetValue")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial float RmlElementProgressGetValueNative(RmlElementProgress* self);
+
+		/// <summary>
+		/// Returns the value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetValue() const<br/>
+		/// </summary>
+		public static float RmlElementProgressGetValue(RmlElementProgressPtr self)
+		{
+			float ret = RmlElementProgressGetValueNative((RmlElementProgress*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetValue() const<br/>
+		/// </summary>
+		public static float RmlElementProgressGetValue(ref RmlElementProgress self)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				float ret = RmlElementProgressGetValueNative((RmlElementProgress*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the maximum value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetMax() const<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_GetMax")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial float RmlElementProgressGetMaxNative(RmlElementProgress* self);
+
+		/// <summary>
+		/// Returns the maximum value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetMax() const<br/>
+		/// </summary>
+		public static float RmlElementProgressGetMax(RmlElementProgressPtr self)
+		{
+			float ret = RmlElementProgressGetMaxNative((RmlElementProgress*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the maximum value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetMax() const<br/>
+		/// </summary>
+		public static float RmlElementProgressGetMax(ref RmlElementProgress self)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				float ret = RmlElementProgressGetMaxNative((RmlElementProgress*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetTab_Int_String")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetTabIntStringNative(RmlElementTabSet* self, int tabIndex, byte* rml);
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(RmlElementTabSetPtr self, int tabIndex, byte* rml)
+		{
+			RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)self, tabIndex, rml);
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(ref RmlElementTabSet self, int tabIndex, byte* rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)pself, tabIndex, rml);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(RmlElementTabSetPtr self, int tabIndex, in byte rml)
+		{
+			fixed (byte* prml = &rml)
+			{
+				RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)self, tabIndex, (byte*)prml);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(RmlElementTabSetPtr self, int tabIndex, ReadOnlySpan<byte> rml)
+		{
+			fixed (byte* prml = rml)
+			{
+				RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)self, tabIndex, (byte*)prml);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(RmlElementTabSetPtr self, int tabIndex, string rml)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (rml != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(rml);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)self, tabIndex, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(ref RmlElementTabSet self, int tabIndex, in byte rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (byte* prml = &rml)
+				{
+					RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)pself, tabIndex, (byte*)prml);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(ref RmlElementTabSet self, int tabIndex, ReadOnlySpan<byte> rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (byte* prml = rml)
+				{
+					RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)pself, tabIndex, (byte*)prml);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(ref RmlElementTabSet self, int tabIndex, string rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (rml != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(rml);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)pself, tabIndex, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetPanel_Int_String")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetPanelIntStringNative(RmlElementTabSet* self, int tabIndex, byte* rml);
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(RmlElementTabSetPtr self, int tabIndex, byte* rml)
+		{
+			RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)self, tabIndex, rml);
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(ref RmlElementTabSet self, int tabIndex, byte* rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)pself, tabIndex, rml);
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(RmlElementTabSetPtr self, int tabIndex, in byte rml)
+		{
+			fixed (byte* prml = &rml)
+			{
+				RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)self, tabIndex, (byte*)prml);
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(RmlElementTabSetPtr self, int tabIndex, ReadOnlySpan<byte> rml)
+		{
+			fixed (byte* prml = rml)
+			{
+				RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)self, tabIndex, (byte*)prml);
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(RmlElementTabSetPtr self, int tabIndex, string rml)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (rml != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(rml);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)self, tabIndex, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(ref RmlElementTabSet self, int tabIndex, in byte rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (byte* prml = &rml)
+				{
+					RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)pself, tabIndex, (byte*)prml);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(ref RmlElementTabSet self, int tabIndex, ReadOnlySpan<byte> rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (byte* prml = rml)
+				{
+					RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)pself, tabIndex, (byte*)prml);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(ref RmlElementTabSet self, int tabIndex, string rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (rml != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(rml);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)pself, tabIndex, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Remove one of the tab set's panels and its corresponding tab.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_RemoveTab")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetRemoveTabNative(RmlElementTabSet* self, int tabIndex);
+
+		/// <summary>
+		/// Remove one of the tab set's panels and its corresponding tab.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetRemoveTab(RmlElementTabSetPtr self, int tabIndex)
+		{
+			RmlElementTabSetRemoveTabNative((RmlElementTabSet*)self, tabIndex);
+		}
+
+		/// <summary>
+		/// Remove one of the tab set's panels and its corresponding tab.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetRemoveTab(ref RmlElementTabSet self, int tabIndex)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetRemoveTabNative((RmlElementTabSet*)pself, tabIndex);
+			}
+		}
+
+		/// <summary>
+		/// Retrieve the number of tabs in the tabset.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_GetNumTabs")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementTabSetGetNumTabsNative(RmlElementTabSet* self);
+
+		/// <summary>
+		/// Retrieve the number of tabs in the tabset.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementTabSetGetNumTabs(RmlElementTabSetPtr self)
+		{
+			int ret = RmlElementTabSetGetNumTabsNative((RmlElementTabSet*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Retrieve the number of tabs in the tabset.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementTabSetGetNumTabs(ref RmlElementTabSet self)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				int ret = RmlElementTabSetGetNumTabsNative((RmlElementTabSet*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Sets the currently active (visible) tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetActiveTab")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetActiveTabNative(RmlElementTabSet* self, int tabIndex);
+
+		/// <summary>
+		/// Sets the currently active (visible) tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetActiveTab(RmlElementTabSetPtr self, int tabIndex)
+		{
+			RmlElementTabSetSetActiveTabNative((RmlElementTabSet*)self, tabIndex);
+		}
+
+		/// <summary>
+		/// Sets the currently active (visible) tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetActiveTab(ref RmlElementTabSet self, int tabIndex)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetActiveTabNative((RmlElementTabSet*)pself, tabIndex);
+			}
+		}
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_ProcessDefaultAction")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetProcessDefaultActionNative(RmlElementTabSet* self, RmlEvent* evnt);
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		public static void RmlElementTabSetProcessDefaultAction(RmlElementTabSetPtr self, RmlEventPtr evnt)
+		{
+			RmlElementTabSetProcessDefaultActionNative((RmlElementTabSet*)self, (RmlEvent*)evnt);
+		}
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		public static void RmlElementTabSetProcessDefaultAction(ref RmlElementTabSet self, RmlEventPtr evnt)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetProcessDefaultActionNative((RmlElementTabSet*)pself, (RmlEvent*)evnt);
+			}
+		}
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		public static void RmlElementTabSetProcessDefaultAction(RmlElementTabSetPtr self, ref RmlEvent evnt)
+		{
+			fixed (RmlEvent* pevnt = &evnt)
+			{
+				RmlElementTabSetProcessDefaultActionNative((RmlElementTabSet*)self, (RmlEvent*)pevnt);
+			}
+		}
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		public static void RmlElementTabSetProcessDefaultAction(ref RmlElementTabSet self, ref RmlEvent evnt)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (RmlEvent* pevnt = &evnt)
+				{
+					RmlElementTabSetProcessDefaultActionNative((RmlElementTabSet*)pself, (RmlEvent*)pevnt);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get the current active tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_GetActiveTab")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementTabSetGetActiveTabNative(RmlElementTabSet* self);
+
+		/// <summary>
+		/// Get the current active tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementTabSetGetActiveTab(RmlElementTabSetPtr self)
+		{
+			int ret = RmlElementTabSetGetActiveTabNative((RmlElementTabSet*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Get the current active tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementTabSetGetActiveTab(ref RmlElementTabSet self)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				int ret = RmlElementTabSetGetActiveTabNative((RmlElementTabSet*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementScroll <br/>
+		/// Updates the increment / decrement arrows.<br/>
+		/// C++: void Rml::ElementScroll::Update()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_Update")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollUpdateNative(RmlElementScroll* self);
+
+		/// <summary>
+		/// Rml::ElementScroll <br/>
+		/// Updates the increment / decrement arrows.<br/>
+		/// C++: void Rml::ElementScroll::Update()<br/>
+		/// </summary>
+		public static void RmlElementScrollUpdate(RmlElementScrollPtr self)
+		{
+			RmlElementScrollUpdateNative((RmlElementScroll*)self);
+		}
+
+		/// <summary>
+		/// Rml::ElementScroll <br/>
+		/// Updates the increment / decrement arrows.<br/>
+		/// C++: void Rml::ElementScroll::Update()<br/>
+		/// </summary>
+		public static void RmlElementScrollUpdate(ref RmlElementScroll self)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementScrollUpdateNative((RmlElementScroll*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Enables and sizes one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_EnableScrollbar")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollEnableScrollbarNative(RmlElementScroll* self, RmlElementScrollOrientation orientation, float elementWidth);
+
+		/// <summary>
+		/// Enables and sizes one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollEnableScrollbar(RmlElementScrollPtr self, RmlElementScrollOrientation orientation, float elementWidth)
+		{
+			RmlElementScrollEnableScrollbarNative((RmlElementScroll*)self, orientation, elementWidth);
+		}
+
+		/// <summary>
+		/// Enables and sizes one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollEnableScrollbar(ref RmlElementScroll self, RmlElementScrollOrientation orientation, float elementWidth)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementScrollEnableScrollbarNative((RmlElementScroll*)pself, orientation, elementWidth);
+			}
+		}
+
+		/// <summary>
+		/// Disables and hides one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_DisableScrollbar")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollDisableScrollbarNative(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+
+		/// <summary>
+		/// Disables and hides one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollDisableScrollbar(RmlElementScrollPtr self, RmlElementScrollOrientation orientation)
+		{
+			RmlElementScrollDisableScrollbarNative((RmlElementScroll*)self, orientation);
+		}
+
+		/// <summary>
+		/// Disables and hides one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollDisableScrollbar(ref RmlElementScroll self, RmlElementScrollOrientation orientation)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementScrollDisableScrollbarNative((RmlElementScroll*)pself, orientation);
+			}
+		}
+
+		/// <summary>
+		/// Updates the position of the scrollbar.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_UpdateScrollbar")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollUpdateScrollbarNative(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+
+		/// <summary>
+		/// Updates the position of the scrollbar.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollUpdateScrollbar(RmlElementScrollPtr self, RmlElementScrollOrientation orientation)
+		{
+			RmlElementScrollUpdateScrollbarNative((RmlElementScroll*)self, orientation);
+		}
+
+		/// <summary>
+		/// Updates the position of the scrollbar.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollUpdateScrollbar(ref RmlElementScroll self, RmlElementScrollOrientation orientation)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementScrollUpdateScrollbarNative((RmlElementScroll*)pself, orientation);
+			}
+		}
+
+		/// <summary>
+		/// Returns one of the scrollbar elements.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_GetScrollbar")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementScrollGetScrollbarNative(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+
+		/// <summary>
+		/// Returns one of the scrollbar elements.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementScrollGetScrollbar(RmlElementScrollPtr self, RmlElementScrollOrientation orientation)
+		{
+			RmlElementPtr ret = RmlElementScrollGetScrollbarNative((RmlElementScroll*)self, orientation);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns one of the scrollbar elements.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementScrollGetScrollbar(ref RmlElementScroll self, RmlElementScrollOrientation orientation)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementScrollGetScrollbarNative((RmlElementScroll*)pself, orientation);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the size, in pixels, of one of the scrollbars; for a vertical scrollbar, this is width, for a horizontal scrollbar, this is height.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_GetScrollbarSize")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial float RmlElementScrollGetScrollbarSizeNative(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+
+		/// <summary>
+		/// Returns the size, in pixels, of one of the scrollbars; for a vertical scrollbar, this is width, for a horizontal scrollbar, this is height.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static float RmlElementScrollGetScrollbarSize(RmlElementScrollPtr self, RmlElementScrollOrientation orientation)
+		{
+			float ret = RmlElementScrollGetScrollbarSizeNative((RmlElementScroll*)self, orientation);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the size, in pixels, of one of the scrollbars; for a vertical scrollbar, this is width, for a horizontal scrollbar, this is height.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static float RmlElementScrollGetScrollbarSize(ref RmlElementScroll self, RmlElementScrollOrientation orientation)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				float ret = RmlElementScrollGetScrollbarSizeNative((RmlElementScroll*)pself, orientation);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Formats the enabled scrollbars based on the current size of the host element.<br/>
+		/// C++: void Rml::ElementScroll::FormatScrollbars()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_FormatScrollbars")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollFormatScrollbarsNative(RmlElementScroll* self);
+
+		/// <summary>
+		/// Formats the enabled scrollbars based on the current size of the host element.<br/>
+		/// C++: void Rml::ElementScroll::FormatScrollbars()<br/>
+		/// </summary>
+		public static void RmlElementScrollFormatScrollbars(RmlElementScrollPtr self)
+		{
+			RmlElementScrollFormatScrollbarsNative((RmlElementScroll*)self);
+		}
+
+		/// <summary>
+		/// Formats the enabled scrollbars based on the current size of the host element.<br/>
+		/// C++: void Rml::ElementScroll::FormatScrollbars()<br/>
+		/// </summary>
+		public static void RmlElementScrollFormatScrollbars(ref RmlElementScroll self)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementScrollFormatScrollbarsNative((RmlElementScroll*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Updates the scrollbar elements to reflect their current state.<br/>
+		/// C++: void Rml::ElementScroll::UpdateProperties()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_UpdateProperties")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollUpdatePropertiesNative(RmlElementScroll* self);
+
+		/// <summary>
+		/// Updates the scrollbar elements to reflect their current state.<br/>
+		/// C++: void Rml::ElementScroll::UpdateProperties()<br/>
+		/// </summary>
+		public static void RmlElementScrollUpdateProperties(RmlElementScrollPtr self)
+		{
+			RmlElementScrollUpdatePropertiesNative((RmlElementScroll*)self);
+		}
+
+		/// <summary>
+		/// Updates the scrollbar elements to reflect their current state.<br/>
+		/// C++: void Rml::ElementScroll::UpdateProperties()<br/>
+		/// </summary>
+		public static void RmlElementScrollUpdateProperties(ref RmlElementScroll self)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementScrollUpdatePropertiesNative((RmlElementScroll*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Rml::Box <br/>
+		/// Sets the size of the content area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlBox_SetContent")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlBoxSetContentNative(RmlBox* self, RmlVector2F content);
+
+		/// <summary>
+		/// Rml::Box <br/>
+		/// Sets the size of the content area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlBoxSetContent(RmlBoxPtr self, RmlVector2F content)
+		{
+			RmlBoxSetContentNative((RmlBox*)self, content);
+		}
+
+		/// <summary>
+		/// Rml::Box <br/>
+		/// Sets the size of the content area.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlBoxSetContent(ref RmlBox self, RmlVector2F content)
+		{
+			fixed (RmlBox* pself = &self)
+			{
+				RmlBoxSetContentNative((RmlBox*)pself, content);
+			}
+		}
+
+		/// <summary>
+		/// Sets the size of one of the edges of one of the box's outer areas.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlBox_SetEdge")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlBoxSetEdgeNative(RmlBox* self, RmlBoxArea area, RmlBoxEdge edge, float size);
+
+		/// <summary>
+		/// Sets the size of one of the edges of one of the box's outer areas.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlBoxSetEdge(RmlBoxPtr self, RmlBoxArea area, RmlBoxEdge edge, float size)
+		{
+			RmlBoxSetEdgeNative((RmlBox*)self, area, edge, size);
+		}
+
+		/// <summary>
 		/// Sets the size of one of the edges of one of the box's outer areas.<br/>
 		/// <br/>
 		/// <summary>

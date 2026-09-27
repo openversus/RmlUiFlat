@@ -4566,7 +4566,7 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4574,16 +4574,13 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_QuerySelector")]
+		[LibraryImport(LibName, EntryPoint = "RmlElement_GetElementsByTagName")]
 		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElement* RmlElementQuerySelectorNative(RmlElement* self, byte* selector);
+		internal static partial void RmlElementGetElementsByTagNameNative(RmlElement* self, RmlElementArray* elements, byte* tag);
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4591,18 +4588,14 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementQuerySelector(RmlElementPtr self, byte* selector)
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, byte* tag)
 		{
-			RmlElementPtr ret = RmlElementQuerySelectorNative((RmlElement*)self, selector);
-			return ret;
+			RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, tag);
 		}
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4610,21 +4603,17 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementQuerySelector(ref RmlElement self, byte* selector)
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, byte* tag)
 		{
 			fixed (RmlElement* pself = &self)
 			{
-				RmlElementPtr ret = RmlElementQuerySelectorNative((RmlElement*)pself, selector);
-				return ret;
+				RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, tag);
 			}
 		}
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4632,21 +4621,17 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementQuerySelector(RmlElementPtr self, in byte selector)
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, byte* tag)
 		{
-			fixed (byte* pselector = &selector)
+			fixed (RmlElementArray* pelements = &elements)
 			{
-				RmlElementPtr ret = RmlElementQuerySelectorNative((RmlElement*)self, (byte*)pselector);
-				return ret;
+				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, tag);
 			}
 		}
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4654,21 +4639,20 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementQuerySelector(RmlElementPtr self, ReadOnlySpan<byte> selector)
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, byte* tag)
 		{
-			fixed (byte* pselector = selector)
+			fixed (RmlElement* pself = &self)
 			{
-				RmlElementPtr ret = RmlElementQuerySelectorNative((RmlElement*)self, (byte*)pselector);
-				return ret;
+				fixed (RmlElementArray* pelements = &elements)
+				{
+					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, tag);
+				}
 			}
 		}
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4676,17 +4660,50 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, in byte tag)
+		{
+			fixed (byte* ptag = &tag)
+			{
+				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, (byte*)ptag);
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		/// </summary>
-		public static RmlElementPtr RmlElementQuerySelector(RmlElementPtr self, string selector)
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, ReadOnlySpan<byte> tag)
+		{
+			fixed (byte* ptag = tag)
+			{
+				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, (byte*)ptag);
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, string tag)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
-			if (selector != null)
+			if (tag != null)
 			{
-				pStrSize0 = Utils.GetByteCountUTF8(selector);
+				pStrSize0 = Utils.GetByteCountUTF8(tag);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4696,19 +4713,18 @@ namespace RmlUi.Interop
 					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 					pStr0 = pStrStack0;
 				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(selector, pStr0, pStrSize0);
+				int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			RmlElementPtr ret = RmlElementQuerySelectorNative((RmlElement*)self, pStr0);
+			RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, pStr0);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
 			}
-			return ret;
 		}
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4716,24 +4732,20 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementQuerySelector(ref RmlElement self, in byte selector)
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, in byte tag)
 		{
 			fixed (RmlElement* pself = &self)
 			{
-				fixed (byte* pselector = &selector)
+				fixed (byte* ptag = &tag)
 				{
-					RmlElementPtr ret = RmlElementQuerySelectorNative((RmlElement*)pself, (byte*)pselector);
-					return ret;
+					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, (byte*)ptag);
 				}
 			}
 		}
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4741,24 +4753,20 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementQuerySelector(ref RmlElement self, ReadOnlySpan<byte> selector)
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, ReadOnlySpan<byte> tag)
 		{
 			fixed (RmlElement* pself = &self)
 			{
-				fixed (byte* pselector = selector)
+				fixed (byte* ptag = tag)
 				{
-					RmlElementPtr ret = RmlElementQuerySelectorNative((RmlElement*)pself, (byte*)pselector);
-					return ret;
+					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, (byte*)ptag);
 				}
 			}
 		}
 
 		/// <summary>
-		/// Returns the first descendent element matching the RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4766,19 +4774,16 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementQuerySelector(ref RmlElement self, string selector)
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, string tag)
 		{
 			fixed (RmlElement* pself = &self)
 			{
 				byte* pStr0 = null;
 				int pStrSize0 = 0;
-				if (selector != null)
+				if (tag != null)
 				{
-					pStrSize0 = Utils.GetByteCountUTF8(selector);
+					pStrSize0 = Utils.GetByteCountUTF8(tag);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4788,20 +4793,19 @@ namespace RmlUi.Interop
 						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 						pStr0 = pStrStack0;
 					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(selector, pStr0, pStrSize0);
+					int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				RmlElementPtr ret = RmlElementQuerySelectorNative((RmlElement*)pself, pStr0);
+				RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, pStr0);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
 				}
-				return ret;
 			}
 		}
 
 		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4810,144 +4814,19 @@ namespace RmlUi.Interop
 		/// To be documented.
 		/// </summary>
 		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_Matches")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial byte RmlElementMatchesNative(RmlElement* self, byte* selector);
-
-		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementMatches(RmlElementPtr self, byte* selector)
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, in byte tag)
 		{
-			byte ret = RmlElementMatchesNative((RmlElement*)self, selector);
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementMatches(ref RmlElement self, byte* selector)
-		{
-			fixed (RmlElement* pself = &self)
+			fixed (RmlElementArray* pelements = &elements)
 			{
-				byte ret = RmlElementMatchesNative((RmlElement*)pself, selector);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementMatches(RmlElementPtr self, in byte selector)
-		{
-			fixed (byte* pselector = &selector)
-			{
-				byte ret = RmlElementMatchesNative((RmlElement*)self, (byte*)pselector);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementMatches(RmlElementPtr self, ReadOnlySpan<byte> selector)
-		{
-			fixed (byte* pselector = selector)
-			{
-				byte ret = RmlElementMatchesNative((RmlElement*)self, (byte*)pselector);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementMatches(RmlElementPtr self, string selector)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (selector != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(selector);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
+				fixed (byte* ptag = &tag)
 				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(selector, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte ret = RmlElementMatchesNative((RmlElement*)self, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementMatches(ref RmlElement self, in byte selector)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pselector = &selector)
-				{
-					byte ret = RmlElementMatchesNative((RmlElement*)pself, (byte*)pselector);
-					return ret != 0;
+					RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, (byte*)ptag);
 				}
 			}
 		}
 
 		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4956,20 +4835,19 @@ namespace RmlUi.Interop
 		/// To be documented.
 		/// </summary>
 		/// </summary>
-		public static bool RmlElementMatches(ref RmlElement self, ReadOnlySpan<byte> selector)
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, ReadOnlySpan<byte> tag)
 		{
-			fixed (RmlElement* pself = &self)
+			fixed (RmlElementArray* pelements = &elements)
 			{
-				fixed (byte* pselector = selector)
+				fixed (byte* ptag = tag)
 				{
-					byte ret = RmlElementMatchesNative((RmlElement*)pself, (byte*)pselector);
-					return ret != 0;
+					RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, (byte*)ptag);
 				}
 			}
 		}
 
 		/// <summary>
-		/// Checks if the element matches the given RCSS selector query.<br/>
+		/// Get all descendant elements with the given tag.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
@@ -4978,15 +4856,15 @@ namespace RmlUi.Interop
 		/// To be documented.
 		/// </summary>
 		/// </summary>
-		public static bool RmlElementMatches(ref RmlElement self, string selector)
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, string tag)
 		{
-			fixed (RmlElement* pself = &self)
+			fixed (RmlElementArray* pelements = &elements)
 			{
 				byte* pStr0 = null;
 				int pStrSize0 = 0;
-				if (selector != null)
+				if (tag != null)
 				{
-					pStrSize0 = Utils.GetByteCountUTF8(selector);
+					pStrSize0 = Utils.GetByteCountUTF8(tag);
 					if (pStrSize0 >= Utils.MaxStackallocSize)
 					{
 						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4996,34 +4874,152 @@ namespace RmlUi.Interop
 						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 						pStr0 = pStrStack0;
 					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(selector, pStr0, pStrSize0);
+					int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
 					pStr0[pStrOffset0] = 0;
 				}
-				byte ret = RmlElementMatchesNative((RmlElement*)pself, pStr0);
+				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, pStr0);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
 				}
-				return ret != 0;
 			}
 		}
 
 		/// <summary>
-		/// Returns the element's nearest scroll container for any non-zero axis in the scroll delta, if any. Defaults to both axes.<br/>
-		/// C++: Element* Rml::Element::GetClosestScrollableContainer(Vector2f scroll_delta = Vector2f(1.f))<br/>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
 		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_GetClosestScrollableContainer")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElement* RmlElementGetClosestScrollableContainerNative(RmlElement* self, RmlVector2F scrollDelta);
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, in byte tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElementArray* pelements = &elements)
+				{
+					fixed (byte* ptag = &tag)
+					{
+						RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, (byte*)ptag);
+					}
+				}
+			}
+		}
 
 		/// <summary>
-		/// Returns the element's nearest scroll container for any non-zero axis in the scroll delta, if any. Defaults to both axes.<br/>
-		/// C++: Element* Rml::Element::GetClosestScrollableContainer(Vector2f scroll_delta = Vector2f(1.f))<br/>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
 		/// </summary>
-		public static RmlElementPtr RmlElementGetClosestScrollableContainer(RmlElementPtr self, RmlVector2F scrollDelta)
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, ReadOnlySpan<byte> tag)
 		{
-			RmlElementPtr ret = RmlElementGetClosestScrollableContainerNative((RmlElement*)self, scrollDelta);
-			return ret;
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElementArray* pelements = &elements)
+				{
+					fixed (byte* ptag = tag)
+					{
+						RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, (byte*)ptag);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, string tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElementArray* pelements = &elements)
+				{
+					byte* pStr0 = null;
+					int pStrSize0 = 0;
+					if (tag != null)
+					{
+						pStrSize0 = Utils.GetByteCountUTF8(tag);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+						}
+						else
+						{
+							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+							pStr0 = pStrStack0;
+						}
+						int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
+						pStr0[pStrOffset0] = 0;
+					}
+					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, pStr0);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given class set on them.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_GetElementsByClassName")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementGetElementsByClassNameNative(RmlElement* self, RmlElementArray* elements, byte* className);
+
+		/// <summary>
+		/// Get all descendant elements with the given class set on them.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByClassName(RmlElementPtr self, RmlElementArrayPtr elements, byte* className)
+		{
+			RmlElementGetElementsByClassNameNative((RmlElement*)self, (RmlElementArray*)elements, className);
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given class set on them.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByClassName(ref RmlElement self, RmlElementArrayPtr elements, byte* className)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementGetElementsByClassNameNative((RmlElement*)pself, (RmlElementArray*)elements, className);
+			}
 		}
 	}
 }

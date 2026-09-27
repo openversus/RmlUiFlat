@@ -22,6 +22,14 @@ public sealed partial class ShimGenerator
     {
         /// <summary>Replaces the handle's own member of the same name (object.ToString).</summary>
         public bool IsOverride { get; init; }
+
+        /// <summary>A void function's only string or list output, returned instead of passed as <c>out</c>.</summary>
+        public CsParam? Returned { get; init; }
+
+        public int ReturnedIndex { get; init; }
+
+        /// <summary>Every parameter in native order, the returned one included.</summary>
+        public List<CsParam> AllParams => Returned == null ? Params : [.. Params[..ReturnedIndex], Returned, .. Params[ReturnedIndex..]];
     }
 
     private readonly List<string> csNotes = [];
@@ -72,12 +80,54 @@ public sealed partial class ShimGenerator
         _ => throw new InvalidOperationException($"no C# type for {cType}"),
     };
 
+    private static string CsListElement(ListBase l) => l.Element is HandleBase h ? ShortName(h.Class.FullName) : "string";
+
+    private static string ListFromNative(ListBase l, string x) => l.Element is HandleBase h
+        ? $"NativeMethods.ToHandles({x}, static h => new {ShortName(h.Class.FullName)}(h))"
+        : $"NativeMethods.ToStrings({x})";
+
     private CsParam MapCsParam(ParamMap p)
     {
         string b = Camel(p.Name);
         string n = CsIdent(b);
         switch (p.Base)
         {
+            case StringBase when p.IsOut:
+                return new($"out string {n}", $"out {n}", $"byte** {n}", $"&{b}_p", [$"byte* {b}_p = null;"], null,
+                    [$"{n} = Utf8StringMarshaller.ConvertToManaged({b}_p) ?? \"\";"], [], false);
+
+            case ListBase l when p.IsOut:
+                return new($"out {CsListElement(l)}[] {n}", $"out {n}", $"RmlArray* {n}", $"&{b}_a", [$"RmlArray {b}_a = default;"], null,
+                    [$"{n} = {ListFromNative(l, $"{b}_a")};"], [], false);
+
+            case ListBase { Element: StringBase }:
+                // Copied to UTF-8 for the call; RmlUi copies the strings into its own list.
+                return new($"IEnumerable<string> {n}", n, $"RmlArray {n}", $"new RmlArray((nint){b}_p, (nuint){b}_s.Length)",
+                    [
+                        $"string[] {b}_s = [.. {n}];",
+                        $"byte** {b}_p = (byte**)NativeMemory.AllocZeroed((nuint){b}_s.Length, (nuint)sizeof(nint));",
+                        $"for (int i = 0; i < {b}_s.Length; i++) {{ {b}_p[i] = Utf8StringMarshaller.ConvertToUnmanaged({b}_s[i]); }}",
+                    ],
+                    null, [],
+                    [$"for (int i = 0; i < {b}_s.Length; i++) {{ Utf8StringMarshaller.Free({b}_p[i]); }}", $"NativeMemory.Free({b}_p);"],
+                    false);
+
+            case ListBase l:
+                return new($"IEnumerable<{CsListElement(l)}> {n}", n, $"RmlArray {n}", $"new RmlArray((nint){b}_p, (nuint){b}_h.Count)",
+                    [$"var {b}_h = new List<nint>();", $"foreach (var item in {n}) {{ {b}_h.Add(item.Handle); }}"],
+                    $"fixed (nint* {b}_p = CollectionsMarshal.AsSpan({b}_h))", [], [], false);
+
+            case ValueBase v when p.IsOut:
+                return new($"out {ShortName(v.CppName)} {n}", $"out {n}", $"{ShortName(v.CppName)}* {n}", $"{b}_p", [$"{n} = default;"],
+                    $"fixed ({ShortName(v.CppName)}* {b}_p = &{n})", [], [], false);
+
+            case PrimBase { CName: "bool" } when p.IsOut:
+                return new($"out bool {n}", $"out {n}", $"byte* {n}", $"&{b}_b", [$"byte {b}_b = 0;"], null, [$"{n} = {b}_b != 0;"], [], false);
+
+            case PrimBase pr when p.IsOut && pr.Widen == null:
+                return new($"out {CsPrimitive(pr.CName)} {n}", $"out {n}", $"{CsPrimitive(pr.CName)}* {n}", $"{b}_p", [$"{n} = default;"],
+                    $"fixed ({CsPrimitive(pr.CName)}* {b}_p = &{n})", [], [], false);
+
             case StringBase:
                 return new($"string {n}", n, $"byte* {n}", $"{b}_m.ToUnmanaged()",
                     [
@@ -143,6 +193,7 @@ public sealed partial class ShimGenerator
         PrimBase { CName: "bool" } => new("bool", "byte", x => $"{x} != 0"),
         PrimBase pr => new(CsPrimitive(pr.CName), CsPrimitive(pr.CName), x => x),
         EnumBase e => new(CsEnumName(e.Enum), CsEnumName(e.Enum), x => x),
+        ListBase l => new($"{CsListElement(l)}[]", "RmlArray", x => ListFromNative(l, x)),
         _ => throw new InvalidOperationException($"no C# return mapping for {TypeMapper.Describe(r.Base)}"),
     };
 
@@ -204,11 +255,17 @@ public sealed partial class ShimGenerator
 
     private CsMethod? BuildCsMethod(Wrapped f, string name)
     {
-        var ps = f.Params.Select(MapCsParam).ToList();
+        var all = f.Params.Select(MapCsParam).ToList();
+        // void GetX(ElementList& out, ...) reads better as ElementList GetX(...): a void function's only string or list
+        // output becomes the return value.
+        var outputs = f.Params.Select((p, i) => (p, i)).Where(x => x.p.IsOut).ToList();
+        int returnedIndex = f.Return.IsVoid && outputs.Count == 1 && outputs[0].p.Base is StringBase or ListBase ? outputs[0].i : -1;
+        var sourceIndex = Enumerable.Range(0, all.Count).Where(i => i != returnedIndex).ToList();
+        var ps = sourceIndex.Select(i => all[i]).ToList();
         var defaults = new List<string?>();
-        for (int i = 0; i < f.Params.Count; i++)
+        foreach (int i in sourceIndex)
         {
-            defaults.Add(ps[i].CanDefault ? TranslateDefault(f.Function.Parameters[i].InitExpression?.ToString(), f.Params[i]) : null);
+            defaults.Add(all[i].CanDefault ? TranslateDefault(f.Function.Parameters[i].InitExpression?.ToString(), f.Params[i]) : null);
         }
         // C# defaults are trailing only: everything up to the last parameter without one is required.
         int lastRequired = defaults.FindLastIndex(d => d == null);
@@ -220,6 +277,12 @@ public sealed partial class ShimGenerator
         bool isStatic = f.Owner == null || f.Function.IsStatic;
         string key = $"{name}({string.Join(",", ps.Select(p => Regex.Replace(p.Decl, @"\s+\S+$", "")))})";
         bool hides = f.Owner != null && !isStatic && name == "GetType" && ps.Count == 0;
+        if (returnedIndex >= 0)
+        {
+            var returned = all[returnedIndex];
+            string type = Regex.Replace(returned.Decl, @"^out\s+|\s+\S+$", "");
+            return new(f, name, key, ps, defaults, new CsReturn(type, "void", x => x), isStatic, hides) { Returned = returned, ReturnedIndex = returnedIndex };
+        }
         return new(f, name, key, ps, defaults, MapCsReturn(f.Return), isStatic, hides);
     }
 
@@ -340,6 +403,7 @@ public sealed partial class ShimGenerator
         w.AppendLine("// Generated by gen/RmlShimGen. Do not edit; change gen/shim.json and regenerate.");
         w.AppendLine("#nullable enable");
         w.AppendLine("using System;");
+        w.AppendLine("using System.Collections.Generic;");
         w.AppendLine("using System.Runtime.CompilerServices;");
         w.AppendLine("using System.Runtime.InteropServices;");
         w.AppendLine("using System.Runtime.InteropServices.Marshalling;");
@@ -417,22 +481,28 @@ public sealed partial class ShimGenerator
         {
             args.Add("Handle");
         }
-        args.AddRange(m.Params.Select(p => p.NativeArg));
+        var all = m.AllParams;
+        args.AddRange(all.Select(p => p.NativeArg));
         string call = $"NativeMethods.{m.F.CName}({string.Join(", ", args)})";
 
         string indent = "        ";
-        foreach (var line in m.Params.SelectMany(p => p.Pre))
+        string? returnedName = m.Returned?.CallArg["out ".Length..];
+        if (m.Returned != null)
+        {
+            w.AppendLine($"{indent}{m.Return.Type} {returnedName};");
+        }
+        foreach (var line in all.SelectMany(p => p.Pre))
         {
             w.AppendLine($"{indent}{line}");
         }
-        var cleanup = m.Params.SelectMany(p => p.Finally).ToList();
+        var cleanup = all.SelectMany(p => p.Finally).ToList();
         if (cleanup.Count > 0)
         {
             w.AppendLine($"{indent}try");
             w.AppendLine($"{indent}{{");
             indent += "    ";
         }
-        var fixeds = m.Params.Where(p => p.Fixed != null).Select(p => p.Fixed!).ToList();
+        var fixeds = all.Where(p => p.Fixed != null).Select(p => p.Fixed!).ToList();
         foreach (var fx in fixeds)
         {
             w.AppendLine($"{indent}{fx}");
@@ -443,8 +513,17 @@ public sealed partial class ShimGenerator
             indent += "    ";
         }
 
-        var post = m.Params.SelectMany(p => p.Post).ToList();
-        if (m.Return.Type == "void")
+        var post = all.SelectMany(p => p.Post).ToList();
+        if (m.Returned != null)
+        {
+            w.AppendLine($"{indent}{call};");
+            foreach (var line in post)
+            {
+                w.AppendLine($"{indent}{line}");
+            }
+            w.AppendLine($"{indent}return {returnedName};");
+        }
+        else if (m.Return.Type == "void")
         {
             w.AppendLine($"{indent}{call};");
             foreach (var line in post)
@@ -501,11 +580,43 @@ public sealed partial class ShimGenerator
     {
         return Wrap(w =>
         {
+            w.AppendLine("/// <summary>Every list struct in the C API (RmlStringArray, RmlElementArray, ...): a pointer and a count.</summary>");
+            w.AppendLine("internal readonly struct RmlArray(nint data, nuint count)");
+            w.AppendLine("{");
+            w.AppendLine("    public readonly nint Data = data;");
+            w.AppendLine();
+            w.AppendLine("    public readonly nuint Count = count;");
+            w.AppendLine("}");
+            w.AppendLine();
             w.AppendLine("/// <summary>The C API in native/generated/rmlui_c.h.</summary>");
             w.AppendLine("internal static unsafe partial class NativeMethods");
             w.AppendLine("{");
             w.AppendLine($"    internal const string LibraryName = \"{config.LibraryName}\";");
             w.AppendLine();
+            w.AppendLine("""
+                    /// <summary>Copies a C string list (RmlStringArray) before the next call can reuse it.</summary>
+                    internal static string[] ToStrings(RmlArray list)
+                    {
+                        var result = new string[(int)list.Count];
+                        for (int i = 0; i < result.Length; i++)
+                        {
+                            result[i] = Utf8StringMarshaller.ConvertToManaged(((byte**)list.Data)[i]) ?? "";
+                        }
+                        return result;
+                    }
+
+                    /// <summary>Copies a C handle list (Rml{Class}Array) before the next call can reuse it.</summary>
+                    internal static T[] ToHandles<T>(RmlArray list, Func<nint, T> handle)
+                    {
+                        var result = new T[(int)list.Count];
+                        for (int i = 0; i < result.Length; i++)
+                        {
+                            result[i] = handle(((nint*)list.Data)[i]);
+                        }
+                        return result;
+                    }
+
+                """);
             foreach (var (from, to) in upcasts)
             {
                 string entry = $"{TypeMapper.HandleCName(from)}_As{ShortName(to)}";
@@ -522,7 +633,7 @@ public sealed partial class ShimGenerator
                 {
                     decls.Add("nint self");
                 }
-                decls.AddRange(m.Params.Select(p => p.NativeDecl));
+                decls.AddRange(m.AllParams.Select(p => p.NativeDecl));
                 WriteImport(w, m.Return.NativeType, m.F.CName, string.Join(", ", decls));
             }
             w.AppendLine("}");
