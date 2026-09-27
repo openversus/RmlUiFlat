@@ -1040,6 +1040,10 @@ internal static unsafe partial class NativeMethods
 
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial byte* RmlEvent_GetParameter(nint self, byte* key, byte* defaultValue);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static partial RmlDictionaryNative RmlEvent_GetParameters(nint self);
 
     [LibraryImport(LibraryName)]

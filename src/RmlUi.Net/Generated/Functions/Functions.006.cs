@@ -18,6 +18,1251 @@ namespace RmlUi.Interop
 	{
 
 		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(RmlElementFormControlTextAreaPtr self, ref int selectionStart, ref int selectionEnd, ref byte* selectedText)
+		{
+			fixed (int* pselectionStart = &selectionStart)
+			{
+				fixed (int* pselectionEnd = &selectionEnd)
+				{
+					fixed (byte** pselectedText = &selectedText)
+					{
+						RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)self, (int*)pselectionStart, (int*)pselectionEnd, (byte**)pselectedText);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlTextAreaGetSelection(ref RmlElementFormControlTextArea self, ref int selectionStart, ref int selectionEnd, ref byte* selectedText)
+		{
+			fixed (RmlElementFormControlTextArea* pself = &self)
+			{
+				fixed (int* pselectionStart = &selectionStart)
+				{
+					fixed (int* pselectionEnd = &selectionEnd)
+					{
+						fixed (byte** pselectedText = &selectedText)
+						{
+							RmlElementFormControlTextAreaGetSelectionNative((RmlElementFormControlTextArea*)pself, (int*)pselectionStart, (int*)pselectionEnd, (byte**)pselectedText);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementProgress <br/>
+		/// Sets the value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetValue(float value)<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_SetValue")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementProgressSetValueNative(RmlElementProgress* self, float value);
+
+		/// <summary>
+		/// Rml::ElementProgress <br/>
+		/// Sets the value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetValue(float value)<br/>
+		/// </summary>
+		public static void RmlElementProgressSetValue(RmlElementProgressPtr self, float value)
+		{
+			RmlElementProgressSetValueNative((RmlElementProgress*)self, value);
+		}
+
+		/// <summary>
+		/// Rml::ElementProgress <br/>
+		/// Sets the value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetValue(float value)<br/>
+		/// </summary>
+		public static void RmlElementProgressSetValue(ref RmlElementProgress self, float value)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				RmlElementProgressSetValueNative((RmlElementProgress*)pself, value);
+			}
+		}
+
+		/// <summary>
+		/// Sets the maximum value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetMax(float max_value)<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_SetMax")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementProgressSetMaxNative(RmlElementProgress* self, float maxValue);
+
+		/// <summary>
+		/// Sets the maximum value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetMax(float max_value)<br/>
+		/// </summary>
+		public static void RmlElementProgressSetMax(RmlElementProgressPtr self, float maxValue)
+		{
+			RmlElementProgressSetMaxNative((RmlElementProgress*)self, maxValue);
+		}
+
+		/// <summary>
+		/// Sets the maximum value of the progress bar.<br/>
+		/// C++: void Rml::ElementProgress::SetMax(float max_value)<br/>
+		/// </summary>
+		public static void RmlElementProgressSetMax(ref RmlElementProgress self, float maxValue)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				RmlElementProgressSetMaxNative((RmlElementProgress*)pself, maxValue);
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_GetIntrinsicDimensions")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial byte RmlElementProgressGetIntrinsicDimensionsNative(RmlElementProgress* self, RmlVector2F* dimensions, float* ratio);
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(RmlElementProgressPtr self, RmlVector2FPtr dimensions, float* ratio)
+		{
+			byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)self, (RmlVector2F*)dimensions, ratio);
+			return ret != 0;
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(ref RmlElementProgress self, RmlVector2FPtr dimensions, float* ratio)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)pself, (RmlVector2F*)dimensions, ratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(RmlElementProgressPtr self, ref RmlVector2F dimensions, float* ratio)
+		{
+			fixed (RmlVector2F* pdimensions = &dimensions)
+			{
+				byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)self, (RmlVector2F*)pdimensions, ratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(ref RmlElementProgress self, ref RmlVector2F dimensions, float* ratio)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				fixed (RmlVector2F* pdimensions = &dimensions)
+				{
+					byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)pself, (RmlVector2F*)pdimensions, ratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(RmlElementProgressPtr self, RmlVector2FPtr dimensions, ref float ratio)
+		{
+			fixed (float* pratio = &ratio)
+			{
+				byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)self, (RmlVector2F*)dimensions, (float*)pratio);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(ref RmlElementProgress self, RmlVector2FPtr dimensions, ref float ratio)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				fixed (float* pratio = &ratio)
+				{
+					byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)pself, (RmlVector2F*)dimensions, (float*)pratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(RmlElementProgressPtr self, ref RmlVector2F dimensions, ref float ratio)
+		{
+			fixed (RmlVector2F* pdimensions = &dimensions)
+			{
+				fixed (float* pratio = &ratio)
+				{
+					byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)self, (RmlVector2F*)pdimensions, (float*)pratio);
+					return ret != 0;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the element's inherent size.<br/>
+		/// C++: bool Rml::ElementProgress::GetIntrinsicDimensions(Vector2f<br/>
+		/// &<br/>
+		/// dimensions, float<br/>
+		/// &<br/>
+		/// ratio)<br/>
+		/// </summary>
+		public static bool RmlElementProgressGetIntrinsicDimensions(ref RmlElementProgress self, ref RmlVector2F dimensions, ref float ratio)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				fixed (RmlVector2F* pdimensions = &dimensions)
+				{
+					fixed (float* pratio = &ratio)
+					{
+						byte ret = RmlElementProgressGetIntrinsicDimensionsNative((RmlElementProgress*)pself, (RmlVector2F*)pdimensions, (float*)pratio);
+						return ret != 0;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetValue() const<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_GetValue")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial float RmlElementProgressGetValueNative(RmlElementProgress* self);
+
+		/// <summary>
+		/// Returns the value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetValue() const<br/>
+		/// </summary>
+		public static float RmlElementProgressGetValue(RmlElementProgressPtr self)
+		{
+			float ret = RmlElementProgressGetValueNative((RmlElementProgress*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetValue() const<br/>
+		/// </summary>
+		public static float RmlElementProgressGetValue(ref RmlElementProgress self)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				float ret = RmlElementProgressGetValueNative((RmlElementProgress*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the maximum value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetMax() const<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementProgress_GetMax")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial float RmlElementProgressGetMaxNative(RmlElementProgress* self);
+
+		/// <summary>
+		/// Returns the maximum value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetMax() const<br/>
+		/// </summary>
+		public static float RmlElementProgressGetMax(RmlElementProgressPtr self)
+		{
+			float ret = RmlElementProgressGetMaxNative((RmlElementProgress*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the maximum value of the progress bar.<br/>
+		/// C++: float Rml::ElementProgress::GetMax() const<br/>
+		/// </summary>
+		public static float RmlElementProgressGetMax(ref RmlElementProgress self)
+		{
+			fixed (RmlElementProgress* pself = &self)
+			{
+				float ret = RmlElementProgressGetMaxNative((RmlElementProgress*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetTab_Int_String")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetTabIntStringNative(RmlElementTabSet* self, int tabIndex, byte* rml);
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(RmlElementTabSetPtr self, int tabIndex, byte* rml)
+		{
+			RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)self, tabIndex, rml);
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(ref RmlElementTabSet self, int tabIndex, byte* rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)pself, tabIndex, rml);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(RmlElementTabSetPtr self, int tabIndex, in byte rml)
+		{
+			fixed (byte* prml = &rml)
+			{
+				RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)self, tabIndex, (byte*)prml);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(RmlElementTabSetPtr self, int tabIndex, ReadOnlySpan<byte> rml)
+		{
+			fixed (byte* prml = rml)
+			{
+				RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)self, tabIndex, (byte*)prml);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(RmlElementTabSetPtr self, int tabIndex, string rml)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (rml != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(rml);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)self, tabIndex, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(ref RmlElementTabSet self, int tabIndex, in byte rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (byte* prml = &rml)
+				{
+					RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)pself, tabIndex, (byte*)prml);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(ref RmlElementTabSet self, int tabIndex, ReadOnlySpan<byte> rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (byte* prml = rml)
+				{
+					RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)pself, tabIndex, (byte*)prml);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementTabSet <br/>
+		/// Sets the specified tab index's tab title RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntString(ref RmlElementTabSet self, int tabIndex, string rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (rml != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(rml);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementTabSetSetTabIntStringNative((RmlElementTabSet*)pself, tabIndex, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetPanel_Int_String")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetPanelIntStringNative(RmlElementTabSet* self, int tabIndex, byte* rml);
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(RmlElementTabSetPtr self, int tabIndex, byte* rml)
+		{
+			RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)self, tabIndex, rml);
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(ref RmlElementTabSet self, int tabIndex, byte* rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)pself, tabIndex, rml);
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(RmlElementTabSetPtr self, int tabIndex, in byte rml)
+		{
+			fixed (byte* prml = &rml)
+			{
+				RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)self, tabIndex, (byte*)prml);
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(RmlElementTabSetPtr self, int tabIndex, ReadOnlySpan<byte> rml)
+		{
+			fixed (byte* prml = rml)
+			{
+				RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)self, tabIndex, (byte*)prml);
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(RmlElementTabSetPtr self, int tabIndex, string rml)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (rml != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(rml);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)self, tabIndex, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(ref RmlElementTabSet self, int tabIndex, in byte rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (byte* prml = &rml)
+				{
+					RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)pself, tabIndex, (byte*)prml);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(ref RmlElementTabSet self, int tabIndex, ReadOnlySpan<byte> rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (byte* prml = rml)
+				{
+					RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)pself, tabIndex, (byte*)prml);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the specified tab index's tab panel RML.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntString(ref RmlElementTabSet self, int tabIndex, string rml)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (rml != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(rml);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementTabSetSetPanelIntStringNative((RmlElementTabSet*)pself, tabIndex, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetTab_Int_ElementPtr")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetTabIntElementPtrNative(RmlElementTabSet* self, int tabIndex, RmlElement* element);
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntElementPtr(RmlElementTabSetPtr self, int tabIndex, RmlElementPtr element)
+		{
+			RmlElementTabSetSetTabIntElementPtrNative((RmlElementTabSet*)self, tabIndex, (RmlElement*)element);
+		}
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntElementPtr(ref RmlElementTabSet self, int tabIndex, RmlElementPtr element)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetTabIntElementPtrNative((RmlElementTabSet*)pself, tabIndex, (RmlElement*)element);
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntElementPtr(RmlElementTabSetPtr self, int tabIndex, ref RmlElement element)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				RmlElementTabSetSetTabIntElementPtrNative((RmlElementTabSet*)self, tabIndex, (RmlElement*)pelement);
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntElementPtr(ref RmlElementTabSet self, int tabIndex, ref RmlElement element)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					RmlElementTabSetSetTabIntElementPtrNative((RmlElementTabSet*)pself, tabIndex, (RmlElement*)pelement);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetPanel_Int_ElementPtr")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetPanelIntElementPtrNative(RmlElementTabSet* self, int tabIndex, RmlElement* element);
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntElementPtr(RmlElementTabSetPtr self, int tabIndex, RmlElementPtr element)
+		{
+			RmlElementTabSetSetPanelIntElementPtrNative((RmlElementTabSet*)self, tabIndex, (RmlElement*)element);
+		}
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntElementPtr(ref RmlElementTabSet self, int tabIndex, RmlElementPtr element)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetPanelIntElementPtrNative((RmlElementTabSet*)pself, tabIndex, (RmlElement*)element);
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntElementPtr(RmlElementTabSetPtr self, int tabIndex, ref RmlElement element)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				RmlElementTabSetSetPanelIntElementPtrNative((RmlElementTabSet*)self, tabIndex, (RmlElement*)pelement);
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntElementPtr(ref RmlElementTabSet self, int tabIndex, ref RmlElement element)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					RmlElementTabSetSetPanelIntElementPtrNative((RmlElementTabSet*)pself, tabIndex, (RmlElement*)pelement);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Remove one of the tab set's panels and its corresponding tab.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_RemoveTab")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetRemoveTabNative(RmlElementTabSet* self, int tabIndex);
+
+		/// <summary>
+		/// Remove one of the tab set's panels and its corresponding tab.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetRemoveTab(RmlElementTabSetPtr self, int tabIndex)
+		{
+			RmlElementTabSetRemoveTabNative((RmlElementTabSet*)self, tabIndex);
+		}
+
+		/// <summary>
+		/// Remove one of the tab set's panels and its corresponding tab.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetRemoveTab(ref RmlElementTabSet self, int tabIndex)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetRemoveTabNative((RmlElementTabSet*)pself, tabIndex);
+			}
+		}
+
+		/// <summary>
+		/// Retrieve the number of tabs in the tabset.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_GetNumTabs")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementTabSetGetNumTabsNative(RmlElementTabSet* self);
+
+		/// <summary>
+		/// Retrieve the number of tabs in the tabset.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementTabSetGetNumTabs(RmlElementTabSetPtr self)
+		{
+			int ret = RmlElementTabSetGetNumTabsNative((RmlElementTabSet*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Retrieve the number of tabs in the tabset.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementTabSetGetNumTabs(ref RmlElementTabSet self)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				int ret = RmlElementTabSetGetNumTabsNative((RmlElementTabSet*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Sets the currently active (visible) tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetActiveTab")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetActiveTabNative(RmlElementTabSet* self, int tabIndex);
+
+		/// <summary>
+		/// Sets the currently active (visible) tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetActiveTab(RmlElementTabSetPtr self, int tabIndex)
+		{
+			RmlElementTabSetSetActiveTabNative((RmlElementTabSet*)self, tabIndex);
+		}
+
+		/// <summary>
+		/// Sets the currently active (visible) tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetActiveTab(ref RmlElementTabSet self, int tabIndex)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetActiveTabNative((RmlElementTabSet*)pself, tabIndex);
+			}
+		}
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_ProcessDefaultAction")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetProcessDefaultActionNative(RmlElementTabSet* self, RmlEvent* evnt);
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		public static void RmlElementTabSetProcessDefaultAction(RmlElementTabSetPtr self, RmlEventPtr evnt)
+		{
+			RmlElementTabSetProcessDefaultActionNative((RmlElementTabSet*)self, (RmlEvent*)evnt);
+		}
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		public static void RmlElementTabSetProcessDefaultAction(ref RmlElementTabSet self, RmlEventPtr evnt)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetProcessDefaultActionNative((RmlElementTabSet*)pself, (RmlEvent*)evnt);
+			}
+		}
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		public static void RmlElementTabSetProcessDefaultAction(RmlElementTabSetPtr self, ref RmlEvent evnt)
+		{
+			fixed (RmlEvent* pevnt = &evnt)
+			{
+				RmlElementTabSetProcessDefaultActionNative((RmlElementTabSet*)self, (RmlEvent*)pevnt);
+			}
+		}
+
+		/// <summary>
+		/// Capture clicks on our tabs.<br/>
+		/// C++: void Rml::ElementTabSet::ProcessDefaultAction(Event<br/>
+		/// &<br/>
+		/// event)<br/>
+		/// </summary>
+		public static void RmlElementTabSetProcessDefaultAction(ref RmlElementTabSet self, ref RmlEvent evnt)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (RmlEvent* pevnt = &evnt)
+				{
+					RmlElementTabSetProcessDefaultActionNative((RmlElementTabSet*)pself, (RmlEvent*)pevnt);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get the current active tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_GetActiveTab")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementTabSetGetActiveTabNative(RmlElementTabSet* self);
+
+		/// <summary>
+		/// Get the current active tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementTabSetGetActiveTab(RmlElementTabSetPtr self)
+		{
+			int ret = RmlElementTabSetGetActiveTabNative((RmlElementTabSet*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Get the current active tab index.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementTabSetGetActiveTab(ref RmlElementTabSet self)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				int ret = RmlElementTabSetGetActiveTabNative((RmlElementTabSet*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementScroll <br/>
+		/// Updates the increment / decrement arrows.<br/>
+		/// C++: void Rml::ElementScroll::Update()<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_Update")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollUpdateNative(RmlElementScroll* self);
+
+		/// <summary>
+		/// Rml::ElementScroll <br/>
+		/// Updates the increment / decrement arrows.<br/>
+		/// C++: void Rml::ElementScroll::Update()<br/>
+		/// </summary>
+		public static void RmlElementScrollUpdate(RmlElementScrollPtr self)
+		{
+			RmlElementScrollUpdateNative((RmlElementScroll*)self);
+		}
+
+		/// <summary>
+		/// Rml::ElementScroll <br/>
+		/// Updates the increment / decrement arrows.<br/>
+		/// C++: void Rml::ElementScroll::Update()<br/>
+		/// </summary>
+		public static void RmlElementScrollUpdate(ref RmlElementScroll self)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementScrollUpdateNative((RmlElementScroll*)pself);
+			}
+		}
+
+		/// <summary>
+		/// Enables and sizes one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_EnableScrollbar")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollEnableScrollbarNative(RmlElementScroll* self, RmlElementScrollOrientation orientation, float elementWidth);
+
+		/// <summary>
+		/// Enables and sizes one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollEnableScrollbar(RmlElementScrollPtr self, RmlElementScrollOrientation orientation, float elementWidth)
+		{
+			RmlElementScrollEnableScrollbarNative((RmlElementScroll*)self, orientation, elementWidth);
+		}
+
+		/// <summary>
+		/// Enables and sizes one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollEnableScrollbar(ref RmlElementScroll self, RmlElementScrollOrientation orientation, float elementWidth)
+		{
+			fixed (RmlElementScroll* pself = &self)
+			{
+				RmlElementScrollEnableScrollbarNative((RmlElementScroll*)pself, orientation, elementWidth);
+			}
+		}
+
+		/// <summary>
+		/// Disables and hides one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementScroll_DisableScrollbar")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementScrollDisableScrollbarNative(RmlElementScroll* self, RmlElementScrollOrientation orientation);
+
+		/// <summary>
+		/// Disables and hides one of the scrollbars.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementScrollDisableScrollbar(RmlElementScrollPtr self, RmlElementScrollOrientation orientation)
+		{
+			RmlElementScrollDisableScrollbarNative((RmlElementScroll*)self, orientation);
+		}
+
+		/// <summary>
 		/// Disables and hides one of the scrollbars.<br/>
 		/// <br/>
 		/// <summary>

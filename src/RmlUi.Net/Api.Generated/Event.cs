@@ -147,6 +147,31 @@ public readonly unsafe partial struct Event : IEquatable<Event>
     }
 
     /// <summary>
+    /// Returns the value of one of the event&apos;s parameters.<br/>
+    /// 
+    /// @param key[in] The name of the desired parameter.<br/>
+    /// @param default_value[in] The default value.<br/>
+    /// @return The value of the requested parameter, or the default value if the key does not exist.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>T Rml::Event::GetParameter(const String&amp; key, const T&amp; default_value) const</c></remarks>
+    public string GetParameter(string key, string defaultValue)
+    {
+        scoped Utf8StringMarshaller.ManagedToUnmanagedIn key_m = new();
+        key_m.FromManaged(key, stackalloc byte[Utf8StringMarshaller.ManagedToUnmanagedIn.BufferSize]);
+        scoped Utf8StringMarshaller.ManagedToUnmanagedIn defaultValue_m = new();
+        defaultValue_m.FromManaged(defaultValue, stackalloc byte[Utf8StringMarshaller.ManagedToUnmanagedIn.BufferSize]);
+        try
+        {
+            return Utf8StringMarshaller.ConvertToManaged(NativeMethods.RmlEvent_GetParameter(Handle, key_m.ToUnmanaged(), defaultValue_m.ToUnmanaged())) ?? "";
+        }
+        finally
+        {
+            key_m.Free();
+            defaultValue_m.Free();
+        }
+    }
+
+    /// <summary>
     /// Access the dictionary of parameters<br/>
     /// 
     /// @return The dictionary of parameters<br/>

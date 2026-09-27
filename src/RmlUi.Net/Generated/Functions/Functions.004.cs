@@ -2675,6 +2675,1275 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlEvent_GetParameter")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial byte* RmlEventGetParameterNative(RmlEvent* self, byte* key, byte* defaultValue);
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, byte* key, byte* defaultValue)
+		{
+			byte* ret = RmlEventGetParameterNative((RmlEvent*)self, key, defaultValue);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, byte* key, byte* defaultValue)
+		{
+			string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, key, defaultValue));
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, byte* key, byte* defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, key, defaultValue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, byte* key, byte* defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, key, defaultValue));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, in byte key, byte* defaultValue)
+		{
+			fixed (byte* pkey = &key)
+			{
+				byte* ret = RmlEventGetParameterNative((RmlEvent*)self, (byte*)pkey, defaultValue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, in byte key, byte* defaultValue)
+		{
+			fixed (byte* pkey = &key)
+			{
+				string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, (byte*)pkey, defaultValue));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, ReadOnlySpan<byte> key, byte* defaultValue)
+		{
+			fixed (byte* pkey = key)
+			{
+				byte* ret = RmlEventGetParameterNative((RmlEvent*)self, (byte*)pkey, defaultValue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, ReadOnlySpan<byte> key, byte* defaultValue)
+		{
+			fixed (byte* pkey = key)
+			{
+				string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, (byte*)pkey, defaultValue));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, string key, byte* defaultValue)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (key != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(key);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(key, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* ret = RmlEventGetParameterNative((RmlEvent*)self, pStr0, defaultValue);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, string key, byte* defaultValue)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (key != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(key);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(key, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, pStr0, defaultValue));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, in byte key, byte* defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pkey = &key)
+				{
+					byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, (byte*)pkey, defaultValue);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, in byte key, byte* defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pkey = &key)
+				{
+					string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, (byte*)pkey, defaultValue));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, ReadOnlySpan<byte> key, byte* defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pkey = key)
+				{
+					byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, (byte*)pkey, defaultValue);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, ReadOnlySpan<byte> key, byte* defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pkey = key)
+				{
+					string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, (byte*)pkey, defaultValue));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, string key, byte* defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (key != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(key);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(key, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, pStr0, defaultValue);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, string key, byte* defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (key != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(key);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(key, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, pStr0, defaultValue));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, byte* key, in byte defaultValue)
+		{
+			fixed (byte* pdefaultValue = &defaultValue)
+			{
+				byte* ret = RmlEventGetParameterNative((RmlEvent*)self, key, (byte*)pdefaultValue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, byte* key, in byte defaultValue)
+		{
+			fixed (byte* pdefaultValue = &defaultValue)
+			{
+				string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, key, (byte*)pdefaultValue));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, byte* key, ReadOnlySpan<byte> defaultValue)
+		{
+			fixed (byte* pdefaultValue = defaultValue)
+			{
+				byte* ret = RmlEventGetParameterNative((RmlEvent*)self, key, (byte*)pdefaultValue);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, byte* key, ReadOnlySpan<byte> defaultValue)
+		{
+			fixed (byte* pdefaultValue = defaultValue)
+			{
+				string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, key, (byte*)pdefaultValue));
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, byte* key, string defaultValue)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (defaultValue != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(defaultValue);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(defaultValue, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* ret = RmlEventGetParameterNative((RmlEvent*)self, key, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, byte* key, string defaultValue)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (defaultValue != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(defaultValue);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(defaultValue, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, key, pStr0));
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, byte* key, in byte defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pdefaultValue = &defaultValue)
+				{
+					byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, key, (byte*)pdefaultValue);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, byte* key, in byte defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pdefaultValue = &defaultValue)
+				{
+					string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, key, (byte*)pdefaultValue));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, byte* key, ReadOnlySpan<byte> defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pdefaultValue = defaultValue)
+				{
+					byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, key, (byte*)pdefaultValue);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, byte* key, ReadOnlySpan<byte> defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pdefaultValue = defaultValue)
+				{
+					string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, key, (byte*)pdefaultValue));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, byte* key, string defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (defaultValue != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(defaultValue);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(defaultValue, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, key, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, byte* key, string defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (defaultValue != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(defaultValue);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(defaultValue, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, key, pStr0));
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, in byte key, in byte defaultValue)
+		{
+			fixed (byte* pkey = &key)
+			{
+				fixed (byte* pdefaultValue = &defaultValue)
+				{
+					byte* ret = RmlEventGetParameterNative((RmlEvent*)self, (byte*)pkey, (byte*)pdefaultValue);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, in byte key, in byte defaultValue)
+		{
+			fixed (byte* pkey = &key)
+			{
+				fixed (byte* pdefaultValue = &defaultValue)
+				{
+					string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, (byte*)pkey, (byte*)pdefaultValue));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, ReadOnlySpan<byte> key, ReadOnlySpan<byte> defaultValue)
+		{
+			fixed (byte* pkey = key)
+			{
+				fixed (byte* pdefaultValue = defaultValue)
+				{
+					byte* ret = RmlEventGetParameterNative((RmlEvent*)self, (byte*)pkey, (byte*)pdefaultValue);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, ReadOnlySpan<byte> key, ReadOnlySpan<byte> defaultValue)
+		{
+			fixed (byte* pkey = key)
+			{
+				fixed (byte* pdefaultValue = defaultValue)
+				{
+					string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, (byte*)pkey, (byte*)pdefaultValue));
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(RmlEventPtr self, string key, string defaultValue)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (key != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(key);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(key, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* pStr1 = null;
+			int pStrSize1 = 0;
+			if (defaultValue != null)
+			{
+				pStrSize1 = Utils.GetByteCountUTF8(defaultValue);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+				}
+				else
+				{
+					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+					pStr1 = pStrStack1;
+				}
+				int pStrOffset1 = Utils.EncodeStringUTF8(defaultValue, pStr1, pStrSize1);
+				pStr1[pStrOffset1] = 0;
+			}
+			byte* ret = RmlEventGetParameterNative((RmlEvent*)self, pStr0, pStr1);
+			if (pStrSize1 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr1);
+			}
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(RmlEventPtr self, string key, string defaultValue)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (key != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(key);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(key, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* pStr1 = null;
+			int pStrSize1 = 0;
+			if (defaultValue != null)
+			{
+				pStrSize1 = Utils.GetByteCountUTF8(defaultValue);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+				}
+				else
+				{
+					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+					pStr1 = pStrStack1;
+				}
+				int pStrOffset1 = Utils.EncodeStringUTF8(defaultValue, pStr1, pStrSize1);
+				pStr1[pStrOffset1] = 0;
+			}
+			string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)self, pStr0, pStr1));
+			if (pStrSize1 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr1);
+			}
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, in byte key, in byte defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pkey = &key)
+				{
+					fixed (byte* pdefaultValue = &defaultValue)
+					{
+						byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, (byte*)pkey, (byte*)pdefaultValue);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, in byte key, in byte defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pkey = &key)
+				{
+					fixed (byte* pdefaultValue = &defaultValue)
+					{
+						string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, (byte*)pkey, (byte*)pdefaultValue));
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, ReadOnlySpan<byte> key, ReadOnlySpan<byte> defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pkey = key)
+				{
+					fixed (byte* pdefaultValue = defaultValue)
+					{
+						byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, (byte*)pkey, (byte*)pdefaultValue);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, ReadOnlySpan<byte> key, ReadOnlySpan<byte> defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				fixed (byte* pkey = key)
+				{
+					fixed (byte* pdefaultValue = defaultValue)
+					{
+						string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, (byte*)pkey, (byte*)pdefaultValue));
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static byte* RmlEventGetParameter(ref RmlEvent self, string key, string defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (key != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(key);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(key, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* pStr1 = null;
+				int pStrSize1 = 0;
+				if (defaultValue != null)
+				{
+					pStrSize1 = Utils.GetByteCountUTF8(defaultValue);
+					if (pStrSize1 >= Utils.MaxStackallocSize)
+					{
+						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+					}
+					else
+					{
+						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+						pStr1 = pStrStack1;
+					}
+					int pStrOffset1 = Utils.EncodeStringUTF8(defaultValue, pStr1, pStrSize1);
+					pStr1[pStrOffset1] = 0;
+				}
+				byte* ret = RmlEventGetParameterNative((RmlEvent*)pself, pStr0, pStr1);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr1);
+				}
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the value of one of the event's parameters.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static string RmlEventGetParameterS(ref RmlEvent self, string key, string defaultValue)
+		{
+			fixed (RmlEvent* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (key != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(key);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(key, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* pStr1 = null;
+				int pStrSize1 = 0;
+				if (defaultValue != null)
+				{
+					pStrSize1 = Utils.GetByteCountUTF8(defaultValue);
+					if (pStrSize1 >= Utils.MaxStackallocSize)
+					{
+						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+					}
+					else
+					{
+						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+						pStr1 = pStrStack1;
+					}
+					int pStrOffset1 = Utils.EncodeStringUTF8(defaultValue, pStr1, pStrSize1);
+					pStr1[pStrOffset1] = 0;
+				}
+				string ret = Utils.DecodeStringUTF8(RmlEventGetParameterNative((RmlEvent*)pself, pStr0, pStr1));
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr1);
+				}
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
 		/// Access the dictionary of parameters<br/>
 		/// <br/>
 		/// <summary>
@@ -3751,1274 +5020,6 @@ namespace RmlUi.Interop
 		public static void RmlElementTextAddLine(RmlElementTextPtr self, RmlVector2F linePosition, byte* line)
 		{
 			RmlElementTextAddLineNative((RmlElementText*)self, linePosition, line);
-		}
-
-		/// <summary>
-		/// Adds a new line into the text element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementTextAddLine(ref RmlElementText self, RmlVector2F linePosition, byte* line)
-		{
-			fixed (RmlElementText* pself = &self)
-			{
-				RmlElementTextAddLineNative((RmlElementText*)pself, linePosition, line);
-			}
-		}
-
-		/// <summary>
-		/// Adds a new line into the text element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementTextAddLine(RmlElementTextPtr self, RmlVector2F linePosition, in byte line)
-		{
-			fixed (byte* pline = &line)
-			{
-				RmlElementTextAddLineNative((RmlElementText*)self, linePosition, (byte*)pline);
-			}
-		}
-
-		/// <summary>
-		/// Adds a new line into the text element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementTextAddLine(RmlElementTextPtr self, RmlVector2F linePosition, ReadOnlySpan<byte> line)
-		{
-			fixed (byte* pline = line)
-			{
-				RmlElementTextAddLineNative((RmlElementText*)self, linePosition, (byte*)pline);
-			}
-		}
-
-		/// <summary>
-		/// Adds a new line into the text element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementTextAddLine(RmlElementTextPtr self, RmlVector2F linePosition, string line)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (line != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(line);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(line, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementTextAddLineNative((RmlElementText*)self, linePosition, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Adds a new line into the text element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementTextAddLine(ref RmlElementText self, RmlVector2F linePosition, in byte line)
-		{
-			fixed (RmlElementText* pself = &self)
-			{
-				fixed (byte* pline = &line)
-				{
-					RmlElementTextAddLineNative((RmlElementText*)pself, linePosition, (byte*)pline);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds a new line into the text element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementTextAddLine(ref RmlElementText self, RmlVector2F linePosition, ReadOnlySpan<byte> line)
-		{
-			fixed (RmlElementText* pself = &self)
-			{
-				fixed (byte* pline = line)
-				{
-					RmlElementTextAddLineNative((RmlElementText*)pself, linePosition, (byte*)pline);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds a new line into the text element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementTextAddLine(ref RmlElementText self, RmlVector2F linePosition, string line)
-		{
-			fixed (RmlElementText* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (line != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(line);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(line, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementTextAddLineNative((RmlElementText*)pself, linePosition, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Prevents the element from dirtying its document's layout when its text is changed.<br/>
-		/// C++: void Rml::ElementText::SuppressAutoLayout()<br/>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementText_SuppressAutoLayout")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementTextSuppressAutoLayoutNative(RmlElementText* self);
-
-		/// <summary>
-		/// Prevents the element from dirtying its document's layout when its text is changed.<br/>
-		/// C++: void Rml::ElementText::SuppressAutoLayout()<br/>
-		/// </summary>
-		public static void RmlElementTextSuppressAutoLayout(RmlElementTextPtr self)
-		{
-			RmlElementTextSuppressAutoLayoutNative((RmlElementText*)self);
-		}
-
-		/// <summary>
-		/// Prevents the element from dirtying its document's layout when its text is changed.<br/>
-		/// C++: void Rml::ElementText::SuppressAutoLayout()<br/>
-		/// </summary>
-		public static void RmlElementTextSuppressAutoLayout(ref RmlElementText self)
-		{
-			fixed (RmlElementText* pself = &self)
-			{
-				RmlElementTextSuppressAutoLayoutNative((RmlElementText*)pself);
-			}
-		}
-
-		/// <summary>
-		/// Returns the raw string this text element contains.<br/>
-		/// C++: const String<br/>
-		/// &<br/>
-		/// Rml::ElementText::GetText() const<br/>
-		/// The returned string is owned by RmlUi and valid while its owner is.<br/>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementText_GetText")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial byte* RmlElementTextGetTextNative(RmlElementText* self);
-
-		/// <summary>
-		/// Returns the raw string this text element contains.<br/>
-		/// C++: const String<br/>
-		/// &<br/>
-		/// Rml::ElementText::GetText() const<br/>
-		/// The returned string is owned by RmlUi and valid while its owner is.<br/>
-		/// </summary>
-		public static byte* RmlElementTextGetText(RmlElementTextPtr self)
-		{
-			byte* ret = RmlElementTextGetTextNative((RmlElementText*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns the raw string this text element contains.<br/>
-		/// C++: const String<br/>
-		/// &<br/>
-		/// Rml::ElementText::GetText() const<br/>
-		/// The returned string is owned by RmlUi and valid while its owner is.<br/>
-		/// </summary>
-		public static string RmlElementTextGetTextS(RmlElementTextPtr self)
-		{
-			string ret = Utils.DecodeStringUTF8(RmlElementTextGetTextNative((RmlElementText*)self));
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns the raw string this text element contains.<br/>
-		/// C++: const String<br/>
-		/// &<br/>
-		/// Rml::ElementText::GetText() const<br/>
-		/// The returned string is owned by RmlUi and valid while its owner is.<br/>
-		/// </summary>
-		public static byte* RmlElementTextGetText(ref RmlElementText self)
-		{
-			fixed (RmlElementText* pself = &self)
-			{
-				byte* ret = RmlElementTextGetTextNative((RmlElementText*)pself);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns the raw string this text element contains.<br/>
-		/// C++: const String<br/>
-		/// &<br/>
-		/// Rml::ElementText::GetText() const<br/>
-		/// The returned string is owned by RmlUi and valid while its owner is.<br/>
-		/// </summary>
-		public static string RmlElementTextGetTextS(ref RmlElementText self)
-		{
-			fixed (RmlElementText* pself = &self)
-			{
-				string ret = Utils.DecodeStringUTF8(RmlElementTextGetTextNative((RmlElementText*)pself));
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementForm_Submit")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementFormSubmitNative(RmlElementForm* self, byte* name, byte* submitValue);
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, byte* name, byte* submitValue)
-		{
-			RmlElementFormSubmitNative((RmlElementForm*)self, name, submitValue);
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, byte* name, byte* submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				RmlElementFormSubmitNative((RmlElementForm*)pself, name, submitValue);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, in byte name, byte* submitValue)
-		{
-			fixed (byte* pname = &name)
-			{
-				RmlElementFormSubmitNative((RmlElementForm*)self, (byte*)pname, submitValue);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, ReadOnlySpan<byte> name, byte* submitValue)
-		{
-			fixed (byte* pname = name)
-			{
-				RmlElementFormSubmitNative((RmlElementForm*)self, (byte*)pname, submitValue);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, string name, byte* submitValue)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (name != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(name);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementFormSubmitNative((RmlElementForm*)self, pStr0, submitValue);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, in byte name, byte* submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				fixed (byte* pname = &name)
-				{
-					RmlElementFormSubmitNative((RmlElementForm*)pself, (byte*)pname, submitValue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, ReadOnlySpan<byte> name, byte* submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				fixed (byte* pname = name)
-				{
-					RmlElementFormSubmitNative((RmlElementForm*)pself, (byte*)pname, submitValue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, string name, byte* submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (name != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(name);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementFormSubmitNative((RmlElementForm*)pself, pStr0, submitValue);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, byte* name, in byte submitValue)
-		{
-			fixed (byte* psubmitValue = &submitValue)
-			{
-				RmlElementFormSubmitNative((RmlElementForm*)self, name, (byte*)psubmitValue);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, byte* name, ReadOnlySpan<byte> submitValue)
-		{
-			fixed (byte* psubmitValue = submitValue)
-			{
-				RmlElementFormSubmitNative((RmlElementForm*)self, name, (byte*)psubmitValue);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, byte* name, string submitValue)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (submitValue != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(submitValue);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(submitValue, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementFormSubmitNative((RmlElementForm*)self, name, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, byte* name, in byte submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				fixed (byte* psubmitValue = &submitValue)
-				{
-					RmlElementFormSubmitNative((RmlElementForm*)pself, name, (byte*)psubmitValue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, byte* name, ReadOnlySpan<byte> submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				fixed (byte* psubmitValue = submitValue)
-				{
-					RmlElementFormSubmitNative((RmlElementForm*)pself, name, (byte*)psubmitValue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, byte* name, string submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (submitValue != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(submitValue);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(submitValue, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementFormSubmitNative((RmlElementForm*)pself, name, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, in byte name, in byte submitValue)
-		{
-			fixed (byte* pname = &name)
-			{
-				fixed (byte* psubmitValue = &submitValue)
-				{
-					RmlElementFormSubmitNative((RmlElementForm*)self, (byte*)pname, (byte*)psubmitValue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, ReadOnlySpan<byte> name, ReadOnlySpan<byte> submitValue)
-		{
-			fixed (byte* pname = name)
-			{
-				fixed (byte* psubmitValue = submitValue)
-				{
-					RmlElementFormSubmitNative((RmlElementForm*)self, (byte*)pname, (byte*)psubmitValue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(RmlElementFormPtr self, string name, string submitValue)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (name != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(name);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte* pStr1 = null;
-			int pStrSize1 = 0;
-			if (submitValue != null)
-			{
-				pStrSize1 = Utils.GetByteCountUTF8(submitValue);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-				}
-				else
-				{
-					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-					pStr1 = pStrStack1;
-				}
-				int pStrOffset1 = Utils.EncodeStringUTF8(submitValue, pStr1, pStrSize1);
-				pStr1[pStrOffset1] = 0;
-			}
-			RmlElementFormSubmitNative((RmlElementForm*)self, pStr0, pStr1);
-			if (pStrSize1 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr1);
-			}
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, in byte name, in byte submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				fixed (byte* pname = &name)
-				{
-					fixed (byte* psubmitValue = &submitValue)
-					{
-						RmlElementFormSubmitNative((RmlElementForm*)pself, (byte*)pname, (byte*)psubmitValue);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, ReadOnlySpan<byte> name, ReadOnlySpan<byte> submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				fixed (byte* pname = name)
-				{
-					fixed (byte* psubmitValue = submitValue)
-					{
-						RmlElementFormSubmitNative((RmlElementForm*)pself, (byte*)pname, (byte*)psubmitValue);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementForm <br/>
-		/// Submits the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormSubmit(ref RmlElementForm self, string name, string submitValue)
-		{
-			fixed (RmlElementForm* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (name != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(name);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				byte* pStr1 = null;
-				int pStrSize1 = 0;
-				if (submitValue != null)
-				{
-					pStrSize1 = Utils.GetByteCountUTF8(submitValue);
-					if (pStrSize1 >= Utils.MaxStackallocSize)
-					{
-						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-					}
-					else
-					{
-						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-						pStr1 = pStrStack1;
-					}
-					int pStrOffset1 = Utils.EncodeStringUTF8(submitValue, pStr1, pStrSize1);
-					pStr1[pStrOffset1] = 0;
-				}
-				RmlElementFormSubmitNative((RmlElementForm*)pself, pStr0, pStr1);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr1);
-				}
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControl_SetName")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementFormControlSetNameNative(RmlElementFormControl* self, byte* name);
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetName(RmlElementFormControlPtr self, byte* name)
-		{
-			RmlElementFormControlSetNameNative((RmlElementFormControl*)self, name);
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetName(ref RmlElementFormControl self, byte* name)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				RmlElementFormControlSetNameNative((RmlElementFormControl*)pself, name);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetName(RmlElementFormControlPtr self, in byte name)
-		{
-			fixed (byte* pname = &name)
-			{
-				RmlElementFormControlSetNameNative((RmlElementFormControl*)self, (byte*)pname);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetName(RmlElementFormControlPtr self, ReadOnlySpan<byte> name)
-		{
-			fixed (byte* pname = name)
-			{
-				RmlElementFormControlSetNameNative((RmlElementFormControl*)self, (byte*)pname);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetName(RmlElementFormControlPtr self, string name)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (name != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(name);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementFormControlSetNameNative((RmlElementFormControl*)self, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetName(ref RmlElementFormControl self, in byte name)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				fixed (byte* pname = &name)
-				{
-					RmlElementFormControlSetNameNative((RmlElementFormControl*)pself, (byte*)pname);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetName(ref RmlElementFormControl self, ReadOnlySpan<byte> name)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				fixed (byte* pname = name)
-				{
-					RmlElementFormControlSetNameNative((RmlElementFormControl*)pself, (byte*)pname);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControl <br/>
-		/// Sets the name of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetName(ref RmlElementFormControl self, string name)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (name != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(name);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementFormControlSetNameNative((RmlElementFormControl*)pself, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControl_SetValue")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementFormControlSetValueNative(RmlElementFormControl* self, byte* value);
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetValue(RmlElementFormControlPtr self, byte* value)
-		{
-			RmlElementFormControlSetValueNative((RmlElementFormControl*)self, value);
-		}
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetValue(ref RmlElementFormControl self, byte* value)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				RmlElementFormControlSetValueNative((RmlElementFormControl*)pself, value);
-			}
-		}
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetValue(RmlElementFormControlPtr self, in byte value)
-		{
-			fixed (byte* pvalue = &value)
-			{
-				RmlElementFormControlSetValueNative((RmlElementFormControl*)self, (byte*)pvalue);
-			}
-		}
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetValue(RmlElementFormControlPtr self, ReadOnlySpan<byte> value)
-		{
-			fixed (byte* pvalue = value)
-			{
-				RmlElementFormControlSetValueNative((RmlElementFormControl*)self, (byte*)pvalue);
-			}
-		}
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetValue(RmlElementFormControlPtr self, string value)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (value != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(value);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementFormControlSetValueNative((RmlElementFormControl*)self, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetValue(ref RmlElementFormControl self, in byte value)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				fixed (byte* pvalue = &value)
-				{
-					RmlElementFormControlSetValueNative((RmlElementFormControl*)pself, (byte*)pvalue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetValue(ref RmlElementFormControl self, ReadOnlySpan<byte> value)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				fixed (byte* pvalue = value)
-				{
-					RmlElementFormControlSetValueNative((RmlElementFormControl*)pself, (byte*)pvalue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetValue(ref RmlElementFormControl self, string value)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (value != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(value);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementFormControlSetValueNative((RmlElementFormControl*)pself, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Returns if this value should be submitted with the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControl_IsSubmitted")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial byte RmlElementFormControlIsSubmittedNative(RmlElementFormControl* self);
-
-		/// <summary>
-		/// Returns if this value should be submitted with the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementFormControlIsSubmitted(RmlElementFormControlPtr self)
-		{
-			byte ret = RmlElementFormControlIsSubmittedNative((RmlElementFormControl*)self);
-			return ret != 0;
-		}
-
-		/// <summary>
-		/// Returns if this value should be submitted with the form.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementFormControlIsSubmitted(ref RmlElementFormControl self)
-		{
-			fixed (RmlElementFormControl* pself = &self)
-			{
-				byte ret = RmlElementFormControlIsSubmittedNative((RmlElementFormControl*)pself);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Sets the disabled status of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControl_SetDisabled")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementFormControlSetDisabledNative(RmlElementFormControl* self, byte disable);
-
-		/// <summary>
-		/// Sets the disabled status of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSetDisabled(RmlElementFormControlPtr self, bool disable)
-		{
-			RmlElementFormControlSetDisabledNative((RmlElementFormControl*)self, disable ? (byte)1 : (byte)0);
 		}
 	}
 }

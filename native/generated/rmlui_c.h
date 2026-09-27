@@ -2284,6 +2284,16 @@ RMLC_API bool RmlEvent_IsPropagating(RmlEvent* self);
  */
 RMLC_API bool RmlEvent_IsImmediatePropagating(RmlEvent* self);
 /**
+ * Returns the value of one of the event's parameters.
+ *
+ * @param key[in] The name of the desired parameter.
+ * @param default_value[in] The default value.
+ * @return The value of the requested parameter, or the default value if the key does not exist.
+ * C++: T Rml::Event::GetParameter(const String& key, const T& default_value) const
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
+ */
+RMLC_API const char* RmlEvent_GetParameter(RmlEvent* self, const char* key, const char* default_value);
+/**
  * Access the dictionary of parameters
  *
  * @return The dictionary of parameters

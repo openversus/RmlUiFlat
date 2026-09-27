@@ -196,13 +196,21 @@ internal static unsafe partial class Program
         window.Listen(document, "keydown", e => pressed = (Input.KeyIdentifier)e.GetParameters()["key_identifier"].ToInt(), inCapturePhase: true);
         window.Context.ProcessKeyDown(Input.KeyIdentifier.KI_A, 0);
         IReadOnlyDictionary<string, Variant>? received = null;
-        window.Listen(status, "custom", e => received = e.GetParameters());
+        string? oneParameter = null, missingParameter = null;
+        window.Listen(status, "custom", e =>
+        {
+            received = e.GetParameters();
+            oneParameter = e.GetParameter("s", "default");          // GetParameter<String>
+            missingParameter = e.GetParameter("no-such-parameter", "default");
+        });
         status.DispatchEvent("custom", new Dictionary<string, Variant> { ["n"] = 7, ["s"] = "text", ["f"] = 1.5f, ["on"] = true });
+        Console.WriteLine($"GetParameter: s={oneParameter}, missing={missingParameter}");
         Console.WriteLine($"key: {pressed}; custom: {(received == null ? "none" : string.Join(", ", received.Select(p => $"{p.Key}={p.Value} ({p.Value.Kind})")))}");
         if (pressed != Input.KeyIdentifier.KI_A || received == null || received.Count != 4
-            || received["n"] != 7 || received["s"].ToString() != "text" || received["f"].ToDouble() != 1.5 || !received["on"].ToBool())
+            || received["n"] != 7 || received["s"].ToString() != "text" || received["f"].ToDouble() != 1.5 || !received["on"].ToBool()
+            || oneParameter != "text" || missingParameter != "default")
         {
-            Console.Error.WriteLine("FAIL: expected KI_A, and the custom event's four parameters as sent");
+            Console.Error.WriteLine("FAIL: expected KI_A, the custom event's four parameters as sent, and GetParameter's value and default");
             exitCode = 1;
         }
 

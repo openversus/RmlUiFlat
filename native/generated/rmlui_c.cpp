@@ -1905,6 +1905,14 @@ RMLC_API bool RmlEvent_IsImmediatePropagating(RmlEvent* self)
     return rml_ret;
 }
 
+RMLC_API const char* RmlEvent_GetParameter(RmlEvent* self, const char* key, const char* default_value)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Event*>(self)->GetParameter<Rml::String>(Rml::String(key ? key : ""), Rml::String(default_value ? default_value : ""));
+    thread_local Rml::String rml_string_result;
+    rml_string_result = std::move(rml_ret);
+    return rml_string_result.c_str();
+}
+
 RMLC_API RmlDictionary RmlEvent_GetParameters(RmlEvent* self)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Event*>(self)->GetParameters();
