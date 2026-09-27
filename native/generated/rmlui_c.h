@@ -560,6 +560,64 @@ typedef enum RmlStylePosition
     RmlStylePosition_Fixed = 3,
 } RmlStylePosition;
 
+/** Rml::Variant::Type */
+typedef enum RmlVariantType
+{
+    RmlVariantType_NONE = 45,
+    RmlVariantType_BOOL = 66,
+    RmlVariantType_BYTE = 98,
+    RmlVariantType_CHAR = 99,
+    RmlVariantType_FLOAT = 102,
+    RmlVariantType_DOUBLE = 100,
+    RmlVariantType_INT = 105,
+    RmlVariantType_INT64 = 73,
+    RmlVariantType_UINT = 117,
+    RmlVariantType_UINT64 = 85,
+    RmlVariantType_STRING = 115,
+    RmlVariantType_VECTOR2 = 50,
+    RmlVariantType_VECTOR3 = 51,
+    RmlVariantType_VECTOR4 = 52,
+    RmlVariantType_COLOURF = 103,
+    RmlVariantType_COLOURB = 104,
+    RmlVariantType_SCRIPTINTERFACE = 112,
+    RmlVariantType_TRANSFORMPTR = 116,
+    RmlVariantType_TRANSITIONLIST = 84,
+    RmlVariantType_ANIMATIONLIST = 65,
+    RmlVariantType_DECORATORSPTR = 68,
+    RmlVariantType_FILTERSPTR = 70,
+    RmlVariantType_FONTEFFECTSPTR = 69,
+    RmlVariantType_COLORSTOPLIST = 67,
+    RmlVariantType_BOXSHADOWLIST = 83,
+    RmlVariantType_VOIDPTR = 42,
+} RmlVariantType;
+
+/* Variant and Dictionary */
+/**
+ * An Rml::Variant, copied: its exact stored value, unconverted. type 0 means no variant (a null Variant*);
+ * otherwise the field for its type holds the value, and pointer and list types carry their type only.
+ */
+typedef struct RmlVariant
+{
+    RmlVariantType type;
+    int64_t integer;     /* BOOL, BYTE, CHAR, INT, INT64, UINT; UINT64 as its bits */
+    double real;         /* FLOAT, DOUBLE */
+    float vector[4];     /* VECTOR2, VECTOR3, VECTOR4, COLOURF by component; COLOURB as 0-255 */
+    const char* string;  /* STRING: valid until the variant's owner changes, or the call's per-thread copy is reused */
+} RmlVariant;
+
+typedef struct RmlDictionaryEntry
+{
+    const char* key;
+    RmlVariant value;
+} RmlDictionaryEntry;
+
+/** A Dictionary (ElementAttributes): points into a per-thread copy, valid until the same function is next called on the thread. */
+typedef struct RmlDictionary
+{
+    const RmlDictionaryEntry* data;
+    size_t count;
+} RmlDictionary;
+
 /* Upcasts */
 RMLC_API RmlElement* RmlElementDocument_AsElement(RmlElementDocument* self);
 RMLC_API RmlElement* RmlElementText_AsElement(RmlElementText* self);
@@ -1428,12 +1486,39 @@ RMLC_API float RmlElement_GetLineHeight(RmlElement* self);
  */
 RMLC_API void RmlElement_SetPseudoClass(RmlElement* self, const char* pseudo_class, bool activate);
 /**
+ * Attributes
+ *
+ * @
+ * {
+ * Sets an attribute on the element.
+ *
+ * @param name Name of the attribute.
+ * @param value Value of the attribute.
+ * C++: void Rml::Element::SetAttribute(const String& name, const T& value)
+ */
+RMLC_API void RmlElement_SetAttribute(RmlElement* self, const char* name, RmlVariant value);
+/**
+ * Gets the specified attribute.
+ *
+ * @param name Name of the attribute to retrieve.
+ * @return A variant representing the attribute, or nullptr if the attribute doesn't exist.
+ * C++: Variant* Rml::Element::GetAttribute(const String& name)
+ */
+RMLC_API RmlVariant RmlElement_GetAttribute_String(RmlElement* self, const char* name);
+/**
  * Removes the attribute from the element.
  *
  * @param name Name of the attribute.
  * C++: void Rml::Element::RemoveAttribute(const String& name)
  */
 RMLC_API void RmlElement_RemoveAttribute(RmlElement* self, const char* name);
+/**
+ * Set a group of attributes.
+ *
+ * @param attributes Attributes to set.
+ * C++: void Rml::Element::SetAttributes(const ElementAttributes& attributes)
+ */
+RMLC_API void RmlElement_SetAttributes(RmlElement* self, RmlDictionary attributes);
 /**
  * Gets the outermost focus element down the tree from this node.
  *
@@ -1626,6 +1711,25 @@ RMLC_API void RmlElement_RemoveEventListener_String_EventListenerPtr_Bool(RmlEle
  * C++: void Rml::Element::RemoveEventListener(EventId id, EventListener* listener, bool in_capture_phase = false)
  */
 RMLC_API void RmlElement_RemoveEventListener_EventId_EventListenerPtr_Bool(RmlElement* self, RmlEventId id, RmlEventListener* listener, bool in_capture_phase);
+/**
+ * Sends an event to this element.
+ *
+ * @param type Event type in string form.
+ * @param parameters The event parameters.
+ * @return True if the event was not consumed (ie, was prevented from propagating by an element), false if it was.
+ * C++: bool Rml::Element::DispatchEvent(const String& type, const Dictionary& parameters)
+ */
+RMLC_API bool RmlElement_DispatchEvent_String_Dictionary(RmlElement* self, const char* type, RmlDictionary parameters);
+/**
+ * Sends an event to this element, overriding the default behavior for the given event type.
+ * C++: bool Rml::Element::DispatchEvent(const String& type, const Dictionary& parameters, bool interruptible, bool bubbles = true)
+ */
+RMLC_API bool RmlElement_DispatchEvent_String_Dictionary_Bool_Bool(RmlElement* self, const char* type, RmlDictionary parameters, bool interruptible, bool bubbles);
+/**
+ * Sends an event to this element by event id.
+ * C++: bool Rml::Element::DispatchEvent(EventId id, const Dictionary& parameters)
+ */
+RMLC_API bool RmlElement_DispatchEvent_EventId_Dictionary(RmlElement* self, RmlEventId id, RmlDictionary parameters);
 /**
  * Scrolls the parent element's contents so that this element is visible.
  *
@@ -1853,6 +1957,13 @@ RMLC_API RmlStringArray RmlElement_GetActivePseudoClasses(RmlElement* self);
  * C++: bool Rml::Element::HasAttribute(const String& name) const
  */
 RMLC_API bool RmlElement_HasAttribute(RmlElement* self, const char* name);
+/**
+ * Get the attributes of the element.
+ *
+ * @return The attributes
+ * C++: const ElementAttributes& Rml::Element::GetAttributes() const
+ */
+RMLC_API RmlDictionary RmlElement_GetAttributes(RmlElement* self);
 /**
  * Returns the number of attributes on the element.
  *
@@ -2172,6 +2283,13 @@ RMLC_API bool RmlEvent_IsPropagating(RmlEvent* self);
  * C++: bool Rml::Event::IsImmediatePropagating() const
  */
 RMLC_API bool RmlEvent_IsImmediatePropagating(RmlEvent* self);
+/**
+ * Access the dictionary of parameters
+ *
+ * @return The dictionary of parameters
+ * C++: const Dictionary& Rml::Event::GetParameters() const
+ */
+RMLC_API RmlDictionary RmlEvent_GetParameters(RmlEvent* self);
 /**
  * Return the unprojected mouse screen position.
  * Note: Only specified for events with 'mouse_x' and 'mouse_y' parameters.

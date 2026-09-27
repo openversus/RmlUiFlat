@@ -11,7 +11,11 @@ namespace RmlShimGen;
 /// <summary>Walks the configured slice of RmlUi and writes rmlui_c.h, rmlui_c.cpp and the report.</summary>
 public sealed partial class ShimGenerator(ShimConfig config, CppCompilation compilation)
 {
-    private sealed record Wrapped(string CName, string CppName, CppFunction Function, CppClass? Owner, ReturnMap Return, List<ParamMap> Params);
+    private sealed record Wrapped(string CName, string CppName, CppFunction Function, CppClass? Owner, ReturnMap Return, List<ParamMap> Params)
+    {
+        /// <summary>For an instantiated function template (shim.json TemplateInstantiations), its template argument.</summary>
+        public string? TemplateArgument { get; init; }
+    }
 
     private sealed record Unmapped(string CppName, string Reason);
 
@@ -49,7 +53,9 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         foreach (var name in config.Classes)
         {
             var cls = classes[name];
-            var methods = cls.Functions.Where(f => IsWrappable(f) && !(DeclaresRtti(cls) && RttiMethods.Contains(f.Name))).ToList();
+            var methods = cls.Functions
+                .Where(f => (IsWrappable(f) || IsInstantiated(f, cls)) && !(DeclaresRtti(cls) && RttiMethods.Contains(f.Name)))
+                .ToList();
             WrapGroup(methods, cls);
         }
 
@@ -88,11 +94,16 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
 
     private CppNamespace? FindNamespace(string name) => compilation.Namespaces.FirstOrDefault(n => n.Name == name);
 
-    private static bool IsWrappable(CppFunction f) =>
+    private static bool IsWrappable(CppFunction f) => IsCallable(f) && !f.IsFunctionTemplate;
+
+    /// <summary>A function template shim.json lists in TemplateInstantiations.</summary>
+    private bool IsInstantiated(CppFunction f, CppClass? owner) =>
+        IsCallable(f) && f.IsFunctionTemplate && config.TemplateInstantiations.ContainsKey(QualifiedName(f, owner));
+
+    private static bool IsCallable(CppFunction f) =>
         f.Visibility == CppVisibility.Public
         && !f.IsConstructor
         && !f.IsDestructor
-        && !f.IsFunctionTemplate
         && !f.Name.StartsWith("operator", StringComparison.Ordinal)
         && (f.Flags & CppFunctionFlags.Deleted) == 0;
 
@@ -146,15 +157,17 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
 
             try
             {
-                var ret = mapper.MapReturn(f.ReturnType);
+                string? templateArgument = f.IsFunctionTemplate ? config.TemplateInstantiations[cppName] : null;
+                var instantiate = templateArgument == null ? (Func<CppType, CppType>)(t => t) : InstantiateTemplate(f, templateArgument);
+                var ret = mapper.MapReturn(instantiate(f.ReturnType));
                 var outs = DocumentedOut(f, owner);
                 var ps = new List<ParamMap>();
                 for (int i = 0; i < f.Parameters.Count; i++)
                 {
                     var p = f.Parameters[i];
-                    ps.Add(mapper.MapParam(p.Type, ParamName(p, i), outs.Contains(p.Name)));
+                    ps.Add(mapper.MapParam(instantiate(p.Type), ParamName(p, i), outs.Contains(p.Name)));
                 }
-                wrapped.Add(new(cName, cppName, f, owner, ret, ps));
+                wrapped.Add(new(cName, cppName, f, owner, ret, ps) { TemplateArgument = templateArgument });
             }
             catch (UnmappedException e)
             {
@@ -293,6 +306,104 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         }
     }
 
+    /// <summary>Replaces a function template's one type parameter with <paramref name="argument"/> wherever it appears.</summary>
+    private Func<CppType, CppType> InstantiateTemplate(CppFunction f, string argument)
+    {
+        if (f.TemplateParameters.Count != 1 || f.TemplateParameters[0] is not CppTemplateParameterType parameter)
+        {
+            throw new UnmappedException("an instantiation needs exactly one type template parameter");
+        }
+        CppType type = classes.GetValueOrDefault(argument) as CppType ?? typedefs.GetValueOrDefault(argument)
+            ?? throw new InvalidDataException($"TemplateInstantiations names {argument}, which is not a class or typedef in the parsed headers.");
+        CppType Substitute(CppType t) => t switch
+        {
+            CppTemplateParameterType p when p.Name == parameter.Name => type,
+            CppUnexposedType u when u.Name == parameter.Name => type,
+            // clang leaves "const T" unexposed inside a function template.
+            CppUnexposedType u when u.Name == "const " + parameter.Name => new CppQualifiedType(default, default, CppTypeQualifier.Const, type),
+            // The clang cursor and type are only for CppAst's own lookups; the mapper reads the element type and qualifier.
+            CppQualifiedType q => new CppQualifiedType(default, default, q.Qualifier, Substitute(q.ElementType)),
+            CppReferenceType r => new CppReferenceType(default, default, Substitute(r.ElementType)),
+            CppPointerType p => new CppPointerType(default, default, Substitute(p.ElementType)),
+            _ => t,
+        };
+        return Substitute;
+    }
+
+    // Variant crosses as its exact stored value, read with GetReference: no TypeConverter runs. RmlUi's converters have
+    // gaps (a BYTE or CHAR converts to almost nothing) and a gap asserts in debug builds, so the C# side converts instead.
+    private const string VariantHelpers = """
+        [[maybe_unused]] static RmlVariant rmlc_variant_out(const Rml::Variant* v)
+        {
+            RmlVariant out{};
+            if (!v)
+                return out;
+            out.type = static_cast<RmlVariantType>(v->GetType());
+            switch (v->GetType())
+            {
+            case Rml::Variant::BOOL: out.integer = v->GetReference<bool>(); break;
+            case Rml::Variant::BYTE: out.integer = v->GetReference<Rml::byte>(); break;
+            case Rml::Variant::CHAR: out.integer = v->GetReference<char>(); break;
+            case Rml::Variant::INT: out.integer = v->GetReference<int>(); break;
+            case Rml::Variant::INT64: out.integer = v->GetReference<int64_t>(); break;
+            case Rml::Variant::UINT: out.integer = v->GetReference<unsigned int>(); break;
+            case Rml::Variant::UINT64: out.integer = static_cast<int64_t>(v->GetReference<uint64_t>()); break;
+            case Rml::Variant::FLOAT: out.real = v->GetReference<float>(); break;
+            case Rml::Variant::DOUBLE: out.real = v->GetReference<double>(); break;
+            case Rml::Variant::STRING: out.string = v->GetReference<Rml::String>().c_str(); break;
+            case Rml::Variant::VECTOR2: { const auto& x = v->GetReference<Rml::Vector2f>(); out.vector[0] = x.x; out.vector[1] = x.y; break; }
+            case Rml::Variant::VECTOR3: { const auto& x = v->GetReference<Rml::Vector3f>(); out.vector[0] = x.x; out.vector[1] = x.y; out.vector[2] = x.z; break; }
+            case Rml::Variant::VECTOR4: { const auto& x = v->GetReference<Rml::Vector4f>(); out.vector[0] = x.x; out.vector[1] = x.y; out.vector[2] = x.z; out.vector[3] = x.w; break; }
+            case Rml::Variant::COLOURF: { const auto& x = v->GetReference<Rml::Colourf>(); out.vector[0] = x.red; out.vector[1] = x.green; out.vector[2] = x.blue; out.vector[3] = x.alpha; break; }
+            case Rml::Variant::COLOURB: { const auto& x = v->GetReference<Rml::Colourb>(); out.vector[0] = x.red; out.vector[1] = x.green; out.vector[2] = x.blue; out.vector[3] = x.alpha; break; }
+            default: break;
+            }
+            return out;
+        }
+
+        [[maybe_unused]] static Rml::Variant rmlc_variant_in(const RmlVariant& v)
+        {
+            switch (static_cast<Rml::Variant::Type>(v.type))
+            {
+            case Rml::Variant::BOOL: return Rml::Variant(v.integer != 0);
+            case Rml::Variant::BYTE: return Rml::Variant(static_cast<Rml::byte>(v.integer));
+            case Rml::Variant::CHAR: return Rml::Variant(static_cast<char>(v.integer));
+            case Rml::Variant::INT: return Rml::Variant(static_cast<int>(v.integer));
+            case Rml::Variant::INT64: return Rml::Variant(static_cast<int64_t>(v.integer));
+            case Rml::Variant::UINT: return Rml::Variant(static_cast<unsigned int>(v.integer));
+            case Rml::Variant::UINT64: return Rml::Variant(static_cast<uint64_t>(v.integer));
+            case Rml::Variant::FLOAT: return Rml::Variant(static_cast<float>(v.real));
+            case Rml::Variant::DOUBLE: return Rml::Variant(v.real);
+            case Rml::Variant::STRING: return Rml::Variant(Rml::String(v.string ? v.string : ""));
+            case Rml::Variant::VECTOR2: return Rml::Variant(Rml::Vector2f(v.vector[0], v.vector[1]));
+            case Rml::Variant::VECTOR3: return Rml::Variant(Rml::Vector3f(v.vector[0], v.vector[1], v.vector[2]));
+            case Rml::Variant::VECTOR4: return Rml::Variant(Rml::Vector4f(v.vector[0], v.vector[1], v.vector[2], v.vector[3]));
+            case Rml::Variant::COLOURF: return Rml::Variant(Rml::Colourf(v.vector[0], v.vector[1], v.vector[2], v.vector[3]));
+            case Rml::Variant::COLOURB:
+                return Rml::Variant(Rml::Colourb(static_cast<Rml::byte>(v.vector[0]), static_cast<Rml::byte>(v.vector[1]),
+                    static_cast<Rml::byte>(v.vector[2]), static_cast<Rml::byte>(v.vector[3])));
+            default: return Rml::Variant();
+            }
+        }
+
+        [[maybe_unused]] static Rml::Dictionary rmlc_dictionary_in(const RmlDictionary& d)
+        {
+            Rml::Dictionary result;
+            for (size_t i = 0; i < d.count; i++)
+                result[Rml::String(d.data[i].key ? d.data[i].key : "")] = rmlc_variant_in(d.data[i].value);
+            return result;
+        }
+
+        [[maybe_unused]] static RmlDictionary rmlc_dictionary_out(const Rml::Dictionary& d, Rml::Vector<RmlDictionaryEntry>& entries)
+        {
+            entries.clear();
+            for (const auto& [key, value] : d)
+                entries.push_back(RmlDictionaryEntry{ key.c_str(), rmlc_variant_out(&value) });
+            return RmlDictionary{ entries.data(), entries.size() };
+        }
+
+        """;
+
     private static CppType SubstituteTemplateArgument(CppType type, CppClass template, CppClass specialization)
     {
         string? name = type switch
@@ -396,6 +507,40 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
             }
             w.AppendLine($"}} {cName};");
             w.AppendLine();
+        }
+
+        if (mapper.VariantType is { } variantType)
+        {
+            string typeName = TypeMapper.EnumCName(variantType);
+            w.AppendLine($$"""
+                /* Variant and Dictionary */
+                /**
+                 * An Rml::Variant, copied: its exact stored value, unconverted. type 0 means no variant (a null Variant*);
+                 * otherwise the field for its type holds the value, and pointer and list types carry their type only.
+                 */
+                typedef struct RmlVariant
+                {
+                    {{typeName}} type;
+                    int64_t integer;     /* BOOL, BYTE, CHAR, INT, INT64, UINT; UINT64 as its bits */
+                    double real;         /* FLOAT, DOUBLE */
+                    float vector[4];     /* VECTOR2, VECTOR3, VECTOR4, COLOURF by component; COLOURB as 0-255 */
+                    const char* string;  /* STRING: valid until the variant's owner changes, or the call's per-thread copy is reused */
+                } RmlVariant;
+
+                typedef struct RmlDictionaryEntry
+                {
+                    const char* key;
+                    RmlVariant value;
+                } RmlDictionaryEntry;
+
+                /** A Dictionary (ElementAttributes): points into a per-thread copy, valid until the same function is next called on the thread. */
+                typedef struct RmlDictionary
+                {
+                    const RmlDictionaryEntry* data;
+                    size_t count;
+                } RmlDictionary;
+
+                """);
         }
 
         w.AppendLine("/* Upcasts */");
@@ -569,6 +714,11 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
             w.AppendLine();
         }
 
+        if (mapper.VariantType != null)
+        {
+            w.AppendLine(VariantHelpers);
+        }
+
         foreach (var owned in mapper.UsedOwned)
         {
             w.AppendLine($"RMLC_API void {TypeMapper.ReleaseOwnedCName(owned)}({TypeMapper.HandleCName(owned)}* value)");
@@ -600,9 +750,10 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
                 }
             }
             string args = string.Join(", ", f.Params.Select(p => p.CppArg));
-            string call = f.Owner == null ? $"{f.CppName}({args})"
-                : f.Function.IsStatic ? $"{f.CppName}({args})"
-                : $"reinterpret_cast<{f.Owner.FullName}*>(self)->{f.Function.Name}({args})";
+            string templateArgs = f.TemplateArgument == null ? "" : $"<{f.TemplateArgument}>";
+            string call = f.Owner == null ? $"{f.CppName}{templateArgs}({args})"
+                : f.Function.IsStatic ? $"{f.CppName}{templateArgs}({args})"
+                : $"reinterpret_cast<{f.Owner.FullName}*>(self)->{f.Function.Name}{templateArgs}({args})";
             if (f.Return.IsVoid)
             {
                 w.AppendLine($"    {call};");

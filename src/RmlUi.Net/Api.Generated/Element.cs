@@ -446,6 +446,54 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     }
 
     /// <summary>
+    /// Attributes<br/>
+    /// 
+    /// @<br/>
+    /// {<br/>
+    /// Sets an attribute on the element.<br/>
+    /// 
+    /// @param name Name of the attribute.<br/>
+    /// @param value Value of the attribute.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>void Rml::Element::SetAttribute(const String&amp; name, const T&amp; value)</c></remarks>
+    public void SetAttribute(string name, Variant value)
+    {
+        scoped Utf8StringMarshaller.ManagedToUnmanagedIn name_m = new();
+        name_m.FromManaged(name, stackalloc byte[Utf8StringMarshaller.ManagedToUnmanagedIn.BufferSize]);
+        RmlVariantNative value_v = value.ToNative();
+        try
+        {
+            NativeMethods.RmlElement_SetAttribute(Handle, name_m.ToUnmanaged(), value_v);
+        }
+        finally
+        {
+            name_m.Free();
+            Variant.FreeNative(value_v);
+        }
+    }
+
+    /// <summary>
+    /// Gets the specified attribute.<br/>
+    /// 
+    /// @param name Name of the attribute to retrieve.<br/>
+    /// @return A variant representing the attribute, or nullptr if the attribute doesn&apos;t exist.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>Variant* Rml::Element::GetAttribute(const String&amp; name)</c></remarks>
+    public Variant? GetAttribute(string name)
+    {
+        scoped Utf8StringMarshaller.ManagedToUnmanagedIn name_m = new();
+        name_m.FromManaged(name, stackalloc byte[Utf8StringMarshaller.ManagedToUnmanagedIn.BufferSize]);
+        try
+        {
+            return Variant.FromNative(NativeMethods.RmlElement_GetAttribute_String(Handle, name_m.ToUnmanaged()));
+        }
+        finally
+        {
+            name_m.Free();
+        }
+    }
+
+    /// <summary>
     /// Removes the attribute from the element.<br/>
     /// 
     /// @param name Name of the attribute.<br/>
@@ -462,6 +510,25 @@ public readonly unsafe partial struct Element : IEquatable<Element>
         finally
         {
             name_m.Free();
+        }
+    }
+
+    /// <summary>
+    /// Set a group of attributes.<br/>
+    /// 
+    /// @param attributes Attributes to set.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>void Rml::Element::SetAttributes(const ElementAttributes&amp; attributes)</c></remarks>
+    public void SetAttributes(IEnumerable<KeyValuePair<string, Variant>> attributes)
+    {
+        RmlDictionaryNative attributes_d = Variant.ToNative(attributes);
+        try
+        {
+            NativeMethods.RmlElement_SetAttributes(Handle, attributes_d);
+        }
+        finally
+        {
+            Variant.FreeNative(attributes_d);
         }
     }
 
@@ -799,6 +866,67 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     public void RemoveEventListener(EventId id, EventListener listener, bool inCapturePhase = false)
     {
         NativeMethods.RmlElement_RemoveEventListener_EventId_EventListenerPtr_Bool(Handle, id, listener.Handle, (byte)(inCapturePhase ? 1 : 0));
+    }
+
+    /// <summary>
+    /// Sends an event to this element.<br/>
+    /// 
+    /// @param type Event type in string form.<br/>
+    /// @param parameters The event parameters.<br/>
+    /// @return True if the event was not consumed (ie, was prevented from propagating by an element), false if it was.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>bool Rml::Element::DispatchEvent(const String&amp; type, const Dictionary&amp; parameters)</c></remarks>
+    public bool DispatchEvent(string type, IEnumerable<KeyValuePair<string, Variant>> parameters)
+    {
+        scoped Utf8StringMarshaller.ManagedToUnmanagedIn type_m = new();
+        type_m.FromManaged(type, stackalloc byte[Utf8StringMarshaller.ManagedToUnmanagedIn.BufferSize]);
+        RmlDictionaryNative parameters_d = Variant.ToNative(parameters);
+        try
+        {
+            return NativeMethods.RmlElement_DispatchEvent_String_Dictionary(Handle, type_m.ToUnmanaged(), parameters_d) != 0;
+        }
+        finally
+        {
+            type_m.Free();
+            Variant.FreeNative(parameters_d);
+        }
+    }
+
+    /// <summary>
+    /// Sends an event to this element, overriding the default behavior for the given event type.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>bool Rml::Element::DispatchEvent(const String&amp; type, const Dictionary&amp; parameters, bool interruptible, bool bubbles = true)</c></remarks>
+    public bool DispatchEvent(string type, IEnumerable<KeyValuePair<string, Variant>> parameters, bool interruptible, bool bubbles = true)
+    {
+        scoped Utf8StringMarshaller.ManagedToUnmanagedIn type_m = new();
+        type_m.FromManaged(type, stackalloc byte[Utf8StringMarshaller.ManagedToUnmanagedIn.BufferSize]);
+        RmlDictionaryNative parameters_d = Variant.ToNative(parameters);
+        try
+        {
+            return NativeMethods.RmlElement_DispatchEvent_String_Dictionary_Bool_Bool(Handle, type_m.ToUnmanaged(), parameters_d, (byte)(interruptible ? 1 : 0), (byte)(bubbles ? 1 : 0)) != 0;
+        }
+        finally
+        {
+            type_m.Free();
+            Variant.FreeNative(parameters_d);
+        }
+    }
+
+    /// <summary>
+    /// Sends an event to this element by event id.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>bool Rml::Element::DispatchEvent(EventId id, const Dictionary&amp; parameters)</c></remarks>
+    public bool DispatchEvent(EventId id, IEnumerable<KeyValuePair<string, Variant>> parameters)
+    {
+        RmlDictionaryNative parameters_d = Variant.ToNative(parameters);
+        try
+        {
+            return NativeMethods.RmlElement_DispatchEvent_EventId_Dictionary(Handle, id, parameters_d) != 0;
+        }
+        finally
+        {
+            Variant.FreeNative(parameters_d);
+        }
     }
 
     /// <summary>
@@ -1247,6 +1375,17 @@ public readonly unsafe partial struct Element : IEquatable<Element>
         {
             name_m.Free();
         }
+    }
+
+    /// <summary>
+    /// Get the attributes of the element.<br/>
+    /// 
+    /// @return The attributes<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const ElementAttributes&amp; Rml::Element::GetAttributes() const</c></remarks>
+    public IReadOnlyDictionary<string, Variant> GetAttributes()
+    {
+        return Variant.FromNative(NativeMethods.RmlElement_GetAttributes(Handle));
     }
 
     /// <summary>

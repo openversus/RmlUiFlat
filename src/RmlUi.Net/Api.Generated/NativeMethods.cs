@@ -16,6 +16,33 @@ internal readonly struct RmlArray(nint data, nuint count)
     public readonly nuint Count = count;
 }
 
+/// <summary>RmlVariant in rmlui_c.h; Variant converts to and from it.</summary>
+[StructLayout(LayoutKind.Sequential)]
+internal unsafe struct RmlVariantNative
+{
+    public int Type;
+    public long Integer;
+    public double Real;
+    public fixed float Vector[4];
+    public byte* String;
+}
+
+/// <summary>RmlDictionaryEntry in rmlui_c.h.</summary>
+[StructLayout(LayoutKind.Sequential)]
+internal unsafe struct RmlDictionaryEntryNative
+{
+    public byte* Key;
+    public RmlVariantNative Value;
+}
+
+/// <summary>RmlDictionary in rmlui_c.h.</summary>
+internal readonly unsafe struct RmlDictionaryNative(RmlDictionaryEntryNative* data, nuint count)
+{
+    public readonly RmlDictionaryEntryNative* Data = data;
+
+    public readonly nuint Count = count;
+}
+
 /// <summary>The C API in native/generated/rmlui_c.h.</summary>
 internal static unsafe partial class NativeMethods
 {
@@ -565,7 +592,19 @@ internal static unsafe partial class NativeMethods
 
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial void RmlElement_SetAttribute(nint self, byte* name, RmlVariantNative value);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial RmlVariantNative RmlElement_GetAttribute_String(nint self, byte* name);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static partial void RmlElement_RemoveAttribute(nint self, byte* name);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial void RmlElement_SetAttributes(nint self, RmlDictionaryNative attributes);
 
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -674,6 +713,18 @@ internal static unsafe partial class NativeMethods
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static partial void RmlElement_RemoveEventListener_EventId_EventListenerPtr_Bool(nint self, EventId id, nint listener, byte inCapturePhase);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial byte RmlElement_DispatchEvent_String_Dictionary(nint self, byte* type, RmlDictionaryNative parameters);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial byte RmlElement_DispatchEvent_String_Dictionary_Bool_Bool(nint self, byte* type, RmlDictionaryNative parameters, byte interruptible, byte bubbles);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial byte RmlElement_DispatchEvent_EventId_Dictionary(nint self, EventId id, RmlDictionaryNative parameters);
 
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -790,6 +841,10 @@ internal static unsafe partial class NativeMethods
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static partial byte RmlElement_HasAttribute(nint self, byte* name);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial RmlDictionaryNative RmlElement_GetAttributes(nint self);
 
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
@@ -982,6 +1037,10 @@ internal static unsafe partial class NativeMethods
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     internal static partial byte RmlEvent_IsImmediatePropagating(nint self);
+
+    [LibraryImport(LibraryName)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    internal static partial RmlDictionaryNative RmlEvent_GetParameters(nint self);
 
     [LibraryImport(LibraryName)]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]

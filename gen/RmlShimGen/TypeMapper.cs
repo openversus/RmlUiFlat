@@ -17,6 +17,10 @@ public sealed record SpanBase(string ElementCName) : Base;
 public sealed record ListBase(Base Element) : Base;
 /// <summary>An owning RmlUi pointer, std::unique_ptr&lt;T, Rml::Releaser&lt;T&gt;&gt; (ElementPtr).</summary>
 public sealed record OwnedBase(HandleBase Handle) : Base;
+/// <summary>Rml::Variant, copied across as its exact stored value (RmlVariant).</summary>
+public sealed record VariantBase : Base;
+/// <summary>A map of String to Variant (Dictionary, ElementAttributes), copied across as RmlDictionary.</summary>
+public sealed record DictionaryBase : Base;
 
 /// <summary>How one C++ parameter crosses: its C declarations, and the C++ that rebuilds the argument.</summary>
 public sealed record ParamMap(List<string> CDecls, string CppArg, List<string> Pre, List<string> Post)
@@ -60,6 +64,9 @@ public sealed class TypeMapper
 
     /// <summary>List structs reached by any mapped signature: C name to the C type of its items.</summary>
     public SortedDictionary<string, string> UsedLists { get; } = new(StringComparer.Ordinal);
+
+    /// <summary>Rml::Variant::Type, once any mapped signature reaches a Variant or Dictionary; the shim's helpers need it.</summary>
+    public CppEnum? VariantType { get; private set; }
 
     /// <summary>Classes whose owning pointer (OwnedBase) any mapped signature reaches; each gets a release function.</summary>
     public SortedSet<string> UsedOwned { get; } = new(StringComparer.Ordinal);
@@ -110,6 +117,12 @@ public sealed class TypeMapper
 
             case ListBase l when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
                 return new([$"{UseList(l)} {name}"], $"{name}_tmp", ListFromC(l, name), []);
+
+            case VariantBase when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
+                return new([$"RmlVariant {name}"], $"rmlc_variant_in({name})", [], []);
+
+            case DictionaryBase when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
+                return new([$"RmlDictionary {name}"], $"{name}_tmp", [$"Rml::Dictionary {name}_tmp = rmlc_dictionary_in({name});"], []);
 
             case OwnedBase o when ind == Indirection.None:
                 // Ownership passes to RmlUi with the call.
@@ -218,6 +231,22 @@ public sealed class TypeMapper
             case ListBase l when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
                 return new(UseList(l), false, [.. ListToC(l, "rml_ret", "rml_list", out var expr), $"return {expr};"]);
 
+            case VariantBase when ind == Indirection.Ptr:
+                // Points into its owner (an element's attributes); the C# side copies it before anything can change it.
+                return new("RmlVariant", false, ["return rmlc_variant_out(rml_ret);"]);
+
+            case VariantBase when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
+                return new("RmlVariant", false, ["thread_local Rml::Variant rml_variant;", "rml_variant = rml_ret;", "return rmlc_variant_out(&rml_variant);"]);
+
+            case DictionaryBase when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
+                return new("RmlDictionary", false,
+                [
+                    "thread_local Rml::Dictionary rml_dictionary;",
+                    "thread_local Rml::Vector<RmlDictionaryEntry> rml_entries;",
+                    "rml_dictionary = rml_ret;",
+                    "return rmlc_dictionary_out(rml_dictionary, rml_entries);",
+                ]);
+
             case OwnedBase o when ind == Indirection.None:
                 // Ownership passes to the caller, who releases it with Rml{Class}_ReleaseOwned or hands it back.
                 UsedOwned.Add(o.Handle.Class.FullName);
@@ -240,6 +269,8 @@ public sealed class TypeMapper
         SpanBase s => $"Span<{s.ElementCName}>",
         ListBase l => $"List<{Describe(l.Element)}>",
         OwnedBase o => $"Owned<{o.Handle.Class.FullName}>",
+        VariantBase => "Rml::Variant",
+        DictionaryBase => "Dictionary",
         _ => b.ToString(),
     };
 
@@ -338,6 +369,12 @@ public sealed class TypeMapper
                     return new EnumBase(e);
                 case CppClass cls when handleClasses.Contains(cls.FullName):
                     return new HandleBase(cls);
+                case CppClass cls when cls.FullName == "Rml::Variant":
+                    UseVariant(cls);
+                    return new VariantBase();
+                case CppClass cls when AsDictionary(cls) is { } variant:
+                    UseVariant(variant);
+                    return new DictionaryBase();
                 case CppClass cls when cls.FullName.StartsWith("Rml::Span<", StringComparison.Ordinal):
                     return MapSpan(cls);
                 // Template arguments arrive with RmlUi's String typedef already looked through.
@@ -392,6 +429,33 @@ public sealed class TypeMapper
             (HandleBase, true) or (StringBase, false) => new ListBase(element),
             _ => throw new UnmappedException(what),
         };
+    }
+
+    /// <summary>
+    /// A map from String to Variant, whichever container RmlUi's config picked for SmallUnorderedMap (itlib::flat_map or
+    /// an unordered map): recognised by its template arguments, not its name. Returns the Variant class.
+    /// </summary>
+    private CppClass? AsDictionary(CppClass cls)
+    {
+        var args = cls.TemplateSpecializedArguments;
+        if (args.Count < 2 || args[1].ArgAsType is not CppClass { FullName: "Rml::Variant" } variant || args[0].ArgAsType is not { } key)
+        {
+            return null;
+        }
+        try
+        {
+            return ClassifyBase(key) is StringBase ? variant : null;
+        }
+        catch (UnmappedException)
+        {
+            return null;
+        }
+    }
+
+    private void UseVariant(CppClass variant)
+    {
+        VariantType ??= variant.Enums.FirstOrDefault(e => e.Name == "Type") ?? throw new UnmappedException("Rml::Variant has no Type enum");
+        UsedEnums[VariantType.FullName] = VariantType;
     }
 
     /// <summary>Only RmlUi's Releaser deleter: C# can hand the object back to RmlUi, but cannot run another deleter.</summary>

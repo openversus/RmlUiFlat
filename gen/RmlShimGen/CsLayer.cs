@@ -117,6 +117,14 @@ public sealed partial class ShimGenerator
                     [$"var {b}_h = new List<nint>();", $"foreach (var item in {n}) {{ {b}_h.Add(item.Handle); }}"],
                     $"fixed (nint* {b}_p = CollectionsMarshal.AsSpan({b}_h))", [], [], false);
 
+            case VariantBase:
+                return new($"Variant {n}", n, $"RmlVariantNative {n}", $"{b}_v", [$"RmlVariantNative {b}_v = {n}.ToNative();"], null, [],
+                    [$"Variant.FreeNative({b}_v);"], false);
+
+            case DictionaryBase:
+                return new($"IEnumerable<KeyValuePair<string, Variant>> {n}", n, $"RmlDictionaryNative {n}", $"{b}_d",
+                    [$"RmlDictionaryNative {b}_d = Variant.ToNative({n});"], null, [], [$"Variant.FreeNative({b}_d);"], false);
+
             case OwnedBase o:
                 // Taken on the call, whatever RmlUi returns: the C++ ElementPtr is moved from either way. Nullable so
                 // AppendChild(document.CreateElement("div")) needs no '!'; a null (a failed create) throws on the call.
@@ -201,6 +209,8 @@ public sealed partial class ShimGenerator
         EnumBase e => new(CsEnumName(e.Enum), CsEnumName(e.Enum), x => x),
         ListBase l => new($"{CsListElement(l)}[]", "RmlArray", x => ListFromNative(l, x)),
         OwnedBase o => new($"Owned{ShortName(o.Handle.Class.FullName)}?", "nint", x => $"Owned{ShortName(o.Handle.Class.FullName)}.Adopt({x})"),
+        VariantBase => new("Variant?", "RmlVariantNative", x => $"Variant.FromNative({x})"),
+        DictionaryBase => new("IReadOnlyDictionary<string, Variant>", "RmlDictionaryNative", x => $"Variant.FromNative({x})"),
         _ => throw new InvalidOperationException($"no C# return mapping for {TypeMapper.Describe(r.Base)}"),
     };
 
@@ -595,6 +605,38 @@ public sealed partial class ShimGenerator
             w.AppendLine("    public readonly nuint Count = count;");
             w.AppendLine("}");
             w.AppendLine();
+            if (mapper.VariantType != null)
+            {
+                w.AppendLine("""
+                    /// <summary>RmlVariant in rmlui_c.h; Variant converts to and from it.</summary>
+                    [StructLayout(LayoutKind.Sequential)]
+                    internal unsafe struct RmlVariantNative
+                    {
+                        public int Type;
+                        public long Integer;
+                        public double Real;
+                        public fixed float Vector[4];
+                        public byte* String;
+                    }
+
+                    /// <summary>RmlDictionaryEntry in rmlui_c.h.</summary>
+                    [StructLayout(LayoutKind.Sequential)]
+                    internal unsafe struct RmlDictionaryEntryNative
+                    {
+                        public byte* Key;
+                        public RmlVariantNative Value;
+                    }
+
+                    /// <summary>RmlDictionary in rmlui_c.h.</summary>
+                    internal readonly unsafe struct RmlDictionaryNative(RmlDictionaryEntryNative* data, nuint count)
+                    {
+                        public readonly RmlDictionaryEntryNative* Data = data;
+
+                        public readonly nuint Count = count;
+                    }
+
+                    """);
+            }
             w.AppendLine("/// <summary>The C API in native/generated/rmlui_c.h.</summary>");
             w.AppendLine("internal static unsafe partial class NativeMethods");
             w.AppendLine("{");
@@ -665,7 +707,8 @@ public sealed partial class ShimGenerator
         foreach (var group in mapper.UsedEnums.Values.GroupBy(e => CsEnumName(e).Contains('.') ? CsEnumName(e)[..CsEnumName(e).LastIndexOf('.')] : ""))
         {
             var containers = group.Key.Length == 0 ? [] : group.Key.Split('.');
-            var handles = new HashSet<string>(config.Classes.Concat(config.OpaqueTypes));
+            // Handles, and Variant (hand-written in Api/Variant.cs), are structs: their nested enums go in a partial struct.
+            var handles = new HashSet<string>(config.Classes.Concat(config.OpaqueTypes)) { "Rml::Variant" };
             string indent = "";
             for (int i = 0; i < containers.Length; i++)
             {

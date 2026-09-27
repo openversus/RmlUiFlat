@@ -70,9 +70,11 @@ internal static unsafe partial class Program
         var name = ElementFormControlInput.From(document.GetElementById("name"));
 
         int clicks = 0;
-        window.Listen(button, "click", _ =>
+        IReadOnlyDictionary<string, Variant>? clickParameters = null;
+        window.Listen(button, "click", e =>
         {
             clicks++;
+            clickParameters = e.GetParameters();
             status.SetInnerRML($"Clicked {clicks} time{(clicks == 1 ? "" : "s")} — handled in C#. Name: {name.GetValue()}");
         });
 
@@ -84,7 +86,7 @@ internal static unsafe partial class Program
         // The host releases elements nothing attached or disposed, and reports each: the self-test leaves one on purpose.
         var leaked = new List<string>();
         OwnedElement.Leaked = leaked.Add;
-        int exitCode = SelfTest(window, document, button, name, status, () => clicks);
+        int exitCode = SelfTest(window, document, button, name, status, () => clicks, () => clickParameters);
         window.Dispose();
         Console.WriteLine($"released by the host: [{string.Join(", ", leaked)}]");
         if (leaked.Count != 1 || leaked[0] != "span#dropped")
@@ -99,7 +101,9 @@ internal static unsafe partial class Program
     /// Clicks the button through RmlUi's own input path, then checks what the handler wrote back and a C bool round trip,
     /// and on Linux saves a screenshot. Returns the exit code.
     /// </summary>
-    private static int SelfTest(RmlWindow window, ElementDocument document, Element button, ElementFormControlInput name, Element status, Func<int> clicks)
+    private static int SelfTest(
+        RmlWindow window, ElementDocument document, Element button, ElementFormControlInput name, Element status, Func<int> clicks,
+        Func<IReadOnlyDictionary<string, Variant>?> clickParameters)
     {
         int exitCode = 0;
 
@@ -176,6 +180,46 @@ internal static unsafe partial class Program
         if (selectionStart != 0 || selectionEnd != 4 || selected != "Open")
         {
             Console.Error.WriteLine("FAIL: expected the selection 0..4 \"Open\"");
+            exitCode = 1;
+        }
+
+        // Event parameters: where the click landed, which key was pressed, and a dictionary sent with a custom event.
+        var clicked = clickParameters();
+        Console.WriteLine($"click parameters: {(clicked == null ? "none" : string.Join(", ", clicked.Select(p => $"{p.Key}={p.Value}")))}");
+        if (clicked == null || clicked["mouse_x"].ToInt() != x || clicked["mouse_y"].ToInt() != y)
+        {
+            Console.Error.WriteLine($"FAIL: expected mouse_x={x} and mouse_y={y} in the click's parameters");
+            exitCode = 1;
+        }
+        Input.KeyIdentifier? pressed = null;
+        // Capture phase: the name box has focus, and a focused text input stops the keys it handles from bubbling.
+        window.Listen(document, "keydown", e => pressed = (Input.KeyIdentifier)e.GetParameters()["key_identifier"].ToInt(), inCapturePhase: true);
+        window.Context.ProcessKeyDown(Input.KeyIdentifier.KI_A, 0);
+        IReadOnlyDictionary<string, Variant>? received = null;
+        window.Listen(status, "custom", e => received = e.GetParameters());
+        status.DispatchEvent("custom", new Dictionary<string, Variant> { ["n"] = 7, ["s"] = "text", ["f"] = 1.5f, ["on"] = true });
+        Console.WriteLine($"key: {pressed}; custom: {(received == null ? "none" : string.Join(", ", received.Select(p => $"{p.Key}={p.Value} ({p.Value.Kind})")))}");
+        if (pressed != Input.KeyIdentifier.KI_A || received == null || received.Count != 4
+            || received["n"] != 7 || received["s"].ToString() != "text" || received["f"].ToDouble() != 1.5 || !received["on"].ToBool())
+        {
+            Console.Error.WriteLine("FAIL: expected KI_A, and the custom event's four parameters as sent");
+            exitCode = 1;
+        }
+
+        // Attributes: set from any value (SetAttribute<Variant>), read back as a Variant, null when absent.
+        name.SetAttribute("value", "Player One");
+        button.SetAttribute("data-n", "42");
+        button.SetAttribute("data-f", 2.5f);
+        var id = name.GetAttribute("id");
+        var missing = name.GetAttribute("no-such-attribute");
+        var n = button.GetAttribute("data-n");
+        var f = button.GetAttribute("data-f");
+        var all = button.GetAttributes();
+        Console.WriteLine($"attributes: value={name.GetValue()}, id={id}, missing={missing?.ToString() ?? "null"}, data-n={n?.ToInt()}, data-f={f} ({f?.Kind}), button has [{string.Join(", ", all.Keys)}]");
+        if (name.GetValue() != "Player One" || id?.ToString() != "name" || missing != null || n?.ToInt() != 42
+            || f?.Kind != Variant.Type.FLOAT || f?.ToDouble() != 2.5 || !all.ContainsKey("id") || !all.ContainsKey("data-n"))
+        {
+            Console.Error.WriteLine("FAIL: attributes");
             exitCode = 1;
         }
 

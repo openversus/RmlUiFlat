@@ -494,3 +494,38 @@ public static partial class Style
 
 }
 
+public readonly unsafe partial struct Variant
+{
+    /// <summary>Rml::Variant::Type</summary>
+    public enum Type : int
+    {
+        NONE = 45,
+        BOOL = 66,
+        BYTE = 98,
+        CHAR = 99,
+        FLOAT = 102,
+        DOUBLE = 100,
+        INT = 105,
+        INT64 = 73,
+        UINT = 117,
+        UINT64 = 85,
+        STRING = 115,
+        VECTOR2 = 50,
+        VECTOR3 = 51,
+        VECTOR4 = 52,
+        COLOURF = 103,
+        COLOURB = 104,
+        SCRIPTINTERFACE = 112,
+        TRANSFORMPTR = 116,
+        TRANSITIONLIST = 84,
+        ANIMATIONLIST = 65,
+        DECORATORSPTR = 68,
+        FILTERSPTR = 70,
+        FONTEFFECTSPTR = 69,
+        COLORSTOPLIST = 67,
+        BOXSHADOWLIST = 83,
+        VOIDPTR = 42,
+    }
+
+}
+

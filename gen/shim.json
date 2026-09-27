@@ -48,6 +48,8 @@
   ],
   // String GetInnerRML() already covers it; C# would give both the same signature.
   "IgnoredFunctions": [ "RmlElement_GetInnerRML_String" ],
+  // SetAttribute exists only as a template; with Variant, C#'s implicit conversions cover every value type.
+  "TemplateInstantiations": { "Rml::Element::SetAttribute": "Rml::Variant" },
   "Renames": {},
 
   "NativeOutput": "../native/generated",

@@ -26,6 +26,22 @@ when the element is something else, so `ElementFormControlInput.From(document.Ge
 reads a text box. A `Property` prints as RmlUi writes it (`element.GetProperty("display")` is `inline-block` in an
 interpolated string).
 
+RmlUi's values (`Rml::Variant`: event parameters, attributes) are a C# `Variant`, made implicitly from a string,
+number, bool, `Vector2f` or `Colourb` and read with `ToInt`, `ToDouble`, `ToBool`, `ToString` and the like, which
+convert between kinds. Dictionaries (event parameters, `ElementAttributes`) come back as
+`IReadOnlyDictionary<string, Variant>` and go in as any `IEnumerable<KeyValuePair<string, Variant>>`:
+
+```csharp
+window.Listen(document, "keydown", e =>
+{
+    var key = (Input.KeyIdentifier)e.GetParameters()["key_identifier"].ToInt();
+}, inCapturePhase: true);   // a focused text input stops the keys it handles from bubbling up to the document
+
+input.SetAttribute("value", "Player One");            // SetAttribute<Variant>: any value type
+int max = slider.GetAttribute("max")?.ToInt() ?? 100; // null when the attribute is absent
+element.DispatchEvent("changed", new Dictionary<string, Variant> { ["index"] = 3, ["name"] = "dx12" });
+```
+
 Elements made in code are owned until attached. `CreateElement`, `CreateTextNode`, `Clone`, `RemoveChild` and
 `ReplaceChild` return an `OwnedElement` (RmlUi's `ElementPtr`); `AppendChild`, `InsertBefore`, `ReplaceChild`,
 `ElementFormControlSelect.Add` and `ElementTabSet.SetTab`/`SetPanel` take it, and RmlUi owns it from then on:
@@ -116,7 +132,7 @@ native/rmlui_c_manual.h, .cpp             ← hand-written: C++ interfaces RmlUi
    │  same RmlShimGen run
    ├─▶ src/RmlUi.Net/Api.Generated/       ← the C# API above (CsLayer.cs), LibraryImports of its own
    └─▶ src/RmlUi.Net/Generated/           ← HexaGen's raw bindings over the C API (namespace RmlUi.Interop)
-src/RmlUi.Net/Api/                        ← hand-written C#: EventListener.Create (paired with rmlui_c_manual.cpp), OwnedElement
+src/RmlUi.Net/Api/                        ← hand-written C#: EventListener.Create (paired with rmlui_c_manual.cpp), OwnedElement, Variant
 ```
 
 Nothing under `generated/`, `Generated/` or `Api.Generated/` is edited by hand; the generator recreates those
@@ -145,6 +161,9 @@ How a C++ type crosses:
 | other `@param[out]` references and pointers | `T*` | `out T` | a non-const reference RmlUi does not document as `[out]` stays `ref` |
 | `ElementPtr` return | `RmlElement*`, released to the caller | `OwnedElement?` | `RmlElement_ReleaseOwned` releases one never handed back |
 | `ElementPtr` parameter | `RmlElement*`, taken by RmlUi | `OwnedElement?` | taken on the call whatever it returns; null throws `ArgumentNullException` |
+| `Variant` | `RmlVariant`: its type and exact stored value, read with `GetReference` | `Variant` (`Variant?` for a `Variant*`) | no RmlUi `TypeConverter` runs (its table has gaps, which assert in debug builds); C# converts; type 0 is a null `Variant*` |
+| `Dictionary`, `ElementAttributes` | `RmlDictionary`: key and `RmlVariant` entries | `IReadOnlyDictionary<string, Variant>` in, `IEnumerable<KeyValuePair<string, Variant>>` out | per-thread copy in C for returns |
+| function template listed in `TemplateInstantiations` | one C function for that argument | a method | `SetAttribute` → `SetAttribute<Rml::Variant>` |
 | `bool` | `bool` | `bool` (one byte on the wire) | |
 | `long` | `int64_t` | `long` | 32-bit on Windows, 64-bit on Linux |
 
@@ -248,5 +267,5 @@ the demo runs with Vulkan and with `--renderer=opengl`. The in-game DLL has no S
 
 - In-game: a DXGI Present hook and RmlUi's DX11 renderer (the game's default) and DX12 renderer (`-d3d12`), chosen
   from the device the game created.
-- Unmapped in scope (see shim-report.md): `Dictionary` and `Variant` (event parameters, attribute values, and what
-  setting a `Property` takes).
+- Not mapped, by choice so far (see shim-report.md): RmlUi's data models (data binding), touch input, instancers
+  (C++ interfaces for custom elements), and the style and render internals.

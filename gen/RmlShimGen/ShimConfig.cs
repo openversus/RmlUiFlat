@@ -33,6 +33,12 @@ public sealed class ShimConfig
     /// <summary>Qualified C++ names (Rml::Element::Focus) or generated C names to leave out.</summary>
     public List<string> IgnoredFunctions { get; set; } = [];
 
+    /// <summary>
+    /// Function templates to wrap, by qualified C++ name, with the type for their one template parameter:
+    /// <c>"Rml::Element::SetAttribute": "Rml::Variant"</c> wraps <c>SetAttribute&lt;Rml::Variant&gt;</c>.
+    /// </summary>
+    public Dictionary<string, string> TemplateInstantiations { get; set; } = [];
+
     /// <summary>Generated C name to final C name.</summary>
     public Dictionary<string, string> Renames { get; set; } = [];
 

@@ -509,12 +509,42 @@ public readonly unsafe partial struct ElementFormControlSelect : IEquatable<Elem
     public void SetPseudoClass(string pseudoClass, bool activate) => ((Element)this).SetPseudoClass(pseudoClass, activate);
 
     /// <summary>
+    /// Attributes<br/>
+    /// 
+    /// @<br/>
+    /// {<br/>
+    /// Sets an attribute on the element.<br/>
+    /// 
+    /// @param name Name of the attribute.<br/>
+    /// @param value Value of the attribute.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>void Rml::Element::SetAttribute(const String&amp; name, const T&amp; value)</c></remarks>
+    public void SetAttribute(string name, Variant value) => ((Element)this).SetAttribute(name, value);
+
+    /// <summary>
+    /// Gets the specified attribute.<br/>
+    /// 
+    /// @param name Name of the attribute to retrieve.<br/>
+    /// @return A variant representing the attribute, or nullptr if the attribute doesn&apos;t exist.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>Variant* Rml::Element::GetAttribute(const String&amp; name)</c></remarks>
+    public Variant? GetAttribute(string name) => ((Element)this).GetAttribute(name);
+
+    /// <summary>
     /// Removes the attribute from the element.<br/>
     /// 
     /// @param name Name of the attribute.<br/>
     /// </summary>
     /// <remarks>C++: <c>void Rml::Element::RemoveAttribute(const String&amp; name)</c></remarks>
     public void RemoveAttribute(string name) => ((Element)this).RemoveAttribute(name);
+
+    /// <summary>
+    /// Set a group of attributes.<br/>
+    /// 
+    /// @param attributes Attributes to set.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>void Rml::Element::SetAttributes(const ElementAttributes&amp; attributes)</c></remarks>
+    public void SetAttributes(IEnumerable<KeyValuePair<string, Variant>> attributes) => ((Element)this).SetAttributes(attributes);
 
     /// <summary>
     /// Gets the outermost focus element down the tree from this node.<br/>
@@ -734,6 +764,28 @@ public readonly unsafe partial struct ElementFormControlSelect : IEquatable<Elem
     /// </summary>
     /// <remarks>C++: <c>void Rml::Element::RemoveEventListener(EventId id, EventListener* listener, bool in_capture_phase = false)</c></remarks>
     public void RemoveEventListener(EventId id, EventListener listener, bool inCapturePhase = false) => ((Element)this).RemoveEventListener(id, listener, inCapturePhase);
+
+    /// <summary>
+    /// Sends an event to this element.<br/>
+    /// 
+    /// @param type Event type in string form.<br/>
+    /// @param parameters The event parameters.<br/>
+    /// @return True if the event was not consumed (ie, was prevented from propagating by an element), false if it was.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>bool Rml::Element::DispatchEvent(const String&amp; type, const Dictionary&amp; parameters)</c></remarks>
+    public bool DispatchEvent(string type, IEnumerable<KeyValuePair<string, Variant>> parameters) => ((Element)this).DispatchEvent(type, parameters);
+
+    /// <summary>
+    /// Sends an event to this element, overriding the default behavior for the given event type.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>bool Rml::Element::DispatchEvent(const String&amp; type, const Dictionary&amp; parameters, bool interruptible, bool bubbles = true)</c></remarks>
+    public bool DispatchEvent(string type, IEnumerable<KeyValuePair<string, Variant>> parameters, bool interruptible, bool bubbles = true) => ((Element)this).DispatchEvent(type, parameters, interruptible, bubbles);
+
+    /// <summary>
+    /// Sends an event to this element by event id.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>bool Rml::Element::DispatchEvent(EventId id, const Dictionary&amp; parameters)</c></remarks>
+    public bool DispatchEvent(EventId id, IEnumerable<KeyValuePair<string, Variant>> parameters) => ((Element)this).DispatchEvent(id, parameters);
 
     /// <summary>
     /// Scrolls the parent element&apos;s contents so that this element is visible.<br/>
@@ -988,6 +1040,14 @@ public readonly unsafe partial struct ElementFormControlSelect : IEquatable<Elem
     /// </summary>
     /// <remarks>C++: <c>bool Rml::Element::HasAttribute(const String&amp; name) const</c></remarks>
     public bool HasAttribute(string name) => ((Element)this).HasAttribute(name);
+
+    /// <summary>
+    /// Get the attributes of the element.<br/>
+    /// 
+    /// @return The attributes<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const ElementAttributes&amp; Rml::Element::GetAttributes() const</c></remarks>
+    public IReadOnlyDictionary<string, Variant> GetAttributes() => ((Element)this).GetAttributes();
 
     /// <summary>
     /// Returns the number of attributes on the element.<br/>

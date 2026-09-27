@@ -403,6 +403,32 @@ static_assert(static_cast<long long>(RmlStylePosition_Static) == static_cast<lon
 static_assert(static_cast<long long>(RmlStylePosition_Relative) == static_cast<long long>(Rml::Style::Position::Relative));
 static_assert(static_cast<long long>(RmlStylePosition_Absolute) == static_cast<long long>(Rml::Style::Position::Absolute));
 static_assert(static_cast<long long>(RmlStylePosition_Fixed) == static_cast<long long>(Rml::Style::Position::Fixed));
+static_assert(static_cast<long long>(RmlVariantType_NONE) == static_cast<long long>(Rml::Variant::Type::NONE));
+static_assert(static_cast<long long>(RmlVariantType_BOOL) == static_cast<long long>(Rml::Variant::Type::BOOL));
+static_assert(static_cast<long long>(RmlVariantType_BYTE) == static_cast<long long>(Rml::Variant::Type::BYTE));
+static_assert(static_cast<long long>(RmlVariantType_CHAR) == static_cast<long long>(Rml::Variant::Type::CHAR));
+static_assert(static_cast<long long>(RmlVariantType_FLOAT) == static_cast<long long>(Rml::Variant::Type::FLOAT));
+static_assert(static_cast<long long>(RmlVariantType_DOUBLE) == static_cast<long long>(Rml::Variant::Type::DOUBLE));
+static_assert(static_cast<long long>(RmlVariantType_INT) == static_cast<long long>(Rml::Variant::Type::INT));
+static_assert(static_cast<long long>(RmlVariantType_INT64) == static_cast<long long>(Rml::Variant::Type::INT64));
+static_assert(static_cast<long long>(RmlVariantType_UINT) == static_cast<long long>(Rml::Variant::Type::UINT));
+static_assert(static_cast<long long>(RmlVariantType_UINT64) == static_cast<long long>(Rml::Variant::Type::UINT64));
+static_assert(static_cast<long long>(RmlVariantType_STRING) == static_cast<long long>(Rml::Variant::Type::STRING));
+static_assert(static_cast<long long>(RmlVariantType_VECTOR2) == static_cast<long long>(Rml::Variant::Type::VECTOR2));
+static_assert(static_cast<long long>(RmlVariantType_VECTOR3) == static_cast<long long>(Rml::Variant::Type::VECTOR3));
+static_assert(static_cast<long long>(RmlVariantType_VECTOR4) == static_cast<long long>(Rml::Variant::Type::VECTOR4));
+static_assert(static_cast<long long>(RmlVariantType_COLOURF) == static_cast<long long>(Rml::Variant::Type::COLOURF));
+static_assert(static_cast<long long>(RmlVariantType_COLOURB) == static_cast<long long>(Rml::Variant::Type::COLOURB));
+static_assert(static_cast<long long>(RmlVariantType_SCRIPTINTERFACE) == static_cast<long long>(Rml::Variant::Type::SCRIPTINTERFACE));
+static_assert(static_cast<long long>(RmlVariantType_TRANSFORMPTR) == static_cast<long long>(Rml::Variant::Type::TRANSFORMPTR));
+static_assert(static_cast<long long>(RmlVariantType_TRANSITIONLIST) == static_cast<long long>(Rml::Variant::Type::TRANSITIONLIST));
+static_assert(static_cast<long long>(RmlVariantType_ANIMATIONLIST) == static_cast<long long>(Rml::Variant::Type::ANIMATIONLIST));
+static_assert(static_cast<long long>(RmlVariantType_DECORATORSPTR) == static_cast<long long>(Rml::Variant::Type::DECORATORSPTR));
+static_assert(static_cast<long long>(RmlVariantType_FILTERSPTR) == static_cast<long long>(Rml::Variant::Type::FILTERSPTR));
+static_assert(static_cast<long long>(RmlVariantType_FONTEFFECTSPTR) == static_cast<long long>(Rml::Variant::Type::FONTEFFECTSPTR));
+static_assert(static_cast<long long>(RmlVariantType_COLORSTOPLIST) == static_cast<long long>(Rml::Variant::Type::COLORSTOPLIST));
+static_assert(static_cast<long long>(RmlVariantType_BOXSHADOWLIST) == static_cast<long long>(Rml::Variant::Type::BOXSHADOWLIST));
+static_assert(static_cast<long long>(RmlVariantType_VOIDPTR) == static_cast<long long>(Rml::Variant::Type::VOIDPTR));
 
 RMLC_API RmlElement* RmlElementDocument_AsElement(RmlElementDocument* self)
 {
@@ -462,6 +488,75 @@ RMLC_API RmlElement* RmlElementProgress_AsElement(RmlElementProgress* self)
 RMLC_API RmlElement* RmlElementTabSet_AsElement(RmlElementTabSet* self)
 {
     return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementTabSet*>(self)));
+}
+
+[[maybe_unused]] static RmlVariant rmlc_variant_out(const Rml::Variant* v)
+{
+    RmlVariant out{};
+    if (!v)
+        return out;
+    out.type = static_cast<RmlVariantType>(v->GetType());
+    switch (v->GetType())
+    {
+    case Rml::Variant::BOOL: out.integer = v->GetReference<bool>(); break;
+    case Rml::Variant::BYTE: out.integer = v->GetReference<Rml::byte>(); break;
+    case Rml::Variant::CHAR: out.integer = v->GetReference<char>(); break;
+    case Rml::Variant::INT: out.integer = v->GetReference<int>(); break;
+    case Rml::Variant::INT64: out.integer = v->GetReference<int64_t>(); break;
+    case Rml::Variant::UINT: out.integer = v->GetReference<unsigned int>(); break;
+    case Rml::Variant::UINT64: out.integer = static_cast<int64_t>(v->GetReference<uint64_t>()); break;
+    case Rml::Variant::FLOAT: out.real = v->GetReference<float>(); break;
+    case Rml::Variant::DOUBLE: out.real = v->GetReference<double>(); break;
+    case Rml::Variant::STRING: out.string = v->GetReference<Rml::String>().c_str(); break;
+    case Rml::Variant::VECTOR2: { const auto& x = v->GetReference<Rml::Vector2f>(); out.vector[0] = x.x; out.vector[1] = x.y; break; }
+    case Rml::Variant::VECTOR3: { const auto& x = v->GetReference<Rml::Vector3f>(); out.vector[0] = x.x; out.vector[1] = x.y; out.vector[2] = x.z; break; }
+    case Rml::Variant::VECTOR4: { const auto& x = v->GetReference<Rml::Vector4f>(); out.vector[0] = x.x; out.vector[1] = x.y; out.vector[2] = x.z; out.vector[3] = x.w; break; }
+    case Rml::Variant::COLOURF: { const auto& x = v->GetReference<Rml::Colourf>(); out.vector[0] = x.red; out.vector[1] = x.green; out.vector[2] = x.blue; out.vector[3] = x.alpha; break; }
+    case Rml::Variant::COLOURB: { const auto& x = v->GetReference<Rml::Colourb>(); out.vector[0] = x.red; out.vector[1] = x.green; out.vector[2] = x.blue; out.vector[3] = x.alpha; break; }
+    default: break;
+    }
+    return out;
+}
+
+[[maybe_unused]] static Rml::Variant rmlc_variant_in(const RmlVariant& v)
+{
+    switch (static_cast<Rml::Variant::Type>(v.type))
+    {
+    case Rml::Variant::BOOL: return Rml::Variant(v.integer != 0);
+    case Rml::Variant::BYTE: return Rml::Variant(static_cast<Rml::byte>(v.integer));
+    case Rml::Variant::CHAR: return Rml::Variant(static_cast<char>(v.integer));
+    case Rml::Variant::INT: return Rml::Variant(static_cast<int>(v.integer));
+    case Rml::Variant::INT64: return Rml::Variant(static_cast<int64_t>(v.integer));
+    case Rml::Variant::UINT: return Rml::Variant(static_cast<unsigned int>(v.integer));
+    case Rml::Variant::UINT64: return Rml::Variant(static_cast<uint64_t>(v.integer));
+    case Rml::Variant::FLOAT: return Rml::Variant(static_cast<float>(v.real));
+    case Rml::Variant::DOUBLE: return Rml::Variant(v.real);
+    case Rml::Variant::STRING: return Rml::Variant(Rml::String(v.string ? v.string : ""));
+    case Rml::Variant::VECTOR2: return Rml::Variant(Rml::Vector2f(v.vector[0], v.vector[1]));
+    case Rml::Variant::VECTOR3: return Rml::Variant(Rml::Vector3f(v.vector[0], v.vector[1], v.vector[2]));
+    case Rml::Variant::VECTOR4: return Rml::Variant(Rml::Vector4f(v.vector[0], v.vector[1], v.vector[2], v.vector[3]));
+    case Rml::Variant::COLOURF: return Rml::Variant(Rml::Colourf(v.vector[0], v.vector[1], v.vector[2], v.vector[3]));
+    case Rml::Variant::COLOURB:
+        return Rml::Variant(Rml::Colourb(static_cast<Rml::byte>(v.vector[0]), static_cast<Rml::byte>(v.vector[1]),
+            static_cast<Rml::byte>(v.vector[2]), static_cast<Rml::byte>(v.vector[3])));
+    default: return Rml::Variant();
+    }
+}
+
+[[maybe_unused]] static Rml::Dictionary rmlc_dictionary_in(const RmlDictionary& d)
+{
+    Rml::Dictionary result;
+    for (size_t i = 0; i < d.count; i++)
+        result[Rml::String(d.data[i].key ? d.data[i].key : "")] = rmlc_variant_in(d.data[i].value);
+    return result;
+}
+
+[[maybe_unused]] static RmlDictionary rmlc_dictionary_out(const Rml::Dictionary& d, Rml::Vector<RmlDictionaryEntry>& entries)
+{
+    entries.clear();
+    for (const auto& [key, value] : d)
+        entries.push_back(RmlDictionaryEntry{ key.c_str(), rmlc_variant_out(&value) });
+    return RmlDictionary{ entries.data(), entries.size() };
 }
 
 RMLC_API void RmlElement_ReleaseOwned(RmlElement* value)
@@ -1134,9 +1229,26 @@ RMLC_API void RmlElement_SetPseudoClass(RmlElement* self, const char* pseudo_cla
     reinterpret_cast<Rml::Element*>(self)->SetPseudoClass(Rml::String(pseudo_class ? pseudo_class : ""), activate);
 }
 
+RMLC_API void RmlElement_SetAttribute(RmlElement* self, const char* name, RmlVariant value)
+{
+    reinterpret_cast<Rml::Element*>(self)->SetAttribute<Rml::Variant>(Rml::String(name ? name : ""), rmlc_variant_in(value));
+}
+
+RMLC_API RmlVariant RmlElement_GetAttribute_String(RmlElement* self, const char* name)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetAttribute(Rml::String(name ? name : ""));
+    return rmlc_variant_out(rml_ret);
+}
+
 RMLC_API void RmlElement_RemoveAttribute(RmlElement* self, const char* name)
 {
     reinterpret_cast<Rml::Element*>(self)->RemoveAttribute(Rml::String(name ? name : ""));
+}
+
+RMLC_API void RmlElement_SetAttributes(RmlElement* self, RmlDictionary attributes)
+{
+    Rml::Dictionary attributes_tmp = rmlc_dictionary_in(attributes);
+    reinterpret_cast<Rml::Element*>(self)->SetAttributes(attributes_tmp);
 }
 
 RMLC_API RmlElement* RmlElement_GetFocusLeafNode(RmlElement* self)
@@ -1289,6 +1401,27 @@ RMLC_API void RmlElement_RemoveEventListener_String_EventListenerPtr_Bool(RmlEle
 RMLC_API void RmlElement_RemoveEventListener_EventId_EventListenerPtr_Bool(RmlElement* self, RmlEventId id, RmlEventListener* listener, bool in_capture_phase)
 {
     reinterpret_cast<Rml::Element*>(self)->RemoveEventListener(static_cast<Rml::EventId>(id), reinterpret_cast<Rml::EventListener*>(listener), in_capture_phase);
+}
+
+RMLC_API bool RmlElement_DispatchEvent_String_Dictionary(RmlElement* self, const char* type, RmlDictionary parameters)
+{
+    Rml::Dictionary parameters_tmp = rmlc_dictionary_in(parameters);
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->DispatchEvent(Rml::String(type ? type : ""), parameters_tmp);
+    return rml_ret;
+}
+
+RMLC_API bool RmlElement_DispatchEvent_String_Dictionary_Bool_Bool(RmlElement* self, const char* type, RmlDictionary parameters, bool interruptible, bool bubbles)
+{
+    Rml::Dictionary parameters_tmp = rmlc_dictionary_in(parameters);
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->DispatchEvent(Rml::String(type ? type : ""), parameters_tmp, interruptible, bubbles);
+    return rml_ret;
+}
+
+RMLC_API bool RmlElement_DispatchEvent_EventId_Dictionary(RmlElement* self, RmlEventId id, RmlDictionary parameters)
+{
+    Rml::Dictionary parameters_tmp = rmlc_dictionary_in(parameters);
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->DispatchEvent(static_cast<Rml::EventId>(id), parameters_tmp);
+    return rml_ret;
 }
 
 RMLC_API void RmlElement_ScrollIntoView_Bool(RmlElement* self, bool align_with_top)
@@ -1483,6 +1616,15 @@ RMLC_API bool RmlElement_HasAttribute(RmlElement* self, const char* name)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->HasAttribute(Rml::String(name ? name : ""));
     return rml_ret;
+}
+
+RMLC_API RmlDictionary RmlElement_GetAttributes(RmlElement* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetAttributes();
+    thread_local Rml::Dictionary rml_dictionary;
+    thread_local Rml::Vector<RmlDictionaryEntry> rml_entries;
+    rml_dictionary = rml_ret;
+    return rmlc_dictionary_out(rml_dictionary, rml_entries);
 }
 
 RMLC_API int32_t RmlElement_GetNumAttributes(RmlElement* self)
@@ -1761,6 +1903,15 @@ RMLC_API bool RmlEvent_IsImmediatePropagating(RmlEvent* self)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Event*>(self)->IsImmediatePropagating();
     return rml_ret;
+}
+
+RMLC_API RmlDictionary RmlEvent_GetParameters(RmlEvent* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Event*>(self)->GetParameters();
+    thread_local Rml::Dictionary rml_dictionary;
+    thread_local Rml::Vector<RmlDictionaryEntry> rml_entries;
+    rml_dictionary = rml_ret;
+    return rmlc_dictionary_out(rml_dictionary, rml_entries);
 }
 
 RMLC_API RmlVector2f RmlEvent_GetUnprojectedMouseScreenPos(RmlEvent* self)

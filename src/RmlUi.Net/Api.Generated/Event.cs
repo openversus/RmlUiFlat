@@ -139,6 +139,17 @@ public readonly unsafe partial struct Event : IEquatable<Event>
     }
 
     /// <summary>
+    /// Access the dictionary of parameters<br/>
+    /// 
+    /// @return The dictionary of parameters<br/>
+    /// </summary>
+    /// <remarks>C++: <c>const Dictionary&amp; Rml::Event::GetParameters() const</c></remarks>
+    public IReadOnlyDictionary<string, Variant> GetParameters()
+    {
+        return Variant.FromNative(NativeMethods.RmlEvent_GetParameters(Handle));
+    }
+
+    /// <summary>
     /// Return the unprojected mouse screen position.<br/>
     /// Note: Only specified for events with &apos;mouse_x&apos; and &apos;mouse_y&apos; parameters.<br/>
     /// </summary>
