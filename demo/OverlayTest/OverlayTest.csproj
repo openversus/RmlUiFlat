@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- RmlUi drawn over a stand-in game's Direct3D 11 swap chain (native/overlay/testgame), through RmlUi.Overlay.
+       Windows only: cross/build-windows.sh builds rmlui_c.dll with the overlay and rmlc_testgame.dll first. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PublishAot>true</PublishAot>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <WinDllDir>$(MSBuildThisFileDirectory)../../native/build/win/</WinDllDir>
+    <!-- As in the demo: keep PublishAotCrossXWin's xwin cache out of its NuGet folder. -->
+    <XWinCache Condition="'$(XWinCache)' == ''">$(HOME)/.cache/xwin/</XWinCache>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../src/RmlUi.Net.Overlay/RmlUi.Net.Overlay.csproj" />
+    <PackageReference Include="PublishAotCrossXWin" Version="1.2.0" />
+    <None Include="../../THIRD-PARTY-NOTICES.txt" CopyToPublishDirectory="PreserveNewest" Link="THIRD-PARTY-NOTICES.txt" />
+    <None Include="../../external/RmlUi/Samples/assets/LatoLatin-Regular.ttf" Link="assets/LatoLatin-Regular.ttf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <None Include="../../external/RmlUi/Samples/assets/LatoLatin-Bold.ttf" Link="assets/LatoLatin-Bold.ttf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="CopyNativeDlls" AfterTargets="Publish">
+    <Error Condition="!Exists('$(WinDllDir)rmlui_c.dll') Or !Exists('$(WinDllDir)rmlc_testgame.dll')" Text="Run cross/build-windows.sh first (the in-game build, with the overlay)." />
+    <Copy SourceFiles="$(WinDllDir)rmlui_c.dll;$(WinDllDir)rmlc_testgame.dll" DestinationFolder="$(PublishDir)" />
+  </Target>
+
+</Project>

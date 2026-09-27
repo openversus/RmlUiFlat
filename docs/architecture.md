@@ -46,6 +46,7 @@ Windows. Options:
 |---|---|---|
 | `RMLC_DESKTOP` | OFF | Adds the standalone window backend (`rmlui_c_backend`): SDL3 (static, from `external/SDL`), RmlUi's OpenGL 3 renderer, and stb_image for PNG and JPEG. SDL3 is trimmed to video, events, audio, gamepad (with HIDAPI) and file dialogs, and loads X11/Wayland, Vulkan, GL and the audio backends at run time. The in-game DLL does not include it. |
 | `RMLC_DESKTOP_VULKAN` | ON | With `RMLC_DESKTOP`, adds RmlUi's Vulkan renderer. |
+| `RMLC_OVERLAY` | OFF | Windows only. Adds the in-game overlay (`native/overlay/`): RmlUi's DX11 renderer and Win32 platform code, and stb_image, behind `rmlui_c_overlay.h`; and `rmlc_testgame.dll`, a stand-in game for testing it. `cross/build-windows.sh` turns it on for the in-game build. |
 | `RMLC_SHARED` | OFF | Builds a shared library (the Windows DLL) instead of static archives. |
 
 **Linux** links the shim, RmlUi and the backend statically into the NativeAOT executable (`DirectPInvoke` in the
@@ -53,8 +54,9 @@ demo's project); FreeType is the system's, linked dynamically.
 **Windows** loads `rmlui_c.dll` from beside the executable at run time, the way the game client will:
 `cross/build-windows.sh` builds it with clang-cl and lld-link against an xwin splat of the Windows SDK
 (`cross/xwin-clang-cl.cmake`; the splat is found at `$XWIN_SPLAT`, `~/.xwin-cache/splat` or `~/.cache/xwin/splat`),
-with the C and C++ runtimes linked statically, so the DLL imports only Windows system DLLs (KERNEL32 and USER32 for the
-in-game build) and players need no redistributable. FreeType is built from `external/freetype` without zlib, png,
+with the C and C++ runtimes linked statically, so the DLL imports only DLLs that ship with Windows and players need no
+redistributable. The in-game build imports KERNEL32, USER32, IMM32 and D3DCOMPILER_47: RmlUi's DX11 renderer compiles
+its shaders at run time, and it draws with the game's device, so it imports no D3D11 function itself. FreeType is built from `external/freetype` without zlib, png,
 bzip2, brotli or harfbuzz. `cross/build-windows.sh desktop` builds the DLL with the window backend. The .NET side
 cross-compiles to win-x64 with the `PublishAotCrossXWin` package, as ovs-client does.
 
@@ -72,10 +74,8 @@ order so no host gets it wrong:
 - A second host while one exists is refused.
 
 `RmlHostBuilder<TSelf>` holds the options every host takes (`AddFont`, `ContextName`); a host's builder derives from
-it and chains its own. `RmlWindow`/`RmlWindowBuilder` are the desktop host. The in-game overlay will be
-`RmlOverlay : RmlHost` with `RmlOverlayBuilder : RmlHostBuilder<RmlOverlayBuilder>`, bringing the game's swap chain
-(from a Present hook), its window messages, and RmlUi's DX11 or DX12 renderer (the game runs DX11 by default and DX12
-with `-d3d12`, so the DLL carries both and picks from the device it finds). Both hosts build on the same base on
+it and chains its own. `RmlWindow`/`RmlWindowBuilder` are the desktop host. `RmlUi.Overlay.RmlOverlay`
+(in `src/RmlUi.Net.Overlay`) is the in-game host; see [The in-game overlay](#the-in-game-overlay). Both hosts build on the same base on
 purpose: neither is built for one consumer and bent to fit the other.
 
 ## The desktop backend
@@ -100,11 +100,39 @@ compiles the OpenGL renderer inside its own namespace (`rmlc_gl3`), using RmlUi'
 the glad loader, and `gl3_renderer.h` is the only way in. The Vulkan renderer and `RmlUi_Platform_SDL.cpp` share no
 names today (checked as of 3045e6e); that pairing is the one to recheck after an update.
 
-**Images.** PNG and JPEG through stb_image (from `external/stb`) for both renderers (`image_loading_renderer.h`);
+**Images.** PNG and JPEG through stb_image (from `external/stb`) for both renderers, and the overlay's (`image_loading_renderer.h`);
 RmlUi's own loaders read only TGA.
 
 The OpenGL 3 renderer composites in `EndFrame`, so the back buffer is complete only after it: `AfterRender` runs after
 `EndFrame` and before the swap for that reason.
+
+## The in-game overlay
+
+`native/overlay/rmlui_c_overlay.cpp` draws an RmlUi context over a swap chain someone else owns, with their device:
+RmlUi's DX11 renderer (`RenderInterface_DX11` takes a device and draws into any render target view) renders into the
+swap chain's current back buffer just before the game presents. `src/RmlUi.Net.Overlay` is its C# host,
+`RmlOverlay : RmlHost`, built with `RmlOverlayBuilder`.
+
+- **The game's device state is never touched.** The overlay has a device context state of its own
+  (`ID3DDeviceContextState`) and swaps it in for each frame with `SwapDeviceContextState`, then swaps the game's back.
+  RmlUi's own "restore" only restores RmlUi's state.
+- **A fault disables the overlay, not the game.** Every entry point that runs RmlUi is guarded with structured
+  exception handling. An exception inside RmlUi or the renderer (an access violation, say) is caught, the game's device
+  state is restored, the overlay turns itself off for good, and `RmlOverlay.Error` reports it once. Exceptions in C#
+  handlers are caught at the listener, as everywhere.
+- **Hidden costs nothing.** While `Visible` is false, `RenderFrame` returns at once and none of RmlUi runs.
+- **One thread.** Everything RmlUi does happens on the thread that presents. Window messages arrive on the window's
+  thread; the modifier keys are read there, as each message arrives (`RmlOverlay_GetKeyModifierState`), because
+  `GetKeyState` reports the calling thread's state, and the messages are fed to RmlUi on the render thread.
+- **Status.** `RmlOverlayBuilder.BuildForD3D11(device, window)` gives an overlay that draws when `RenderFrame` is called,
+  for a program that owns its render loop; the test app uses it. Hooking a game's `Present`, `ResizeBuffers` and window
+  messages, and the DX12 renderer (the game runs DX11 by default and DX12 with `-d3d12`), are not done yet. RmlUi's DX11
+  and DX12 renderers define different types under the same names, like its GL3 and VK ones
+  (`Gfx`, `ProgramId`, `CompiledFilter`, ...), so the DX12 renderer needs the same namespace isolation as GL3.
+
+`demo/OverlayTest` is the test: a stand-in game (`native/overlay/testgame`) with a window, a D3D11 flip-model swap
+chain, a scene that changes every frame and pipeline state left bound, and the overlay drawing a document over it
+([testing.md](testing.md#the-overlay-test)).
 
 ## Code style and docs
 

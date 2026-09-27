@@ -18,6 +18,9 @@ template <class Renderer>
 class ImageLoadingRenderer final : public Renderer
 {
 public:
+    // Whatever the renderer's constructor takes (the DX11 renderer takes the device).
+    using Renderer::Renderer;
+
     Rml::TextureHandle LoadTexture(Rml::Vector2i& texture_dimensions, const Rml::String& source) override
     {
         const size_t dot = source.rfind('.');

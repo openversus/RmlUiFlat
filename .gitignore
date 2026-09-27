@@ -3,6 +3,7 @@ obj/
 native/build/
 gen/gen.log
 demo-selftest.*
+overlay-selftest.*
 /.codegraph/
 /graphify-out/
 /local/

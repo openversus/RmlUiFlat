@@ -18,8 +18,11 @@ if [ "${1:-}" = "desktop" ]; then
     shift
 fi
 BUILD="$REPO/native/build/win"
+# The in-game build carries the overlay; the desktop build has its own window instead.
+OVERLAY=ON
 if [ "$DESKTOP" = ON ]; then
     BUILD="$REPO/native/build/win-desktop"
+    OVERLAY=OFF
 fi
 TOOLCHAIN="$REPO/cross/xwin-clang-cl.cmake"
 FT_BUILD="$BUILD/freetype"
@@ -43,12 +46,15 @@ cmake --build "$FT_BUILD" --target install
 echo "==> rmlui_c.dll"
 cmake -S "$REPO/native" -B "$BUILD" -G Ninja \
     -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN" -DCMAKE_BUILD_TYPE=Release \
-    -DRMLC_SHARED=ON -DRMLC_DESKTOP="$DESKTOP" \
+    -DRMLC_SHARED=ON -DRMLC_DESKTOP="$DESKTOP" -DRMLC_OVERLAY="$OVERLAY" \
     -DFREETYPE_LIBRARY="$FT_PREFIX/lib/freetype.lib" \
     -DFREETYPE_INCLUDE_DIR_ft2build="$FT_PREFIX/include/freetype2" \
     -DFREETYPE_INCLUDE_DIR_freetype2="$FT_PREFIX/include/freetype2" \
     "$@"
 cmake --build "$BUILD" --target rmlui_c
+if [ "$OVERLAY" = ON ]; then
+    cmake --build "$BUILD" --target rmlc_testgame
+fi
 
 echo
 echo "built: $BUILD/rmlui_c.dll"

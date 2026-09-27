@@ -13,6 +13,7 @@
   <ItemGroup>
     <!-- For NativeMethods.LibraryName, so both assemblies import the same library by the same name. -->
     <InternalsVisibleTo Include="RmlUi.Net.Desktop" />
+    <InternalsVisibleTo Include="RmlUi.Net.Overlay" />
   </ItemGroup>
 
 </Project>

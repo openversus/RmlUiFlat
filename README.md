@@ -43,8 +43,9 @@ dictionaries are ordinary C# types, and ownership is handled for you. Every meth
   code (`OwnedElement`).
 - **Not mapped, by choice so far** (`gen/shim-report.md` lists everything, with reasons): RmlUi's data models (data
   binding), touch input, instancers (C++ interfaces for custom elements), and style and render internals.
-- **Not done yet**: the in-game overlay (a DXGI Present hook with RmlUi's DX11 and DX12 renderers, chosen from the
-  game's device), built on the same host base as the window.
+- **In progress: the in-game overlay.** RmlUi draws over a Direct3D 11 swap chain with the game's own device, with
+  the game's device state swapped out around it and faults contained (checked under Wine with DXVK against a stand-in
+  game, `demo/OverlayTest`). Not done yet: hooking a game's `Present` and window messages, and DX12.
 - **Known issue**: forced OpenGL does not work under Wine (its WGL offers no pixel format); it works on real Windows,
   and Vulkan works under Wine.
 
@@ -81,7 +82,7 @@ Git submodules under `external/`, pinned (shallow, so a clone fetches only the p
 | [RmlUi](https://github.com/mikke89/RmlUi) | 3045e6e (2026-09-13, 6.4-dev) | everything |
 | [FreeType](https://gitlab.freedesktop.org/freetype/freetype) | VER-2-14-3 | Windows builds (Linux uses the system one) |
 | [SDL](https://github.com/libsdl-org/SDL) | release-3.4.16 | the window backend |
-| [stb](https://github.com/nothings/stb) | 2c980bb (stb_image 2.30) | the window backend |
+| [stb](https://github.com/nothings/stb) | 2c980bb (stb_image 2.30) | the window backend and the overlay |
 
 HexaGen, HexaGen.CppAst and HexaGen.Runtime come from NuGet. `THIRD-PARTY-NOTICES.txt` has the license of everything
 that ends up in a binary built here, including what RmlUi and SDL bundle, and which binaries contain it; ship it with

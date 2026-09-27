@@ -7,6 +7,12 @@ project(rmlui_c LANGUAGES C CXX)
 option(RMLC_DESKTOP "Build the standalone window backend (SDL3; Vulkan, else OpenGL 3)" OFF)
 option(RMLC_DESKTOP_VULKAN "Include RmlUi's Vulkan renderer in the desktop backend" ON)
 
+# RMLC_OVERLAY adds the in-game overlay (overlay/rmlui_c_overlay.h): RmlUi's DX11 renderer drawing with a game's device
+# into its swap chain, and its Win32 system interface. Windows only; the in-game build turns it on.
+option(RMLC_OVERLAY "Build the in-game overlay backend (Direct3D 11; Windows)" OFF)
+
+set(RMLUI_BACKENDS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../external/RmlUi/Backends")
+
 set(BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
 set(RMLUI_SAMPLES OFF CACHE BOOL "" FORCE)
 set(RMLUI_PRECOMPILED_HEADERS OFF CACHE BOOL "" FORCE)
@@ -27,7 +33,6 @@ if(RMLC_DESKTOP)
     endforeach()
     add_subdirectory(../external/SDL SDL EXCLUDE_FROM_ALL)
 
-    set(RMLUI_BACKENDS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../external/RmlUi/Backends")
     set(RMLC_DESKTOP_SOURCES
         backend/rmlui_c_backend.cpp
         "${RMLUI_BACKENDS_DIR}/RmlUi_Platform_SDL.cpp"
@@ -55,6 +60,24 @@ if(RMLC_SHARED)
         target_compile_definitions(rmlui_c PRIVATE ${RMLC_DESKTOP_DEFINITIONS})
         target_include_directories(rmlui_c PRIVATE ${RMLC_DESKTOP_INCLUDES})
         target_link_libraries(rmlui_c PRIVATE SDL3::SDL3-static)
+    endif()
+    if(RMLC_OVERLAY)
+        if(NOT WIN32)
+            message(FATAL_ERROR "RMLC_OVERLAY is Direct3D 11 and Win32: Windows only")
+        endif()
+        target_sources(rmlui_c PRIVATE
+            overlay/rmlui_c_overlay.cpp
+            "${RMLUI_BACKENDS_DIR}/RmlUi_Renderer_DX11.cpp"
+            "${RMLUI_BACKENDS_DIR}/RmlUi_Platform_Win32.cpp")
+        target_include_directories(rmlui_c PRIVATE "${RMLUI_BACKENDS_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/backend"
+            "${CMAKE_CURRENT_SOURCE_DIR}/../external/stb")
+        # d3d11 and d3dcompiler (RmlUi compiles its shaders at run time) ship with Windows, as does imm32.
+        target_link_libraries(rmlui_c PRIVATE d3d11 d3dcompiler imm32)
+
+        # A stand-in game for testing the overlay (demo/OverlayTest). Test-only; never shipped.
+        add_library(rmlc_testgame SHARED overlay/testgame/testgame.cpp)
+        target_compile_features(rmlc_testgame PRIVATE cxx_std_20)
+        target_link_libraries(rmlc_testgame PRIVATE d3d11 dxgi user32)
     endif()
 else()
     add_library(rmlui_c STATIC

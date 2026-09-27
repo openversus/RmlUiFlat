@@ -51,8 +51,8 @@ llvm-readobj --coff-exports native/build/win/rmlui_c.dll | awk '/Name: Rml/{prin
     | comm -23 /tmp/declared.txt -                              # prints nothing when every one is exported
 ```
 
-The in-game DLL must import only Windows system DLLs (today, KERNEL32 and USER32), so players need nothing
-installed:
+The in-game DLL must import only DLLs that ship with Windows (today KERNEL32, USER32, IMM32 and D3DCOMPILER_47), so
+players need nothing installed:
 
 ```sh
 llvm-readobj --coff-imports native/build/win/rmlui_c.dll | awk '/Name: .*\.dll/{print $2}' | sort -u
@@ -79,6 +79,35 @@ It exits non-zero and prints `FAIL:` for each check that fails:
 | `GetBox(0, out offset)` | a value-type output |
 | `GetProperty("display").ToString()` | a `Property` handle and its `ToString` |
 | `--expect-renderer` | the renderer choice |
+
+## The overlay test
+
+`demo/OverlayTest` draws RmlUi over a stand-in game's Direct3D 11 swap chain. Windows only; it runs under Wine with
+DXVK:
+
+```sh
+cross/build-windows.sh                  # rmlui_c.dll with the overlay, and rmlc_testgame.dll
+dotnet publish demo/OverlayTest -c Release -p:AcceptVSBuildToolsLicense=true -o demo/OverlayTest/bin/publish
+wine demo/OverlayTest/bin/publish/OverlayTest.exe --selftest       # without --selftest: a window until closed
+```
+
+It runs a few frames and checks, reading the back buffer before each present:
+
+| Check | Proves |
+|---|---|
+| A point inside the magenta panel's padding is magenta | the overlay drew, where the document says |
+| A point outside the panel is the game's background colour | the game's pixels are untouched |
+| After every frame, the game's render target, viewport, topology and blend state are what it left bound | the device state swap |
+| With `Visible` false, the panel's point is the game's colour | hidden draws nothing |
+| The overlay is not faulted | no exception inside RmlUi |
+
+It saves `overlay-selftest.ppm`, the back buffer of the last shown frame: look at it.
+
+Mutations run against it, each caught: removing the device state swap (the state check fails on every frame);
+skipping the renderer's `EndFrame` (the panel is not drawn); ignoring `Visible` in C# (the panel is drawn while
+hidden). And a planted access violation in the middle of a frame: the test app keeps running and exits normally, the
+overlay reports `exception 0xC0000005 while rendering` once and turns itself off, and the game's device state is
+intact on every frame.
 
 ## Can the test fail?
 

@@ -7,6 +7,8 @@ from, which binaries contain it, and its license, copied from the component's so
                                  system's FreeType)
   rmlui_c desktop builds         additionally SDL3 (with HIDAPI and yuv2rgb), stb_image, Vulkan Memory Allocator, and
   (RMLC_DESKTOP, the window)     the glad OpenGL and Vulkan loaders with their Khronos definitions
+  rmlui_c in-game builds         additionally stb_image (RmlUi's DX11 renderer and Win32 platform code are RmlUi's,
+  (RMLC_OVERLAY, the overlay)    under its license above)
   RmlUi.Net (.NET)               HexaGen.Runtime
   the demo                       the Lato fonts, as files in assets/
 
@@ -371,7 +373,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ====================================================================================================
 stb_image
-https://github.com/nothings/stb (external/stb) - used under its MIT alternative - desktop builds
+https://github.com/nothings/stb (external/stb) - used under its MIT alternative - desktop and in-game builds
 ====================================================================================================
 
 This software is available under 2 licenses -- choose whichever you prefer.

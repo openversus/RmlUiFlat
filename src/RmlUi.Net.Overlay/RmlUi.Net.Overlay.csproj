@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- RmlUi drawn over a game's Direct3D 11 swap chain, for the in-game client. Windows only; needs an rmlui_c built with
+       RMLC_OVERLAY (cross/build-windows.sh, the in-game build). -->
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../RmlUi.Net/RmlUi.Net.csproj" />
+  </ItemGroup>
+
+</Project>
