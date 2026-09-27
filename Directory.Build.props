@@ -20,5 +20,8 @@
     <!-- The .editorconfig rules run as analyzers during the build, as in ovs-client: braces on every control-flow
          body (IDE0011) is an error. -->
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Every public type and member carries an XML doc comment: .editorconfig makes a missing one (CS1591) an error,
+         except in HexaGen's raw layer. Not WarningsAsErrors: that would outrank .editorconfig's exemption. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 </Project>

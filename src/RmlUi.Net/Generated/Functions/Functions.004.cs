@@ -195,7 +195,7 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// Returns event types with the number of listeners for debugging.<br/>
 		/// C++: String Rml::Element::GetEventDispatcherSummary() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		[LibraryImport(LibName, EntryPoint = "RmlElement_GetEventDispatcherSummary")]
 		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
@@ -204,7 +204,7 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// Returns event types with the number of listeners for debugging.<br/>
 		/// C++: String Rml::Element::GetEventDispatcherSummary() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		public static byte* RmlElementGetEventDispatcherSummary(RmlElementPtr self)
 		{
@@ -215,7 +215,7 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// Returns event types with the number of listeners for debugging.<br/>
 		/// C++: String Rml::Element::GetEventDispatcherSummary() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		public static string RmlElementGetEventDispatcherSummaryS(RmlElementPtr self)
 		{
@@ -226,7 +226,7 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// Returns event types with the number of listeners for debugging.<br/>
 		/// C++: String Rml::Element::GetEventDispatcherSummary() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		public static byte* RmlElementGetEventDispatcherSummary(ref RmlElement self)
 		{
@@ -240,7 +240,7 @@ namespace RmlUi.Interop
 		/// <summary>
 		/// Returns event types with the number of listeners for debugging.<br/>
 		/// C++: String Rml::Element::GetEventDispatcherSummary() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		public static string RmlElementGetEventDispatcherSummaryS(ref RmlElement self)
 		{

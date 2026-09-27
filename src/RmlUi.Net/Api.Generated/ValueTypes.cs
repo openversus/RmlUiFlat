@@ -12,25 +12,34 @@ namespace RmlUi;
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Vector2f : IEquatable<Vector2f>
 {
+    /// <summary>Rml::Vector2f::x.</summary>
     public float X;
+    /// <summary>Rml::Vector2f::y.</summary>
     public float Y;
 
+    /// <summary>A Vector2f with the given x, y.</summary>
     public Vector2f(float x, float y)
     {
         X = x;
         Y = y;
     }
 
+    /// <summary>Whether every field is equal.</summary>
     public readonly bool Equals(Vector2f other) => X == other.X && Y == other.Y;
 
+    /// <inheritdoc/>
     public override readonly bool Equals(object? obj) => obj is Vector2f other && Equals(other);
 
+    /// <inheritdoc/>
     public override readonly int GetHashCode() => HashCode.Combine(X, Y);
 
+    /// <summary>The fields in brackets: <c>(x, y)</c>.</summary>
     public override readonly string ToString() => $"({X}, {Y})";
 
+    /// <summary>Whether every field is equal.</summary>
     public static bool operator ==(Vector2f a, Vector2f b) => a.Equals(b);
 
+    /// <summary>Whether any field differs.</summary>
     public static bool operator !=(Vector2f a, Vector2f b) => !a.Equals(b);
 }
 
@@ -38,25 +47,34 @@ public partial struct Vector2f : IEquatable<Vector2f>
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Vector2i : IEquatable<Vector2i>
 {
+    /// <summary>Rml::Vector2i::x.</summary>
     public int X;
+    /// <summary>Rml::Vector2i::y.</summary>
     public int Y;
 
+    /// <summary>A Vector2i with the given x, y.</summary>
     public Vector2i(int x, int y)
     {
         X = x;
         Y = y;
     }
 
+    /// <summary>Whether every field is equal.</summary>
     public readonly bool Equals(Vector2i other) => X == other.X && Y == other.Y;
 
+    /// <inheritdoc/>
     public override readonly bool Equals(object? obj) => obj is Vector2i other && Equals(other);
 
+    /// <inheritdoc/>
     public override readonly int GetHashCode() => HashCode.Combine(X, Y);
 
+    /// <summary>The fields in brackets: <c>(x, y)</c>.</summary>
     public override readonly string ToString() => $"({X}, {Y})";
 
+    /// <summary>Whether every field is equal.</summary>
     public static bool operator ==(Vector2i a, Vector2i b) => a.Equals(b);
 
+    /// <summary>Whether any field differs.</summary>
     public static bool operator !=(Vector2i a, Vector2i b) => !a.Equals(b);
 }
 
@@ -64,11 +82,16 @@ public partial struct Vector2i : IEquatable<Vector2i>
 [StructLayout(LayoutKind.Sequential)]
 public partial struct Colourb : IEquatable<Colourb>
 {
+    /// <summary>Rml::Colourb::red.</summary>
     public byte Red;
+    /// <summary>Rml::Colourb::green.</summary>
     public byte Green;
+    /// <summary>Rml::Colourb::blue.</summary>
     public byte Blue;
+    /// <summary>Rml::Colourb::alpha.</summary>
     public byte Alpha;
 
+    /// <summary>A Colourb with the given red, green, blue, alpha.</summary>
     public Colourb(byte red, byte green, byte blue, byte alpha)
     {
         Red = red;
@@ -77,16 +100,22 @@ public partial struct Colourb : IEquatable<Colourb>
         Alpha = alpha;
     }
 
+    /// <summary>Whether every field is equal.</summary>
     public readonly bool Equals(Colourb other) => Red == other.Red && Green == other.Green && Blue == other.Blue && Alpha == other.Alpha;
 
+    /// <inheritdoc/>
     public override readonly bool Equals(object? obj) => obj is Colourb other && Equals(other);
 
+    /// <inheritdoc/>
     public override readonly int GetHashCode() => HashCode.Combine(Red, Green, Blue, Alpha);
 
+    /// <summary>The fields in brackets: <c>(red, green, blue, alpha)</c>.</summary>
     public override readonly string ToString() => $"({Red}, {Green}, {Blue}, {Alpha})";
 
+    /// <summary>Whether every field is equal.</summary>
     public static bool operator ==(Colourb a, Colourb b) => a.Equals(b);
 
+    /// <summary>Whether any field differs.</summary>
     public static bool operator !=(Colourb a, Colourb b) => !a.Equals(b);
 }
 

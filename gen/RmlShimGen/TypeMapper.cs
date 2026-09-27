@@ -3,16 +3,56 @@ using HexaGen.CppAst.Model.Types;
 
 namespace RmlShimGen;
 
-public enum Indirection { None, Ref, Ptr }
+// How the generator sees a C++ type: one level of indirection (Indirection) over a base type (a Base record). Every
+// rule in TypeMapper is a switch on that pair; a pair with no case throws UnmappedException, and the function lands in
+// the report with the message as its reason. Adding a kind of type is adding a Base record and its cases, here and in
+// CsLayer; docs/walkthroughs.md walks through one.
 
+/// <summary>The one level of reference or pointer over a type's base; deeper indirection is not mapped.</summary>
+public enum Indirection
+{
+    /// <summary>By value.</summary>
+    None,
+
+    /// <summary>A reference, T&amp;.</summary>
+    Ref,
+
+    /// <summary>A pointer, T*.</summary>
+    Ptr,
+}
+
+/// <summary>A C++ type with its qualifiers and one indirection removed, classified by how it can cross into C.</summary>
 public abstract record Base;
+
+/// <summary>void: a void return, or void* by pointer.</summary>
 public sealed record VoidBase : Base;
+
+/// <summary>Rml::String (std::string): UTF-8 <c>const char*</c> in C, <c>string</c> in C#.</summary>
 public sealed record StringBase : Base;
+
+/// <summary>A primitive or fixed-size C typedef, by its C spelling.</summary>
+/// <param name="CName">The C type (<c>int32_t</c>, <c>float</c>, <c>size_t</c>).</param>
+/// <param name="Widen">
+/// For C++ <c>long</c>/<c>unsigned long</c>, which differ in size between Windows and Linux: the C++ type to convert to
+/// from the 64-bit C type. Null when C and C++ agree.
+/// </param>
 public sealed record PrimBase(string CName, string? Widen) : Base;
+
+/// <summary>A class in shim.json's Classes or OpaqueTypes: an opaque pointer in C, a handle struct in C#.</summary>
 public sealed record HandleBase(CppClass Class) : Base;
+
+/// <summary>A ValueTypes typedef (Rml::Vector2f): a C struct of the same fields, copied with std::bit_cast.</summary>
+/// <param name="CppName">The C++ typedef (<c>Rml::Vector2f</c>).</param>
+/// <param name="CName">The C struct (<c>RmlVector2f</c>).</param>
 public sealed record ValueBase(string CppName, string CName) : Base;
+
+/// <summary>A named enum: a C enum whose every value is static_asserted against the C++ one.</summary>
 public sealed record EnumBase(CppEnum Enum) : Base;
+
+/// <summary>Rml::Span of a const primitive: a pointer and a count.</summary>
+/// <param name="ElementCName">The C type of the items.</param>
 public sealed record SpanBase(string ElementCName) : Base;
+
 /// <summary>A std::vector of String or of a handle pointer (StringList, ElementList).</summary>
 public sealed record ListBase(Base Element) : Base;
 /// <summary>An owning RmlUi pointer, std::unique_ptr&lt;T, Rml::Releaser&lt;T&gt;&gt; (ElementPtr).</summary>
@@ -23,27 +63,53 @@ public sealed record VariantBase : Base;
 public sealed record DictionaryBase : Base;
 
 /// <summary>How one C++ parameter crosses: its C declarations, and the C++ that rebuilds the argument.</summary>
+/// <param name="CDecls">The C parameter declarations it becomes; usually one, two for a pointer and count.</param>
+/// <param name="CppArg">The C++ expression passed to RmlUi, built from the C parameters.</param>
+/// <param name="Pre">C++ statements run before the call (building a temporary the call writes into).</param>
+/// <param name="Post">C++ statements run after the call (copying an output back to the C side).</param>
 public sealed record ParamMap(List<string> CDecls, string CppArg, List<string> Pre, List<string> Post)
 {
+    /// <summary>The classified base type; CsLayer maps the C# side from it.</summary>
     public Base Base { get; init; } = new VoidBase();
+
+    /// <summary>The reference or pointer over <see cref="Base"/>.</summary>
     public Indirection Ind { get; init; }
+
+    /// <summary>Whether what the reference or pointer points at is const.</summary>
     public bool PointeeConst { get; init; }
+
+    /// <summary>The C and C++ parameter name.</summary>
     public string Name { get; init; } = "";
+
     /// <summary>Written by the callee, never read: documented <c>@param[out]</c> in RmlUi's header.</summary>
     public bool IsOut { get; init; }
 }
 
 /// <summary>How a C++ return value crosses: its C type, and the statements that return it given the value in <c>rml_ret</c>.</summary>
+/// <param name="CType">The C return type.</param>
+/// <param name="IsVoid">Whether the function returns nothing (no <c>rml_ret</c> is declared).</param>
+/// <param name="Statements">C++ statements that turn <c>rml_ret</c> into the C return.</param>
 public sealed record ReturnMap(string CType, bool IsVoid, List<string> Statements)
 {
+    /// <summary>The classified base type; CsLayer maps the C# side from it.</summary>
     public Base Base { get; init; } = new VoidBase();
+
+    /// <summary>The reference or pointer over <see cref="Base"/>.</summary>
     public Indirection Ind { get; init; }
+
+    /// <summary>Whether what the reference or pointer points at is const.</summary>
     public bool PointeeConst { get; init; }
 }
 
 /// <summary>Thrown (and caught per function) when a type has no rule; the message goes into the report.</summary>
+/// <param name="reason">The report heading the function is listed under: the type, or what about it has no rule.</param>
 public sealed class UnmappedException(string reason) : Exception(reason);
 
+/// <summary>
+/// The type rules: how each C++ parameter and return type crosses into C (<see cref="MapParam(CppType, string, bool)"/>,
+/// <see cref="MapReturn(CppType)"/>), and which shared C types (lists, enums, Variant) the mapped signatures reach, so the
+/// header can declare them.
+/// </summary>
 public sealed class TypeMapper
 {
     // Typedefs that C spells the same way; kept by name so size_t stays size_t on both sides.
@@ -56,6 +122,7 @@ public sealed class TypeMapper
     private readonly HashSet<string> handleClasses;
     private readonly HashSet<string> valueTypes;
 
+    /// <summary>A mapper for the handle and value types the config names.</summary>
     public TypeMapper(ShimConfig config)
     {
         handleClasses = [.. config.Classes, .. config.OpaqueTypes];
@@ -77,14 +144,25 @@ public sealed class TypeMapper
     /// <summary>Enums reached by any mapped signature, keyed by qualified name.</summary>
     public SortedDictionary<string, CppEnum> UsedEnums { get; } = new(StringComparer.Ordinal);
 
+    /// <summary>The C name of a handle: <c>Rml::ElementDocument</c> becomes <c>RmlElementDocument</c>.</summary>
     public static string HandleCName(string qualified) => "Rml" + StripRml(qualified).Replace("::", "");
 
+    /// <summary>The C name of an enum: <c>Rml::Style::Display</c> becomes <c>RmlStyleDisplay</c>.</summary>
     public static string EnumCName(CppEnum e) => "Rml" + StripRml(e.FullName).Replace("::", "");
 
+    /// <summary>The C name of a value type: <c>Rml::Vector2f</c> becomes <c>RmlVector2f</c>.</summary>
     public static string ValueCName(string qualified) => "Rml" + StripRml(qualified).Replace("::", "");
 
     private static string StripRml(string qualified) => qualified.StartsWith("Rml::") ? qualified[5..] : qualified;
 
+    /// <summary>How a parameter crosses into C.</summary>
+    /// <param name="type">The parameter's C++ type, as parsed (template parameters already substituted).</param>
+    /// <param name="name">The parameter's name in C and in the C++ the shim writes.</param>
+    /// <param name="documentedOut">
+    /// Whether RmlUi's doc comment marks it <c>@param[out]</c>. Only a non-const reference or pointer can be an output;
+    /// a String or list reference that is not documented as one has no rule, since it might be read.
+    /// </param>
+    /// <exception cref="UnmappedException">No rule covers the type.</exception>
     public ParamMap MapParam(CppType type, string name, bool documentedOut)
     {
         var (b, ind, pointeeConst) = Classify(type);
@@ -178,6 +256,8 @@ public sealed class TypeMapper
         }
     }
 
+    /// <summary>How a return value crosses into C.</summary>
+    /// <exception cref="UnmappedException">No rule covers the type.</exception>
     public ReturnMap MapReturn(CppType type)
     {
         var (b, ind, pointeeConst) = Classify(type);
@@ -258,6 +338,7 @@ public sealed class TypeMapper
         }
     }
 
+    /// <summary>A base type as the report names it.</summary>
     public static string Describe(Base b) => b switch
     {
         VoidBase => "void",
@@ -477,6 +558,7 @@ public sealed class TypeMapper
         }
     }
 
+    /// <summary>The C struct for a list: <c>RmlStringArray</c>, or <c>Rml{Class}Array</c> for handles.</summary>
     public static string ListCName(ListBase l) => l.Element switch
     {
         StringBase => "RmlStringArray",
@@ -484,6 +566,7 @@ public sealed class TypeMapper
         _ => throw new InvalidOperationException(Describe(l)),
     };
 
+    /// <summary>Records that a signature uses this list struct, so the header declares it; returns its C name.</summary>
     private string UseList(ListBase l)
     {
         string cName = ListCName(l);
@@ -491,6 +574,7 @@ public sealed class TypeMapper
         return cName;
     }
 
+    /// <summary>The C++ vector the shim builds or copies for a list.</summary>
     private static string ListCppType(ListBase l) => l.Element is HandleBase h ? $"Rml::Vector<{h.Class.FullName}*>" : "Rml::Vector<Rml::String>";
 
     /// <summary>Statements that build the C++ list <c>{name}_tmp</c> from the C list <c>name</c>.</summary>

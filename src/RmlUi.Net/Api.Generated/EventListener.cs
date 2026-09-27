@@ -14,20 +14,28 @@ public readonly unsafe partial struct EventListener : IEquatable<EventListener>
     /// <summary>The native Rml::EventListener*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::EventListener*. Does not take ownership.</summary>
     public EventListener(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::EventListener.</summary>
     public bool Equals(EventListener other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is EventListener other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::EventListener(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::EventListener(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::EventListener.</summary>
     public static bool operator ==(EventListener a, EventListener b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(EventListener a, EventListener b) => a.Handle != b.Handle;
 
 }

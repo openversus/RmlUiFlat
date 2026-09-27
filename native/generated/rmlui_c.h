@@ -665,7 +665,7 @@ RMLC_API void RmlShutdown(void);
  *
  * @return The version number.
  * C++: String Rml::GetVersion()
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlGetVersion(void);
 /**
@@ -1862,7 +1862,7 @@ RMLC_API bool RmlElement_IsClassSet(RmlElement* self, const char* class_name);
  *
  * @return The space-separated list of classes active on the element.
  * C++: String Rml::Element::GetClassNames() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElement_GetClassNames(RmlElement* self);
 /**
@@ -1879,7 +1879,7 @@ RMLC_API const RmlStyleSheet* RmlElement_GetStyleSheet(RmlElement* self);
  * @param include_parents True to include the address of all parent elements.
  * @return The address of the element.
  * C++: String Rml::Element::GetAddress(bool include_pseudo_classes = false, bool include_parents = true) const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElement_GetAddress(RmlElement* self, bool include_pseudo_classes, bool include_parents);
 /**
@@ -2067,7 +2067,7 @@ RMLC_API int32_t RmlElement_GetNumChildren(RmlElement* self, bool include_non_do
  *
  * @return The content of the element.
  * C++: String Rml::Element::GetInnerRML() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElement_GetInnerRML(RmlElement* self);
 /**
@@ -2088,7 +2088,7 @@ RMLC_API bool RmlElement_Contains(RmlElement* self, RmlElement* element);
 /**
  * Returns event types with the number of listeners for debugging.
  * C++: String Rml::Element::GetEventDispatcherSummary() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElement_GetEventDispatcherSummary(RmlElement* self);
 /**
@@ -2393,7 +2393,7 @@ RMLC_API void RmlElementFormControl_SetDisabled(RmlElementFormControl* self, boo
  *
  * @return The name of the form control.
  * C++: String Rml::ElementFormControl::GetName() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElementFormControl_GetName(RmlElementFormControl* self);
 /**
@@ -2401,7 +2401,7 @@ RMLC_API const char* RmlElementFormControl_GetName(RmlElementFormControl* self);
  *
  * @return The value of the form control.
  * C++: String Rml::ElementFormControl::GetValue() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElementFormControl_GetValue(RmlElementFormControl* self);
 /**
@@ -2456,7 +2456,7 @@ RMLC_API void RmlElementFormControlInput_SetCompositionRange(RmlElementFormContr
  *
  * @return The value of the form control.
  * C++: String Rml::ElementFormControlInput::GetValue() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElementFormControlInput_GetValue(RmlElementFormControlInput* self);
 /**
@@ -2557,7 +2557,7 @@ RMLC_API bool RmlElementFormControlSelect_IsSelectBoxVisible(RmlElementFormContr
  *
  * @return The value of the form control.
  * C++: String Rml::ElementFormControlSelect::GetValue() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElementFormControlSelect_GetValue(RmlElementFormControlSelect* self);
 /**
@@ -2646,7 +2646,7 @@ RMLC_API bool RmlElementFormControlTextArea_GetIntrinsicDimensions(RmlElementFor
  *
  * @return The value of the form control.
  * C++: String Rml::ElementFormControlTextArea::GetValue() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlElementFormControlTextArea_GetValue(RmlElementFormControlTextArea* self);
 /**
@@ -2917,7 +2917,7 @@ RMLC_API void RmlStyleSheet_BuildNodeIndex(RmlStyleSheet* self);
 /**
  * Get the value of the property as a string.
  * C++: String Rml::Property::ToString() const
- * The returned string is valid until the next call on this thread that returns a string by value.
+ * The returned string is a per-thread copy, valid until this function is next called on the same thread.
  */
 RMLC_API const char* RmlProperty_ToString(RmlProperty* self);
 

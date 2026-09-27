@@ -14,20 +14,28 @@ public readonly unsafe partial struct ElementProgress : IEquatable<ElementProgre
     /// <summary>The native Rml::ElementProgress*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::ElementProgress*. Does not take ownership.</summary>
     public ElementProgress(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::ElementProgress.</summary>
     public bool Equals(ElementProgress other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is ElementProgress other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::ElementProgress(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::ElementProgress(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::ElementProgress.</summary>
     public static bool operator ==(ElementProgress a, ElementProgress b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(ElementProgress a, ElementProgress b) => a.Handle != b.Handle;
 
     /// <summary>Upcast to Rml::Element.</summary>

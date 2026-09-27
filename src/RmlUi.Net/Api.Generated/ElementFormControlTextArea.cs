@@ -14,20 +14,28 @@ public readonly unsafe partial struct ElementFormControlTextArea : IEquatable<El
     /// <summary>The native Rml::ElementFormControlTextArea*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::ElementFormControlTextArea*. Does not take ownership.</summary>
     public ElementFormControlTextArea(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::ElementFormControlTextArea.</summary>
     public bool Equals(ElementFormControlTextArea other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is ElementFormControlTextArea other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::ElementFormControlTextArea(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::ElementFormControlTextArea(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::ElementFormControlTextArea.</summary>
     public static bool operator ==(ElementFormControlTextArea a, ElementFormControlTextArea b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(ElementFormControlTextArea a, ElementFormControlTextArea b) => a.Handle != b.Handle;
 
     /// <summary>Upcast to Rml::ElementFormControl.</summary>

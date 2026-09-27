@@ -14,20 +14,28 @@ public readonly unsafe partial struct ElementFormControl : IEquatable<ElementFor
     /// <summary>The native Rml::ElementFormControl*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::ElementFormControl*. Does not take ownership.</summary>
     public ElementFormControl(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::ElementFormControl.</summary>
     public bool Equals(ElementFormControl other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is ElementFormControl other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::ElementFormControl(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::ElementFormControl(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::ElementFormControl.</summary>
     public static bool operator ==(ElementFormControl a, ElementFormControl b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(ElementFormControl a, ElementFormControl b) => a.Handle != b.Handle;
 
     /// <summary>Upcast to Rml::Element.</summary>

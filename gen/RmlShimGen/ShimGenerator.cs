@@ -11,25 +11,41 @@ namespace RmlShimGen;
 /// <summary>Walks the configured slice of RmlUi and writes rmlui_c.h, rmlui_c.cpp and the report.</summary>
 public sealed partial class ShimGenerator(ShimConfig config, CppCompilation compilation)
 {
+    /// <summary>A function the shim wraps: its C name, the C++ it calls, and how each parameter and the return cross.</summary>
     private sealed record Wrapped(string CName, string CppName, CppFunction Function, CppClass? Owner, ReturnMap Return, List<ParamMap> Params)
     {
         /// <summary>For an instantiated function template (shim.json TemplateInstantiations), its template argument.</summary>
         public string? TemplateArgument { get; init; }
     }
 
+    /// <summary>A function in scope that no rule could map, with the reason the report groups it under.</summary>
     private sealed record Unmapped(string CppName, string Reason);
 
+    /// <summary>The type rules; also collects the enums, lists and Variant types the header must declare.</summary>
     private readonly TypeMapper mapper = new(config);
+    /// <summary>Every wrapped function, in the order the C API declares them.</summary>
     private readonly List<Wrapped> wrapped = [];
+    /// <summary>Functions in scope that could not be mapped; the report lists them by reason.</summary>
     private readonly List<Unmapped> unmapped = [];
+    /// <summary>C names shim.json's IgnoredFunctions left out.</summary>
     private readonly List<string> ignored = [];
+    /// <summary>Every class definition in the parse, by qualified name (forward declarations yield to the definition).</summary>
     private readonly Dictionary<string, CppClass> classes = new(StringComparer.Ordinal);
+    /// <summary>Every typedef in the parse, by qualified name; value types and template arguments are looked up here.</summary>
     private readonly Dictionary<string, CppTypedef> typedefs = new(StringComparer.Ordinal);
+    /// <summary>The C structs derived for shim.json's ValueTypes: C name, C fields, C++ typedef.</summary>
     private readonly List<(string CName, List<(string Type, string Name)> Fields, string CppName)> valueStructs = [];
+    /// <summary>ValueTypes that could not be derived; any of them stops the run.</summary>
     private readonly List<string> valueFailures = [];
 
+    /// <summary>How many functions in scope could not be mapped (after <see cref="Run"/>).</summary>
     public int UnmappedCount => unmapped.Count;
 
+    /// <summary>
+    /// Indexes the parse, wraps the configured classes and free functions, and writes rmlui_c.h, rmlui_c.cpp, the C#
+    /// API and the report. HexaGen's raw layer is run afterwards by Program.
+    /// </summary>
+    /// <exception cref="InvalidDataException">shim.json names a class that is not in the headers, or a value type cannot be derived.</exception>
     public void Run()
     {
         Index(compilation.Namespaces);
@@ -69,9 +85,11 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         Console.WriteLine($"wrapped {wrapped.Count} functions, {unmapped.Count} unmapped, {ignored.Count} ignored, {mapper.UsedEnums.Count} enums, {valueStructs.Count} value types");
     }
 
+    /// <summary>Whether a parsed declaration's source file is the given header.</summary>
     private static bool SameFile(string? a, string b) =>
         a != null && string.Equals(Path.GetFullPath(a), Path.GetFullPath(b), StringComparison.Ordinal);
 
+    /// <summary>Fills <see cref="classes"/> and <see cref="typedefs"/> from every namespace, recursively.</summary>
     private void Index(IEnumerable<CppNamespace> namespaces)
     {
         foreach (var ns in namespaces)
@@ -92,14 +110,17 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         }
     }
 
+    /// <summary>A top-level namespace of the parse (Rml).</summary>
     private CppNamespace? FindNamespace(string name) => compilation.Namespaces.FirstOrDefault(n => n.Name == name);
 
+    /// <summary>A public, callable, non-template member: everything the shim wraps without being asked.</summary>
     private static bool IsWrappable(CppFunction f) => IsCallable(f) && !f.IsFunctionTemplate;
 
     /// <summary>A function template shim.json lists in TemplateInstantiations.</summary>
     private bool IsInstantiated(CppFunction f, CppClass? owner) =>
         IsCallable(f) && f.IsFunctionTemplate && config.TemplateInstantiations.ContainsKey(QualifiedName(f, owner));
 
+    /// <summary>Public, not a constructor, destructor or operator, and not deleted.</summary>
     private static bool IsCallable(CppFunction f) =>
         f.Visibility == CppVisibility.Public
         && !f.IsConstructor
@@ -111,8 +132,10 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
     // return mean nothing to a caller, so they are not wrapped.
     private static readonly HashSet<string> RttiMethods = ["GetClassIdentifier", "GetStaticClassIdentifier", "IsClass"];
 
+    /// <summary>Whether the class itself declares RmlUi's RTTI (RMLUI_RTTI_DefineWithParent), which rmlui_dynamic_cast needs.</summary>
     private static bool DeclaresRtti(CppClass c) => c.Functions.Any(f => f.Name == "GetStaticClassIdentifier");
 
+    /// <summary>The qualified C++ name shim.json refers to a function by: <c>Rml::Element::Focus</c>, <c>Rml::Initialise</c>.</summary>
     private static string QualifiedName(CppFunction f, CppClass? owner) => owner == null ? $"Rml::{f.Name}" : $"{owner.FullName}::{f.Name}";
 
     /// <summary>
@@ -196,6 +219,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         return result;
     }
 
+    /// <summary>Parameter names the function's own comment marks <c>@param[out]</c>, from CppAst's parsed comment tree (its ToString drops the direction).</summary>
     private static HashSet<string> DocumentedOut(CppFunction f)
     {
         var result = new HashSet<string>(StringComparer.Ordinal);
@@ -222,6 +246,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
     // Names that would collide with the shim's own locals, or with C, get a suffix.
     private static readonly HashSet<string> ReservedNames = ["self", "rml_ret", "rml_string_result", "rml_list", "rml_i", "rml_item"];
 
+    /// <summary>The parameter's name for C and the shim's C++: argN when unnamed, suffixed when it would shadow a shim local.</summary>
     private static string ParamName(CppParameter p, int index)
     {
         if (string.IsNullOrEmpty(p.Name))
@@ -231,6 +256,10 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         return ReservedNames.Contains(p.Name) ? p.Name + "_" : p.Name;
     }
 
+    /// <summary>
+    /// The C name suffix for one overload, from its parameter types: <c>_String_Int</c>. Every overload of a name gets
+    /// one, whether or not it maps, so a later rule that maps another overload never renames an existing C function.
+    /// </summary>
     private static string OverloadSuffix(CppFunction f)
     {
         if (f.Parameters.Count == 0)
@@ -241,6 +270,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         return "_" + string.Join("_", parts);
     }
 
+    /// <summary>One C++ type as a word for an overload suffix: <c>const String&amp;</c> becomes <c>String</c>, <c>Element*</c> becomes <c>ElementPtr</c>.</summary>
     private static string TypeWord(string cppType)
     {
         var s = cppType.Replace("Rml::", "").Replace("const ", "").Replace("&", "").Replace("*", "Ptr");
@@ -252,6 +282,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
     [GeneratedRegex("[^A-Za-z0-9]")]
     private static partial Regex NonIdentifier();
 
+    /// <summary>The C++ signature as RmlUi's header spells it, for the report and the generated doc comments.</summary>
     private static string Signature(CppFunction f, CppClass? owner)
     {
         var ps = f.Parameters.Select(p =>
@@ -404,6 +435,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
 
         """;
 
+    /// <summary>A field type of a class template with its template parameter replaced by the specialization's argument (Vector2&lt;float&gt;'s T is float).</summary>
     private static CppType SubstituteTemplateArgument(CppType type, CppClass template, CppClass specialization)
     {
         string? name = type switch
@@ -427,6 +459,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         throw new UnmappedException($"unresolved template type {name}");
     }
 
+    /// <summary>rmlui_c.h: handles, value types, lists, enums, Variant, casts and every wrapped function, in that order.</summary>
     private string WriteHeader()
     {
         var w = new StringBuilder();
@@ -587,6 +620,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         return w.ToString();
     }
 
+    /// <summary>A function's C doc comment: RmlUi's comment, its C++ signature, and the lifetime of a returned string.</summary>
     private static void WriteDocComment(StringBuilder w, Wrapped f)
     {
         w.AppendLine("/**");
@@ -602,12 +636,13 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         if (f.Return.CType == "const char*")
         {
             w.AppendLine(f.Return.Statements.Count > 1
-                ? " * The returned string is valid until the next call on this thread that returns a string by value."
+                ? " * The returned string is a per-thread copy, valid until this function is next called on the same thread."
                 : " * The returned string is owned by RmlUi and valid while its owner is.");
         }
         w.AppendLine(" */");
     }
 
+    /// <summary>The C parameter list: <c>self</c> for an instance method, then each parameter's declarations.</summary>
     private static string CParams(Wrapped f)
     {
         var ps = new List<string>();
@@ -619,6 +654,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         return ps.Count == 0 ? "void" : string.Join(", ", ps);
     }
 
+    /// <summary>An enum item's value as C writes it, undoing CppAst's sign extension of unsigned underlying types.</summary>
     private static string EnumValue(CppEnum e, CppEnumItem item)
     {
         long value = item.Value;
@@ -635,6 +671,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         return value.ToString();
     }
 
+    /// <summary>The last part of a qualified name: <c>Rml::ElementDocument</c> becomes <c>ElementDocument</c>.</summary>
     private static string ShortName(string qualified) => qualified[(qualified.LastIndexOf(':') + 1)..];
 
     /// <summary>The upcasts that can be checked the other way: both classes declare RmlUi's RTTI.</summary>
@@ -666,6 +703,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         }
     }
 
+    /// <summary>rmlui_c.cpp: the layout and enum static_asserts, the Variant helpers, the casts, and every wrapped function's body.</summary>
     private string WriteSource()
     {
         var w = new StringBuilder();
@@ -779,6 +817,7 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         return w.ToString();
     }
 
+    /// <summary>shim-report.md: counts, what is in scope but unmapped (grouped by reason), C# names that differ from C++, and the classes not in scope.</summary>
     private string WriteReport()
     {
         var w = new StringBuilder();

@@ -14,20 +14,28 @@ public readonly unsafe partial struct ElementTabSet : IEquatable<ElementTabSet>
     /// <summary>The native Rml::ElementTabSet*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::ElementTabSet*. Does not take ownership.</summary>
     public ElementTabSet(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::ElementTabSet.</summary>
     public bool Equals(ElementTabSet other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is ElementTabSet other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::ElementTabSet(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::ElementTabSet(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::ElementTabSet.</summary>
     public static bool operator ==(ElementTabSet a, ElementTabSet b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(ElementTabSet a, ElementTabSet b) => a.Handle != b.Handle;
 
     /// <summary>Upcast to Rml::Element.</summary>

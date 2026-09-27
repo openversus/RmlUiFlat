@@ -14,20 +14,28 @@ public readonly unsafe partial struct Event : IEquatable<Event>
     /// <summary>The native Rml::Event*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::Event*. Does not take ownership.</summary>
     public Event(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::Event.</summary>
     public bool Equals(Event other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Event other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::Event(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::Event(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::Event.</summary>
     public static bool operator ==(Event a, Event b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(Event a, Event b) => a.Handle != b.Handle;
 
     /// <summary>

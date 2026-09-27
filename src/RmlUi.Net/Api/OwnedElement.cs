@@ -13,7 +13,8 @@ namespace RmlUi;
 /// <remarks>
 /// <para>
 /// Attaching it (<see cref="Element.AppendChild"/>, <see cref="Element.InsertBefore"/>, <see cref="Element.ReplaceChild"/>,
-/// <see cref="ElementFormControlSelect.Add"/>, <see cref="ElementTabSet.SetTab"/>, <see cref="ElementTabSet.SetPanel"/>)
+/// <see cref="ElementFormControlSelect.Add(OwnedElement, int)"/>, <see cref="ElementTabSet.SetTab(int, OwnedElement)"/>,
+/// <see cref="ElementTabSet.SetPanel(int, OwnedElement)"/>)
 /// hands it to RmlUi, which frees it with its parent. Attaching it twice throws.
 /// </para>
 /// <para>
@@ -56,6 +57,8 @@ public sealed class OwnedElement : IDisposable
     /// <summary>Whether RmlUi owns it now, through the element it was attached to.</summary>
     public bool IsAttached => state == State.Attached;
 
+    /// <summary>The element, as <see cref="Element"/> returns it: pass an OwnedElement wherever an Element goes.</summary>
+    /// <exception cref="ObjectDisposedException">It was released without being attached.</exception>
     public static implicit operator Element(OwnedElement owned)
     {
         ArgumentNullException.ThrowIfNull(owned);
@@ -77,6 +80,7 @@ public sealed class OwnedElement : IDisposable
         NativeMethods.RmlElement_ReleaseOwned(handle);
     }
 
+    /// <summary>The element's address (<c>div#row.selected</c>), or <c>OwnedElement(released)</c>.</summary>
     public override string ToString() => state == State.Released ? "OwnedElement(released)" : $"OwnedElement({Element.GetAddress(false, false)})";
 
     /// <summary>Wraps an ElementPtr RmlUi returned; null for a null pointer.</summary>

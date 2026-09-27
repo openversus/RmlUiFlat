@@ -14,20 +14,28 @@ public readonly unsafe partial struct TextInputHandler : IEquatable<TextInputHan
     /// <summary>The native Rml::TextInputHandler*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::TextInputHandler*. Does not take ownership.</summary>
     public TextInputHandler(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::TextInputHandler.</summary>
     public bool Equals(TextInputHandler other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is TextInputHandler other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::TextInputHandler(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::TextInputHandler(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::TextInputHandler.</summary>
     public static bool operator ==(TextInputHandler a, TextInputHandler b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(TextInputHandler a, TextInputHandler b) => a.Handle != b.Handle;
 
 }

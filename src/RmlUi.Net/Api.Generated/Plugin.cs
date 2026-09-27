@@ -14,20 +14,28 @@ public readonly unsafe partial struct Plugin : IEquatable<Plugin>
     /// <summary>The native Rml::Plugin*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::Plugin*. Does not take ownership.</summary>
     public Plugin(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::Plugin.</summary>
     public bool Equals(Plugin other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Plugin other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::Plugin(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::Plugin(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::Plugin.</summary>
     public static bool operator ==(Plugin a, Plugin b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(Plugin a, Plugin b) => a.Handle != b.Handle;
 
 }

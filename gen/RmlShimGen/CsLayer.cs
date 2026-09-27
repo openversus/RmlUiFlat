@@ -12,12 +12,32 @@ namespace RmlShimGen;
 /// </summary>
 public sealed partial class ShimGenerator
 {
+    /// <summary>How one parameter looks in C#, and the code that converts it for the native call.</summary>
+    /// <param name="Decl">The C# parameter declaration (<c>string name</c>, <c>out int start</c>).</param>
+    /// <param name="CallArg">How a forwarding method passes it on (<c>name</c>, <c>out start</c>).</param>
+    /// <param name="NativeDecl">Its declaration in the LibraryImport.</param>
+    /// <param name="NativeArg">The expression passed to the LibraryImport.</param>
+    /// <param name="Pre">Statements before the call (marshal a string, allocate a list).</param>
+    /// <param name="Fixed">A <c>fixed</c> statement to pin it for the call, or null.</param>
+    /// <param name="Post">Statements after the call (copy an output back).</param>
+    /// <param name="Finally">Statements in the <c>finally</c> (free what Pre allocated).</param>
+    /// <param name="CanDefault">Whether a C++ default argument can become a C# default here.</param>
     private sealed record CsParam(
         string Decl, string CallArg, string NativeDecl, string NativeArg,
         List<string> Pre, string? Fixed, List<string> Post, List<string> Finally, bool CanDefault);
 
+    /// <summary>How a return looks in C#: its type, the LibraryImport's type, and the conversion from one to the other.</summary>
     private sealed record CsReturn(string Type, string NativeType, Func<string, string> Convert);
 
+    /// <summary>One C# method over a wrapped function.</summary>
+    /// <param name="F">The wrapped function.</param>
+    /// <param name="Name">The C# method name (the C++ name unless it clashed).</param>
+    /// <param name="Key">Name and parameter types, to detect two methods C# could not tell apart.</param>
+    /// <param name="Params">The C# parameters, without one that became the return value.</param>
+    /// <param name="Defaults">The C# default for each of <paramref name="Params"/>, or null.</param>
+    /// <param name="Return">The C# return.</param>
+    /// <param name="IsStatic">A free function or a static member.</param>
+    /// <param name="HidesObjectMember">Needs <c>new</c> (a method named GetType).</param>
     private sealed record CsMethod(Wrapped F, string Name, string Key, List<CsParam> Params, List<string?> Defaults, CsReturn Return, bool IsStatic, bool HidesObjectMember)
     {
         /// <summary>Replaces the handle's own member of the same name (object.ToString).</summary>
@@ -32,8 +52,10 @@ public sealed partial class ShimGenerator
         public List<CsParam> AllParams => Returned == null ? Params : [.. Params[..ReturnedIndex], Returned, .. Params[ReturnedIndex..]];
     }
 
+    /// <summary>Methods whose C# name differs from C++, or that were left out of C#; the report lists them.</summary>
     private readonly List<string> csNotes = [];
 
+    /// <summary>C# keywords a C++ parameter name might be; they get an <c>@</c>.</summary>
     private static readonly HashSet<string> CsKeywords =
     [
         "abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue",
@@ -48,6 +70,7 @@ public sealed partial class ShimGenerator
     // Members every handle struct defines itself.
     private static readonly HashSet<string> HandleMembers = ["Handle", "IsNull", "Equals", "GetHashCode", "ToString"];
 
+    /// <summary>A name made safe as a C# identifier.</summary>
     private static string CsIdent(string name) => CsKeywords.Contains(name) ? "@" + name : name;
 
     /// <summary>C++ snake_case to C# camelCase: in_capture_phase becomes inCapturePhase.</summary>
@@ -57,11 +80,13 @@ public sealed partial class ShimGenerator
         return parts.Length == 0 ? name : parts[0] + string.Concat(parts.Skip(1).Select(Pascal));
     }
 
+    /// <summary>First letter upper case.</summary>
     private static string Pascal(string name) => name.Length == 0 ? name : char.ToUpperInvariant(name[0]) + name[1..];
 
     /// <summary>Rml::Style::Display becomes Style.Display: RmlUi's namespaces become static classes.</summary>
     private static string CsEnumName(CppEnum e) => e.FullName.StartsWith("Rml::") ? e.FullName[5..].Replace("::", ".") : e.FullName.Replace("::", ".");
 
+    /// <summary>The C# type for a C primitive or fixed-size typedef.</summary>
     private static string CsPrimitive(string cType) => cType switch
     {
         "bool" => "bool",
@@ -80,12 +105,15 @@ public sealed partial class ShimGenerator
         _ => throw new InvalidOperationException($"no C# type for {cType}"),
     };
 
+    /// <summary>The C# element type of a list: a handle struct, or string.</summary>
     private static string CsListElement(ListBase l) => l.Element is HandleBase h ? ShortName(h.Class.FullName) : "string";
 
+    /// <summary>The C# expression that copies a native list (<paramref name="x"/>) into an array.</summary>
     private static string ListFromNative(ListBase l, string x) => l.Element is HandleBase h
         ? $"NativeMethods.ToHandles({x}, static h => new {ShortName(h.Class.FullName)}(h))"
         : $"NativeMethods.ToStrings({x})";
 
+    /// <summary>How a parameter looks in C#, from how TypeMapper mapped it to C.</summary>
     private CsParam MapCsParam(ParamMap p)
     {
         string b = Camel(p.Name);
@@ -195,6 +223,7 @@ public sealed partial class ShimGenerator
         }
     }
 
+    /// <summary>How a return looks in C#, from how TypeMapper mapped it to C.</summary>
     private CsReturn MapCsReturn(ReturnMap r) => r.Base switch
     {
         VoidBase when r.Ind == Indirection.None => new("void", "void", x => x),
@@ -270,6 +299,10 @@ public sealed partial class ShimGenerator
         }
     }
 
+    /// <summary>
+    /// The C# method for a wrapped function under a given name: parameters, C# defaults (trailing only), and, for a void
+    /// function whose only output is a string or list, that output as the return value.
+    /// </summary>
     private CsMethod? BuildCsMethod(Wrapped f, string name)
     {
         var all = f.Params.Select(MapCsParam).ToList();
@@ -343,6 +376,7 @@ public sealed partial class ShimGenerator
         return methods;
     }
 
+    /// <summary>Writes src/RmlUi.Net/Api.Generated: NativeMethods, Rml (free functions), one file per handle, the enums and value types.</summary>
     private void WriteCsLayer()
     {
         var dir = config.Resolve(config.CsApiOutput);
@@ -414,6 +448,7 @@ public sealed partial class ShimGenerator
         File.WriteAllText(Path.Combine(dir, "ValueTypes.cs"), Wrap(WriteCsValueTypes));
     }
 
+    /// <summary>A generated C# file: header comment, usings, namespace RmlUi, then the body.</summary>
     private static string Wrap(Action<StringBuilder> body)
     {
         var w = new StringBuilder();
@@ -431,6 +466,7 @@ public sealed partial class ShimGenerator
         return w.ToString();
     }
 
+    /// <summary>A handle struct's own members: Handle, IsNull, equality, and ToString unless the class has its own.</summary>
     private static void WriteHandleStart(StringBuilder w, string qualified, string shortName, bool ownToString)
     {
         w.AppendLine($"/// <summary>A {qualified}*. Does not own it.</summary>");
@@ -439,27 +475,36 @@ public sealed partial class ShimGenerator
         w.AppendLine($"    /// <summary>The native {qualified}*.</summary>");
         w.AppendLine("    public readonly nint Handle;");
         w.AppendLine();
+        w.AppendLine($"    /// <summary>Wraps a native {qualified}*. Does not take ownership.</summary>");
         w.AppendLine($"    public {shortName}(nint handle) => Handle = handle;");
         w.AppendLine();
+        w.AppendLine("    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>");
         w.AppendLine("    public bool IsNull => Handle == 0;");
         w.AppendLine();
+        w.AppendLine($"    /// <summary>Whether both point at the same {qualified}.</summary>");
         w.AppendLine($"    public bool Equals({shortName} other) => Handle == other.Handle;");
         w.AppendLine();
+        w.AppendLine("    /// <inheritdoc/>");
         w.AppendLine($"    public override bool Equals(object? obj) => obj is {shortName} other && Equals(other);");
         w.AppendLine();
+        w.AppendLine("    /// <inheritdoc/>");
         w.AppendLine("    public override int GetHashCode() => Handle.GetHashCode();");
         w.AppendLine();
         if (!ownToString)
         {
+            w.AppendLine($"    /// <summary>The type and native address, for logs: <c>{qualified}(0x1A2B3C)</c>.</summary>");
             w.AppendLine($"    public override string ToString() => $\"{qualified}(0x{{Handle:X}})\";");
             w.AppendLine();
         }
+        w.AppendLine($"    /// <summary>Whether both point at the same {qualified}.</summary>");
         w.AppendLine($"    public static bool operator ==({shortName} a, {shortName} b) => a.Handle == b.Handle;");
         w.AppendLine();
+        w.AppendLine($"    /// <summary>Whether they point at different objects.</summary>");
         w.AppendLine($"    public static bool operator !=({shortName} a, {shortName} b) => a.Handle != b.Handle;");
         w.AppendLine();
     }
 
+    /// <summary>A method's XML doc: RmlUi's comment as the summary, the C++ signature as remarks.</summary>
     private static void WriteCsDoc(StringBuilder w, Wrapped f, string indent)
     {
         var comment = f.Function.Comment?.ToString()?.Trim();
@@ -475,9 +520,11 @@ public sealed partial class ShimGenerator
         w.AppendLine($"{indent}/// <remarks>C++: <c>{SecurityElement.Escape(Signature(f.Function, f.Owner))}</c></remarks>");
     }
 
+    /// <summary>A method's C# parameter list with defaults.</summary>
     private static string DeclList(CsMethod m) =>
         string.Join(", ", m.Params.Select((p, i) => m.Defaults[i] is { } d ? $"{p.Decl} = {d}" : p.Decl));
 
+    /// <summary>A method body: marshal the parameters, pin, call, copy outputs back, free in finally, convert the return.</summary>
     private static void WriteCsMethod(StringBuilder w, CsMethod m)
     {
         WriteCsDoc(w, m.F, "    ");
@@ -583,6 +630,7 @@ public sealed partial class ShimGenerator
         w.AppendLine();
     }
 
+    /// <summary>A method inherited from a base handle, forwarded through the upcast: C# does not look through implicit conversions for members.</summary>
     private static void WriteCsForwarder(StringBuilder w, CsMethod m, string baseName)
     {
         WriteCsDoc(w, m.F, "    ");
@@ -592,6 +640,7 @@ public sealed partial class ShimGenerator
         w.AppendLine();
     }
 
+    /// <summary>NativeMethods.cs: the RmlArray and Variant interop structs, the list-copy helpers, and a LibraryImport per C function.</summary>
     private string WriteNativeMethods(
         List<CsMethod> free, Dictionary<string, List<CsMethod>> perClass, List<(string From, string To)> upcasts, List<(string Derived, string Base)> downcasts)
     {
@@ -693,6 +742,7 @@ public sealed partial class ShimGenerator
         });
     }
 
+    /// <summary>One LibraryImport (Cdecl) of a C function.</summary>
     private static void WriteImport(StringBuilder w, string ret, string entry, string decls)
     {
         w.AppendLine("    [LibraryImport(LibraryName)]");
@@ -701,6 +751,7 @@ public sealed partial class ShimGenerator
         w.AppendLine();
     }
 
+    /// <summary>Enums.cs: every enum a signature reaches, nested as in C++ (Style.Display, ElementScroll.Orientation).</summary>
     private void WriteCsEnums(StringBuilder w)
     {
         // Group by containing namespace path so Style.* share one static class.
@@ -714,7 +765,13 @@ public sealed partial class ShimGenerator
             {
                 string c = containers[i];
                 // An enum declared inside a wrapped class (Rml::ElementScroll::Orientation) nests in its handle struct.
-                bool isHandle = handles.Contains("Rml::" + string.Join("::", containers[..(i + 1)]));
+                string qualified = "Rml::" + string.Join("::", containers[..(i + 1)]);
+                bool isHandle = handles.Contains(qualified);
+                if (!isHandle)
+                {
+                    // A handle struct is documented where it is declared; a namespace has no other declaration.
+                    w.AppendLine($"{indent}/// <summary>The enums of RmlUi's <c>{qualified}</c> namespace.</summary>");
+                }
                 w.AppendLine(isHandle ? $"{indent}public readonly unsafe partial struct {c}" : $"{indent}public static partial class {c}");
                 w.AppendLine($"{indent}{{");
                 indent += "    ";
@@ -728,6 +785,13 @@ public sealed partial class ShimGenerator
                 w.AppendLine($"{indent}{{");
                 foreach (var item in e.Items)
                 {
+                    // RmlUi's comment on the item where it has one; otherwise its C++ name, which is what a reader
+                    // looks up in RmlUi's documentation.
+                    string? comment = item.Comment?.ToString()?.Trim();
+                    string doc = string.IsNullOrEmpty(comment)
+                        ? $"<c>{e.FullName}::{item.Name}</c>"
+                        : string.Join(" ", comment.Split('\n', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries).Select(SecurityElement.Escape));
+                    w.AppendLine($"{indent}    /// <summary>{doc}</summary>");
                     w.AppendLine($"{indent}    {CsIdent(item.Name)} = {EnumValue(e, item)},");
                 }
                 w.AppendLine($"{indent}}}");
@@ -742,6 +806,7 @@ public sealed partial class ShimGenerator
         }
     }
 
+    /// <summary>ValueTypes.cs: a C# struct per value type, laid out as the C one, with equality.</summary>
     private void WriteCsValueTypes(StringBuilder w)
     {
         foreach (var (_, fields, cppName) in valueStructs)
@@ -754,9 +819,11 @@ public sealed partial class ShimGenerator
             w.AppendLine("{");
             foreach (var f in cs)
             {
+                w.AppendLine($"    /// <summary>{cppName}::{f.Param}.</summary>");
                 w.AppendLine($"    public {f.Type} {f.Name};");
             }
             w.AppendLine();
+            w.AppendLine($"    /// <summary>A {name} with the given {string.Join(", ", cs.Select(f => f.Param))}.</summary>");
             w.AppendLine($"    public {name}({string.Join(", ", cs.Select(f => $"{f.Type} {f.Param}"))})");
             w.AppendLine("    {");
             foreach (var f in cs)
@@ -765,16 +832,22 @@ public sealed partial class ShimGenerator
             }
             w.AppendLine("    }");
             w.AppendLine();
+            w.AppendLine("    /// <summary>Whether every field is equal.</summary>");
             w.AppendLine($"    public readonly bool Equals({name} other) => {string.Join(" && ", cs.Select(f => $"{f.Name} == other.{f.Name}"))};");
             w.AppendLine();
+            w.AppendLine("    /// <inheritdoc/>");
             w.AppendLine($"    public override readonly bool Equals(object? obj) => obj is {name} other && Equals(other);");
             w.AppendLine();
+            w.AppendLine("    /// <inheritdoc/>");
             w.AppendLine($"    public override readonly int GetHashCode() => HashCode.Combine({string.Join(", ", cs.Select(f => f.Name))});");
             w.AppendLine();
+            w.AppendLine($"    /// <summary>The fields in brackets: <c>({string.Join(", ", cs.Select(f => f.Param))})</c>.</summary>");
             w.AppendLine($"    public override readonly string ToString() => $\"({string.Join(", ", cs.Select(f => $"{{{f.Name}}}"))})\";");
             w.AppendLine();
+            w.AppendLine("    /// <summary>Whether every field is equal.</summary>");
             w.AppendLine($"    public static bool operator ==({name} a, {name} b) => a.Equals(b);");
             w.AppendLine();
+            w.AppendLine("    /// <summary>Whether any field differs.</summary>");
             w.AppendLine($"    public static bool operator !=({name} a, {name} b) => !a.Equals(b);");
             w.AppendLine("}");
             w.AppendLine();

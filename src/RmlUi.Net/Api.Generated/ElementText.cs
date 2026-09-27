@@ -14,20 +14,28 @@ public readonly unsafe partial struct ElementText : IEquatable<ElementText>
     /// <summary>The native Rml::ElementText*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::ElementText*. Does not take ownership.</summary>
     public ElementText(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::ElementText.</summary>
     public bool Equals(ElementText other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is ElementText other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::ElementText(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::ElementText(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::ElementText.</summary>
     public static bool operator ==(ElementText a, ElementText b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(ElementText a, ElementText b) => a.Handle != b.Handle;
 
     /// <summary>Upcast to Rml::Element.</summary>

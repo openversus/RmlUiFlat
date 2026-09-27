@@ -11,231 +11,402 @@ namespace RmlUi;
 /// <summary>Rml::BoxArea</summary>
 public enum BoxArea : int
 {
+    /// <summary><c>Rml::BoxArea::Margin</c></summary>
     Margin = 0,
+    /// <summary><c>Rml::BoxArea::Border</c></summary>
     Border = 1,
+    /// <summary><c>Rml::BoxArea::Padding</c></summary>
     Padding = 2,
+    /// <summary><c>Rml::BoxArea::Content</c></summary>
     Content = 3,
+    /// <summary><c>Rml::BoxArea::Auto</c></summary>
     Auto = 4,
 }
 
 /// <summary>Rml::BoxDirection</summary>
 public enum BoxDirection : int
 {
+    /// <summary><c>Rml::BoxDirection::Vertical</c></summary>
     Vertical = 0,
+    /// <summary><c>Rml::BoxDirection::Horizontal</c></summary>
     Horizontal = 1,
 }
 
 /// <summary>Rml::BoxEdge</summary>
 public enum BoxEdge : int
 {
+    /// <summary><c>Rml::BoxEdge::Top</c></summary>
     Top = 0,
+    /// <summary><c>Rml::BoxEdge::Right</c></summary>
     Right = 1,
+    /// <summary><c>Rml::BoxEdge::Bottom</c></summary>
     Bottom = 2,
+    /// <summary><c>Rml::BoxEdge::Left</c></summary>
     Left = 3,
 }
 
 /// <summary>Rml::Character</summary>
 public enum Character : int
 {
+    /// <summary>Unicode code point</summary>
     Null = 0,
+    /// <summary>Unicode code point</summary>
     Replacement = 65533,
 }
 
 /// <summary>Rml::DefaultActionPhase</summary>
 public enum DefaultActionPhase : int
 {
+    /// <summary><c>Rml::DefaultActionPhase::None</c></summary>
     None = 0,
+    /// <summary><c>Rml::DefaultActionPhase::Target</c></summary>
     Target = 2,
+    /// <summary><c>Rml::DefaultActionPhase::TargetAndBubble</c></summary>
     TargetAndBubble = 6,
 }
 
 /// <summary>Rml::EventId</summary>
 public enum EventId : int
 {
+    /// <summary><c>Rml::EventId::Invalid</c></summary>
     Invalid = 0,
+    /// <summary>Core events</summary>
     Mousedown = 1,
+    /// <summary>Core events</summary>
     Mousescroll = 2,
+    /// <summary>Core events</summary>
     Mouseover = 3,
+    /// <summary>Core events</summary>
     Mouseout = 4,
+    /// <summary>Core events</summary>
     Focus = 5,
+    /// <summary>Core events</summary>
     Blur = 6,
+    /// <summary>Core events</summary>
     Keydown = 7,
+    /// <summary>Core events</summary>
     Keyup = 8,
+    /// <summary>Core events</summary>
     Textinput = 9,
+    /// <summary>Core events</summary>
     Mouseup = 10,
+    /// <summary>Core events</summary>
     Click = 11,
+    /// <summary>Core events</summary>
     Dblclick = 12,
+    /// <summary>Core events</summary>
     Load = 13,
+    /// <summary>Core events</summary>
     Unload = 14,
+    /// <summary>Core events</summary>
     Show = 15,
+    /// <summary>Core events</summary>
     Hide = 16,
+    /// <summary>Core events</summary>
     Mousemove = 17,
+    /// <summary>Core events</summary>
     Dragmove = 18,
+    /// <summary>Core events</summary>
     Drag = 19,
+    /// <summary>Core events</summary>
     Dragstart = 20,
+    /// <summary>Core events</summary>
     Dragover = 21,
+    /// <summary>Core events</summary>
     Dragdrop = 22,
+    /// <summary>Core events</summary>
     Dragout = 23,
+    /// <summary>Core events</summary>
     Dragend = 24,
+    /// <summary>Core events</summary>
     Handledrag = 25,
+    /// <summary>Core events</summary>
     Resize = 26,
+    /// <summary>Core events</summary>
     Scroll = 27,
+    /// <summary>Core events</summary>
     Animationend = 28,
+    /// <summary>Core events</summary>
     Transitionend = 29,
+    /// <summary>Form control events</summary>
     Change = 30,
+    /// <summary>Form control events</summary>
     Submit = 31,
+    /// <summary>Form control events</summary>
     Tabchange = 32,
+    /// <summary>Form control events</summary>
     NumDefinedIds = 33,
+    /// <summary>Custom IDs start here</summary>
     FirstCustomId = 33,
+    /// <summary>The maximum number of IDs. This limits the number of possible custom IDs to MaxNumIds - FirstCustomId.</summary>
     MaxNumIds = 65535,
 }
 
 /// <summary>Rml::EventPhase</summary>
 public enum EventPhase : int
 {
+    /// <summary><c>Rml::EventPhase::None</c></summary>
     None = 0,
+    /// <summary><c>Rml::EventPhase::Capture</c></summary>
     Capture = 1,
+    /// <summary><c>Rml::EventPhase::Target</c></summary>
     Target = 2,
+    /// <summary><c>Rml::EventPhase::Bubble</c></summary>
     Bubble = 4,
 }
 
 /// <summary>Rml::FocusFlag</summary>
 public enum FocusFlag : int
 {
+    /// <summary>No focus.</summary>
     None = 0,
+    /// <summary>Focus the document.</summary>
     Document = 1,
+    /// <summary>Focus the element in the document which last had focus.</summary>
     Keep = 2,
+    /// <summary>Focus the first tab element with the &apos;autofocus&apos; attribute or else the document.</summary>
     Auto = 3,
 }
 
 /// <summary>Rml::ModalFlag</summary>
 public enum ModalFlag : int
 {
+    /// <summary>Remove modal state.</summary>
     None = 0,
+    /// <summary>Set modal state, other documents cannot receive focus.</summary>
     Modal = 1,
+    /// <summary>Modal state unchanged.</summary>
     Keep = 2,
 }
 
 /// <summary>Rml::PropertyId</summary>
 public enum PropertyId : int
 {
+    /// <summary><c>Rml::PropertyId::Invalid</c></summary>
     Invalid = 0,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MarginTop = 1,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MarginRight = 2,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MarginBottom = 3,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MarginLeft = 4,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     PaddingTop = 5,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     PaddingRight = 6,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     PaddingBottom = 7,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     PaddingLeft = 8,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderTopWidth = 9,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderRightWidth = 10,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderBottomWidth = 11,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderLeftWidth = 12,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderTopColor = 13,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderRightColor = 14,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderBottomColor = 15,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderLeftColor = 16,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderTopLeftRadius = 17,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderTopRightRadius = 18,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderBottomRightRadius = 19,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BorderBottomLeftRadius = 20,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Display = 21,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Position = 22,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Top = 23,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Right = 24,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Bottom = 25,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Left = 26,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Float = 27,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Clear = 28,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BoxSizing = 29,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     ZIndex = 30,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Width = 31,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MinWidth = 32,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MaxWidth = 33,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Height = 34,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MinHeight = 35,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MaxHeight = 36,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     LineHeight = 37,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     VerticalAlign = 38,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     OverflowX = 39,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     OverflowY = 40,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Clip = 41,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Visibility = 42,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     TextOverflow = 43,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BackgroundColor = 44,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Color = 45,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     CaretColor = 46,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     ImageColor = 47,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FontFamily = 48,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FontStyle = 49,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FontWeight = 50,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FontSize = 51,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FontKerning = 52,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     LetterSpacing = 53,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     TextAlign = 54,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     TextDecoration = 55,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     TextTransform = 56,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     WhiteSpace = 57,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     WordBreak = 58,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     RowGap = 59,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     ColumnGap = 60,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Cursor = 61,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Drag = 62,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     TabIndex = 63,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     ScrollbarMargin = 64,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     OverscrollBehavior = 65,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Perspective = 66,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     PerspectiveOriginX = 67,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     PerspectiveOriginY = 68,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Transform = 69,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     TransformOriginX = 70,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     TransformOriginY = 71,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     TransformOriginZ = 72,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Transition = 73,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Animation = 74,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Opacity = 75,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     PointerEvents = 76,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Focus = 77,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Decorator = 78,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     MaskImage = 79,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FontEffect = 80,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     Filter = 81,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BackdropFilter = 82,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     BoxShadow = 83,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FillImage = 84,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     AlignContent = 85,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     AlignItems = 86,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     AlignSelf = 87,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FlexBasis = 88,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FlexDirection = 89,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FlexGrow = 90,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FlexShrink = 91,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FlexWrap = 92,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     JustifyContent = 93,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     NavUp = 94,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     NavRight = 95,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     NavDown = 96,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     NavLeft = 97,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     RmlUi_Language = 98,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     RmlUi_Direction = 99,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     NumDefinedIds = 100,
+    /// <summary>The following values define the property ids for the main stylesheet specification. These values must not be used in places that have their own property specification, such as decorators and font-effects.</summary>
     FirstCustomId = 100,
+    /// <summary>The maximum number of IDs. This limits the number of possible custom IDs to MaxNumIds - FirstCustomId.</summary>
     MaxNumIds = 128,
 }
 
 /// <summary>Rml::ScrollBehavior</summary>
 public enum ScrollBehavior : int
 {
+    /// <summary>Scroll using the context&apos;s configured setting.</summary>
     Auto = 0,
+    /// <summary>Scroll using a smooth animation.</summary>
     Smooth = 1,
+    /// <summary>Scroll instantly.</summary>
     Instant = 2,
 }
 
 /// <summary>Rml::ScrollFlag</summary>
 public enum ScrollFlag : int
 {
+    /// <summary>Never scroll.</summary>
     None = 0,
+    /// <summary>Scroll the focused element into view, if applicable.</summary>
     Auto = 1,
 }
 
@@ -245,250 +416,459 @@ public readonly unsafe partial struct ElementScroll
     /// <summary>Rml::ElementScroll::Orientation</summary>
     public enum Orientation : int
     {
+        /// <summary><c>Rml::ElementScroll::Orientation::VERTICAL</c></summary>
         VERTICAL = 0,
+        /// <summary><c>Rml::ElementScroll::Orientation::HORIZONTAL</c></summary>
         HORIZONTAL = 1,
     }
 
 }
 
+/// <summary>The enums of RmlUi's <c>Rml::Input</c> namespace.</summary>
 public static partial class Input
 {
     /// <summary>Rml::Input::KeyIdentifier</summary>
     public enum KeyIdentifier : int
     {
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_UNKNOWN</c></summary>
         KI_UNKNOWN = 0,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_SPACE</c></summary>
         KI_SPACE = 1,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_0</c></summary>
         KI_0 = 2,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_1</c></summary>
         KI_1 = 3,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_2</c></summary>
         KI_2 = 4,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_3</c></summary>
         KI_3 = 5,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_4</c></summary>
         KI_4 = 6,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_5</c></summary>
         KI_5 = 7,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_6</c></summary>
         KI_6 = 8,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_7</c></summary>
         KI_7 = 9,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_8</c></summary>
         KI_8 = 10,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_9</c></summary>
         KI_9 = 11,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_A</c></summary>
         KI_A = 12,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_B</c></summary>
         KI_B = 13,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_C</c></summary>
         KI_C = 14,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_D</c></summary>
         KI_D = 15,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_E</c></summary>
         KI_E = 16,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F</c></summary>
         KI_F = 17,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_G</c></summary>
         KI_G = 18,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_H</c></summary>
         KI_H = 19,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_I</c></summary>
         KI_I = 20,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_J</c></summary>
         KI_J = 21,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_K</c></summary>
         KI_K = 22,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_L</c></summary>
         KI_L = 23,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_M</c></summary>
         KI_M = 24,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_N</c></summary>
         KI_N = 25,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_O</c></summary>
         KI_O = 26,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_P</c></summary>
         KI_P = 27,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_Q</c></summary>
         KI_Q = 28,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_R</c></summary>
         KI_R = 29,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_S</c></summary>
         KI_S = 30,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_T</c></summary>
         KI_T = 31,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_U</c></summary>
         KI_U = 32,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_V</c></summary>
         KI_V = 33,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_W</c></summary>
         KI_W = 34,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_X</c></summary>
         KI_X = 35,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_Y</c></summary>
         KI_Y = 36,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_Z</c></summary>
         KI_Z = 37,
+        /// <summary>US standard keyboard; the &apos;;:&apos; key.</summary>
         KI_OEM_1 = 38,
+        /// <summary>Any region; the &apos;=+&apos; key.</summary>
         KI_OEM_PLUS = 39,
+        /// <summary>Any region; the &apos;, &lt; &apos; key.</summary>
         KI_OEM_COMMA = 40,
+        /// <summary>Any region; the &apos;-_&apos; key.</summary>
         KI_OEM_MINUS = 41,
+        /// <summary>Any region; the &apos;.&gt;&apos; key.</summary>
         KI_OEM_PERIOD = 42,
+        /// <summary>Any region; the &apos;/?&apos; key.</summary>
         KI_OEM_2 = 43,
+        /// <summary>Any region; the &apos;`~&apos; key.</summary>
         KI_OEM_3 = 44,
+        /// <summary>US standard keyboard; the &apos;[{&apos; key.</summary>
         KI_OEM_4 = 45,
+        /// <summary>US standard keyboard; the &apos; \ |&apos; key.</summary>
         KI_OEM_5 = 46,
+        /// <summary>US standard keyboard; the &apos;]}&apos; key.</summary>
         KI_OEM_6 = 47,
+        /// <summary>US standard keyboard; the &apos;&apos;&quot;&apos; key.</summary>
         KI_OEM_7 = 48,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_OEM_8</c></summary>
         KI_OEM_8 = 49,
+        /// <summary>RT 102-key keyboard; the &apos; &lt; &gt;&apos; or &apos; \ |&apos; key.</summary>
         KI_OEM_102 = 50,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD0</c></summary>
         KI_NUMPAD0 = 51,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD1</c></summary>
         KI_NUMPAD1 = 52,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD2</c></summary>
         KI_NUMPAD2 = 53,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD3</c></summary>
         KI_NUMPAD3 = 54,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD4</c></summary>
         KI_NUMPAD4 = 55,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD5</c></summary>
         KI_NUMPAD5 = 56,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD6</c></summary>
         KI_NUMPAD6 = 57,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD7</c></summary>
         KI_NUMPAD7 = 58,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD8</c></summary>
         KI_NUMPAD8 = 59,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPAD9</c></summary>
         KI_NUMPAD9 = 60,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_NUMPADENTER</c></summary>
         KI_NUMPADENTER = 61,
+        /// <summary>Asterisk on the numeric keypad.</summary>
         KI_MULTIPLY = 62,
+        /// <summary>Plus on the numeric keypad.</summary>
         KI_ADD = 63,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_SEPARATOR</c></summary>
         KI_SEPARATOR = 64,
+        /// <summary>Minus on the numeric keypad.</summary>
         KI_SUBTRACT = 65,
+        /// <summary>Period on the numeric keypad.</summary>
         KI_DECIMAL = 66,
+        /// <summary>Forward Slash on the numeric keypad.</summary>
         KI_DIVIDE = 67,
+        /// <summary>Equals key on the numeric keypad.</summary>
         KI_OEM_NEC_EQUAL = 68,
+        /// <summary>Backspace key.</summary>
         KI_BACK = 69,
+        /// <summary>Tab key.</summary>
         KI_TAB = 70,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_CLEAR</c></summary>
         KI_CLEAR = 71,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_RETURN</c></summary>
         KI_RETURN = 72,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_PAUSE</c></summary>
         KI_PAUSE = 73,
+        /// <summary>Capslock key.</summary>
         KI_CAPITAL = 74,
+        /// <summary>IME Kana mode.</summary>
         KI_KANA = 75,
+        /// <summary>IME Hangul mode.</summary>
         KI_HANGUL = 76,
+        /// <summary>IME Junja mode.</summary>
         KI_JUNJA = 77,
+        /// <summary>IME final mode.</summary>
         KI_FINAL = 78,
+        /// <summary>IME Hanja mode.</summary>
         KI_HANJA = 79,
+        /// <summary>IME Kanji mode.</summary>
         KI_KANJI = 80,
+        /// <summary>Escape key.</summary>
         KI_ESCAPE = 81,
+        /// <summary>IME convert.</summary>
         KI_CONVERT = 82,
+        /// <summary>IME nonconvert.</summary>
         KI_NONCONVERT = 83,
+        /// <summary>IME accept.</summary>
         KI_ACCEPT = 84,
+        /// <summary>IME mode change request.</summary>
         KI_MODECHANGE = 85,
+        /// <summary>Page Up key.</summary>
         KI_PRIOR = 86,
+        /// <summary>Page Down key.</summary>
         KI_NEXT = 87,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_END</c></summary>
         KI_END = 88,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_HOME</c></summary>
         KI_HOME = 89,
+        /// <summary>Left Arrow key.</summary>
         KI_LEFT = 90,
+        /// <summary>Up Arrow key.</summary>
         KI_UP = 91,
+        /// <summary>Right Arrow key.</summary>
         KI_RIGHT = 92,
+        /// <summary>Down Arrow key.</summary>
         KI_DOWN = 93,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_SELECT</c></summary>
         KI_SELECT = 94,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_PRINT</c></summary>
         KI_PRINT = 95,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_EXECUTE</c></summary>
         KI_EXECUTE = 96,
+        /// <summary>Print Screen key.</summary>
         KI_SNAPSHOT = 97,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_INSERT</c></summary>
         KI_INSERT = 98,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_DELETE</c></summary>
         KI_DELETE = 99,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_HELP</c></summary>
         KI_HELP = 100,
+        /// <summary>Left Windows key.</summary>
         KI_LWIN = 101,
+        /// <summary>Right Windows key.</summary>
         KI_RWIN = 102,
+        /// <summary>Applications key.</summary>
         KI_APPS = 103,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_POWER</c></summary>
         KI_POWER = 104,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_SLEEP</c></summary>
         KI_SLEEP = 105,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_WAKE</c></summary>
         KI_WAKE = 106,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F1</c></summary>
         KI_F1 = 107,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F2</c></summary>
         KI_F2 = 108,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F3</c></summary>
         KI_F3 = 109,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F4</c></summary>
         KI_F4 = 110,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F5</c></summary>
         KI_F5 = 111,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F6</c></summary>
         KI_F6 = 112,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F7</c></summary>
         KI_F7 = 113,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F8</c></summary>
         KI_F8 = 114,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F9</c></summary>
         KI_F9 = 115,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F10</c></summary>
         KI_F10 = 116,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F11</c></summary>
         KI_F11 = 117,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F12</c></summary>
         KI_F12 = 118,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F13</c></summary>
         KI_F13 = 119,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F14</c></summary>
         KI_F14 = 120,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F15</c></summary>
         KI_F15 = 121,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F16</c></summary>
         KI_F16 = 122,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F17</c></summary>
         KI_F17 = 123,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F18</c></summary>
         KI_F18 = 124,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F19</c></summary>
         KI_F19 = 125,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F20</c></summary>
         KI_F20 = 126,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F21</c></summary>
         KI_F21 = 127,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F22</c></summary>
         KI_F22 = 128,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F23</c></summary>
         KI_F23 = 129,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_F24</c></summary>
         KI_F24 = 130,
+        /// <summary>Numlock key.</summary>
         KI_NUMLOCK = 131,
+        /// <summary>Scroll Lock key.</summary>
         KI_SCROLL = 132,
+        /// <summary>&apos;Dictionary&apos; key.</summary>
         KI_OEM_FJ_JISHO = 133,
+        /// <summary>&apos;Unregister word&apos; key.</summary>
         KI_OEM_FJ_MASSHOU = 134,
+        /// <summary>&apos;Register word&apos; key.</summary>
         KI_OEM_FJ_TOUROKU = 135,
+        /// <summary>&apos;Left OYAYUBI&apos; key.</summary>
         KI_OEM_FJ_LOYA = 136,
+        /// <summary>&apos;Right OYAYUBI&apos; key.</summary>
         KI_OEM_FJ_ROYA = 137,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_LSHIFT</c></summary>
         KI_LSHIFT = 138,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_RSHIFT</c></summary>
         KI_RSHIFT = 139,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_LCONTROL</c></summary>
         KI_LCONTROL = 140,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_RCONTROL</c></summary>
         KI_RCONTROL = 141,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_LMENU</c></summary>
         KI_LMENU = 142,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_RMENU</c></summary>
         KI_RMENU = 143,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_BROWSER_BACK</c></summary>
         KI_BROWSER_BACK = 144,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_BROWSER_FORWARD</c></summary>
         KI_BROWSER_FORWARD = 145,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_BROWSER_REFRESH</c></summary>
         KI_BROWSER_REFRESH = 146,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_BROWSER_STOP</c></summary>
         KI_BROWSER_STOP = 147,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_BROWSER_SEARCH</c></summary>
         KI_BROWSER_SEARCH = 148,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_BROWSER_FAVORITES</c></summary>
         KI_BROWSER_FAVORITES = 149,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_BROWSER_HOME</c></summary>
         KI_BROWSER_HOME = 150,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_VOLUME_MUTE</c></summary>
         KI_VOLUME_MUTE = 151,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_VOLUME_DOWN</c></summary>
         KI_VOLUME_DOWN = 152,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_VOLUME_UP</c></summary>
         KI_VOLUME_UP = 153,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_MEDIA_NEXT_TRACK</c></summary>
         KI_MEDIA_NEXT_TRACK = 154,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_MEDIA_PREV_TRACK</c></summary>
         KI_MEDIA_PREV_TRACK = 155,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_MEDIA_STOP</c></summary>
         KI_MEDIA_STOP = 156,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_MEDIA_PLAY_PAUSE</c></summary>
         KI_MEDIA_PLAY_PAUSE = 157,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_LAUNCH_MAIL</c></summary>
         KI_LAUNCH_MAIL = 158,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_LAUNCH_MEDIA_SELECT</c></summary>
         KI_LAUNCH_MEDIA_SELECT = 159,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_LAUNCH_APP1</c></summary>
         KI_LAUNCH_APP1 = 160,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_LAUNCH_APP2</c></summary>
         KI_LAUNCH_APP2 = 161,
+        /// <summary>Various extended or enhanced keyboards</summary>
         KI_OEM_AX = 162,
+        /// <summary>Various extended or enhanced keyboards</summary>
         KI_ICO_HELP = 163,
+        /// <summary>Various extended or enhanced keyboards</summary>
         KI_ICO_00 = 164,
+        /// <summary>IME Process key.</summary>
         KI_PROCESSKEY = 165,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_ICO_CLEAR</c></summary>
         KI_ICO_CLEAR = 166,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_ATTN</c></summary>
         KI_ATTN = 167,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_CRSEL</c></summary>
         KI_CRSEL = 168,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_EXSEL</c></summary>
         KI_EXSEL = 169,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_EREOF</c></summary>
         KI_EREOF = 170,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_PLAY</c></summary>
         KI_PLAY = 171,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_ZOOM</c></summary>
         KI_ZOOM = 172,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_PA1</c></summary>
         KI_PA1 = 173,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_OEM_CLEAR</c></summary>
         KI_OEM_CLEAR = 174,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_LMETA</c></summary>
         KI_LMETA = 175,
+        /// <summary><c>Rml::Input::KeyIdentifier::KI_RMETA</c></summary>
         KI_RMETA = 176,
+        /// <summary>Custom keys that users can assign their own meaning to.</summary>
         KI_FIRST_CUSTOM_KEY = 177,
+        /// <summary>Custom keys that users can assign their own meaning to.</summary>
         KI_LAST_CUSTOM_KEY = 250,
     }
 
 }
 
+/// <summary>The enums of RmlUi's <c>Rml::Style</c> namespace.</summary>
 public static partial class Style
 {
     /// <summary>Rml::Style::Display</summary>
     public enum Display : int
     {
+        /// <summary><c>Rml::Style::Display::None</c></summary>
         None = 0,
+        /// <summary><c>Rml::Style::Display::Block</c></summary>
         Block = 1,
+        /// <summary><c>Rml::Style::Display::Inline</c></summary>
         Inline = 2,
+        /// <summary><c>Rml::Style::Display::InlineBlock</c></summary>
         InlineBlock = 3,
+        /// <summary><c>Rml::Style::Display::FlowRoot</c></summary>
         FlowRoot = 4,
+        /// <summary><c>Rml::Style::Display::Flex</c></summary>
         Flex = 5,
+        /// <summary><c>Rml::Style::Display::InlineFlex</c></summary>
         InlineFlex = 6,
+        /// <summary><c>Rml::Style::Display::Table</c></summary>
         Table = 7,
+        /// <summary><c>Rml::Style::Display::InlineTable</c></summary>
         InlineTable = 8,
+        /// <summary><c>Rml::Style::Display::TableRow</c></summary>
         TableRow = 9,
+        /// <summary><c>Rml::Style::Display::TableRowGroup</c></summary>
         TableRowGroup = 10,
+        /// <summary><c>Rml::Style::Display::TableColumn</c></summary>
         TableColumn = 11,
+        /// <summary><c>Rml::Style::Display::TableColumnGroup</c></summary>
         TableColumnGroup = 12,
+        /// <summary><c>Rml::Style::Display::TableCell</c></summary>
         TableCell = 13,
     }
 
     /// <summary>Rml::Style::Float</summary>
     public enum Float : int
     {
+        /// <summary><c>Rml::Style::Float::None</c></summary>
         None = 0,
+        /// <summary><c>Rml::Style::Float::Left</c></summary>
         Left = 1,
+        /// <summary><c>Rml::Style::Float::Right</c></summary>
         Right = 2,
     }
 
     /// <summary>Rml::Style::FontStyle</summary>
     public enum FontStyle : int
     {
+        /// <summary><c>Rml::Style::FontStyle::Normal</c></summary>
         Normal = 0,
+        /// <summary><c>Rml::Style::FontStyle::Italic</c></summary>
         Italic = 1,
     }
 
     /// <summary>Rml::Style::FontWeight</summary>
     public enum FontWeight : int
     {
+        /// <summary>Any definite value in the range [1,1000] is valid.</summary>
         Auto = 0,
+        /// <summary>Any definite value in the range [1,1000] is valid.</summary>
         Normal = 400,
+        /// <summary>Any definite value in the range [1,1000] is valid.</summary>
         Bold = 700,
     }
 
     /// <summary>Rml::Style::Position</summary>
     public enum Position : int
     {
+        /// <summary><c>Rml::Style::Position::Static</c></summary>
         Static = 0,
+        /// <summary><c>Rml::Style::Position::Relative</c></summary>
         Relative = 1,
+        /// <summary><c>Rml::Style::Position::Absolute</c></summary>
         Absolute = 2,
+        /// <summary><c>Rml::Style::Position::Fixed</c></summary>
         Fixed = 3,
     }
 
@@ -499,31 +879,57 @@ public readonly unsafe partial struct Variant
     /// <summary>Rml::Variant::Type</summary>
     public enum Type : int
     {
+        /// <summary><c>Rml::Variant::Type::NONE</c></summary>
         NONE = 45,
+        /// <summary><c>Rml::Variant::Type::BOOL</c></summary>
         BOOL = 66,
+        /// <summary><c>Rml::Variant::Type::BYTE</c></summary>
         BYTE = 98,
+        /// <summary><c>Rml::Variant::Type::CHAR</c></summary>
         CHAR = 99,
+        /// <summary><c>Rml::Variant::Type::FLOAT</c></summary>
         FLOAT = 102,
+        /// <summary><c>Rml::Variant::Type::DOUBLE</c></summary>
         DOUBLE = 100,
+        /// <summary><c>Rml::Variant::Type::INT</c></summary>
         INT = 105,
+        /// <summary><c>Rml::Variant::Type::INT64</c></summary>
         INT64 = 73,
+        /// <summary><c>Rml::Variant::Type::UINT</c></summary>
         UINT = 117,
+        /// <summary><c>Rml::Variant::Type::UINT64</c></summary>
         UINT64 = 85,
+        /// <summary><c>Rml::Variant::Type::STRING</c></summary>
         STRING = 115,
+        /// <summary><c>Rml::Variant::Type::VECTOR2</c></summary>
         VECTOR2 = 50,
+        /// <summary><c>Rml::Variant::Type::VECTOR3</c></summary>
         VECTOR3 = 51,
+        /// <summary><c>Rml::Variant::Type::VECTOR4</c></summary>
         VECTOR4 = 52,
+        /// <summary><c>Rml::Variant::Type::COLOURF</c></summary>
         COLOURF = 103,
+        /// <summary><c>Rml::Variant::Type::COLOURB</c></summary>
         COLOURB = 104,
+        /// <summary><c>Rml::Variant::Type::SCRIPTINTERFACE</c></summary>
         SCRIPTINTERFACE = 112,
+        /// <summary><c>Rml::Variant::Type::TRANSFORMPTR</c></summary>
         TRANSFORMPTR = 116,
+        /// <summary><c>Rml::Variant::Type::TRANSITIONLIST</c></summary>
         TRANSITIONLIST = 84,
+        /// <summary><c>Rml::Variant::Type::ANIMATIONLIST</c></summary>
         ANIMATIONLIST = 65,
+        /// <summary><c>Rml::Variant::Type::DECORATORSPTR</c></summary>
         DECORATORSPTR = 68,
+        /// <summary><c>Rml::Variant::Type::FILTERSPTR</c></summary>
         FILTERSPTR = 70,
+        /// <summary><c>Rml::Variant::Type::FONTEFFECTSPTR</c></summary>
         FONTEFFECTSPTR = 69,
+        /// <summary><c>Rml::Variant::Type::COLORSTOPLIST</c></summary>
         COLORSTOPLIST = 67,
+        /// <summary><c>Rml::Variant::Type::BOXSHADOWLIST</c></summary>
         BOXSHADOWLIST = 83,
+        /// <summary><c>Rml::Variant::Type::VOIDPTR</c></summary>
         VOIDPTR = 42,
     }
 

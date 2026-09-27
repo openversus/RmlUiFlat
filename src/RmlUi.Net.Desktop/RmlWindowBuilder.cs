@@ -12,6 +12,14 @@ public sealed class RmlWindowBuilder : RmlHostBuilder<RmlWindowBuilder>
     private bool powerSave = true;
     private RmlRenderer renderer = RmlRenderer.Auto;
 
+    /// <summary>A window with the given title and size.</summary>
+    /// <param name="title">The window's title bar text.</param>
+    /// <param name="width">
+    /// Width in the display's logical units. The context is sized in physical pixels, so on a display scaled to 125%
+    /// an 800-wide window has a 1000-wide context; RmlUi's <c>dp</c> unit follows the scale.
+    /// </param>
+    /// <param name="height">Height in the display's logical units.</param>
+    /// <exception cref="ArgumentOutOfRangeException">A size is zero or negative.</exception>
     public RmlWindowBuilder(string title, int width, int height)
     {
         ArgumentNullException.ThrowIfNull(title);

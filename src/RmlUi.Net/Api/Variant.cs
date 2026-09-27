@@ -44,24 +44,34 @@ public readonly unsafe partial struct Variant : IEquatable<Variant>
 
     private bool IsReal => Kind is Type.FLOAT or Type.DOUBLE;
 
+    /// <summary>A STRING. Null becomes an empty string.</summary>
     public static implicit operator Variant(string value) => new(Type.STRING, text: value ?? "");
 
+    /// <summary>A BOOL.</summary>
     public static implicit operator Variant(bool value) => new(Type.BOOL, integer: value ? 1 : 0);
 
+    /// <summary>An INT.</summary>
     public static implicit operator Variant(int value) => new(Type.INT, integer: value);
 
+    /// <summary>An INT64.</summary>
     public static implicit operator Variant(long value) => new(Type.INT64, integer: value);
 
+    /// <summary>A FLOAT.</summary>
     public static implicit operator Variant(float value) => new(Type.FLOAT, real: value);
 
+    /// <summary>A DOUBLE.</summary>
     public static implicit operator Variant(double value) => new(Type.DOUBLE, real: value);
 
+    /// <summary>A VECTOR2.</summary>
     public static implicit operator Variant(Vector2f value) => new(Type.VECTOR2, x: value.X, y: value.Y);
 
+    /// <summary>A COLOURB.</summary>
     public static implicit operator Variant(Colourb value) => new(Type.COLOURB, x: value.Red, y: value.Green, z: value.Blue, w: value.Alpha);
 
+    /// <summary>Same kind and same value; no conversion (INT 1 is not DOUBLE 1).</summary>
     public static bool operator ==(Variant a, Variant b) => a.Equals(b);
 
+    /// <summary>A different kind or value.</summary>
     public static bool operator !=(Variant a, Variant b) => !a.Equals(b);
 
     /// <summary>Numbers are nonzero; strings are "1" or "true" (any case), or a nonzero number.</summary>
@@ -87,6 +97,7 @@ public readonly unsafe partial struct Variant : IEquatable<Variant>
         _ => 0,
     };
 
+    /// <summary>The value as a float: see <see cref="ToDouble"/>.</summary>
     public float ToFloat() => (float)ToDouble();
 
     /// <summary>The value as a double: numbers as stored (UINT64 unsigned), strings parsed; 0 when there is no number.</summary>
@@ -119,12 +130,15 @@ public readonly unsafe partial struct Variant : IEquatable<Variant>
         _ => $"<{Kind}>",
     };
 
+    /// <summary>Same kind and same value; no conversion (INT 1 is not DOUBLE 1).</summary>
     public bool Equals(Variant other) =>
         Kind == other.Kind && integer == other.integer && real.Equals(other.real) && text == other.text
         && x.Equals(other.x) && y.Equals(other.y) && z.Equals(other.z) && w.Equals(other.w);
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is Variant other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(Kind, integer, real, text, x, y, z, w);
 
     private static string Join(params float[] values) => string.Join(", ", Array.ConvertAll(values, v => v.ToString(CultureInfo.InvariantCulture)));

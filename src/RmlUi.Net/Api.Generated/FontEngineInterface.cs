@@ -14,20 +14,28 @@ public readonly unsafe partial struct FontEngineInterface : IEquatable<FontEngin
     /// <summary>The native Rml::FontEngineInterface*.</summary>
     public readonly nint Handle;
 
+    /// <summary>Wraps a native Rml::FontEngineInterface*. Does not take ownership.</summary>
     public FontEngineInterface(nint handle) => Handle = handle;
 
+    /// <summary>Whether this points at nothing: RmlUi returned null (nothing found, or a <c>From</c> of another type).</summary>
     public bool IsNull => Handle == 0;
 
+    /// <summary>Whether both point at the same Rml::FontEngineInterface.</summary>
     public bool Equals(FontEngineInterface other) => Handle == other.Handle;
 
+    /// <inheritdoc/>
     public override bool Equals(object? obj) => obj is FontEngineInterface other && Equals(other);
 
+    /// <inheritdoc/>
     public override int GetHashCode() => Handle.GetHashCode();
 
+    /// <summary>The type and native address, for logs: <c>Rml::FontEngineInterface(0x1A2B3C)</c>.</summary>
     public override string ToString() => $"Rml::FontEngineInterface(0x{Handle:X})";
 
+    /// <summary>Whether both point at the same Rml::FontEngineInterface.</summary>
     public static bool operator ==(FontEngineInterface a, FontEngineInterface b) => a.Handle == b.Handle;
 
+    /// <summary>Whether they point at different objects.</summary>
     public static bool operator !=(FontEngineInterface a, FontEngineInterface b) => a.Handle != b.Handle;
 
 }

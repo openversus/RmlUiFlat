@@ -782,7 +782,7 @@ namespace RmlUi.Interop
 		/// Rml::Property <br/>
 		/// Get the value of the property as a string.<br/>
 		/// C++: String Rml::Property::ToString() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		[LibraryImport(LibName, EntryPoint = "RmlProperty_ToString")]
 		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
@@ -792,7 +792,7 @@ namespace RmlUi.Interop
 		/// Rml::Property <br/>
 		/// Get the value of the property as a string.<br/>
 		/// C++: String Rml::Property::ToString() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		public static byte* RmlPropertyToString(RmlPropertyPtr self)
 		{
@@ -804,7 +804,7 @@ namespace RmlUi.Interop
 		/// Rml::Property <br/>
 		/// Get the value of the property as a string.<br/>
 		/// C++: String Rml::Property::ToString() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		public static string RmlPropertyToStringS(RmlPropertyPtr self)
 		{
@@ -816,7 +816,7 @@ namespace RmlUi.Interop
 		/// Rml::Property <br/>
 		/// Get the value of the property as a string.<br/>
 		/// C++: String Rml::Property::ToString() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		public static byte* RmlPropertyToString(ref RmlProperty self)
 		{
@@ -831,7 +831,7 @@ namespace RmlUi.Interop
 		/// Rml::Property <br/>
 		/// Get the value of the property as a string.<br/>
 		/// C++: String Rml::Property::ToString() const<br/>
-		/// The returned string is valid until the next call on this thread that returns a string by value.<br/>
+		/// The returned string is a per-thread copy, valid until this function is next called on the same thread.<br/>
 		/// </summary>
 		public static string RmlPropertyToStringS(ref RmlProperty self)
 		{
