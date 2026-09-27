@@ -87,7 +87,9 @@ public abstract unsafe class RmlHost : IDisposable
     protected abstract void ShutdownHost();
 
     /// <summary>
-    /// Shuts RmlUi down (which destroys the context and detaches every listener), then destroys the listeners, frees
+    /// Releases any <see cref="OwnedElement"/> nothing attached or disposed (reporting each through
+    /// <see cref="OwnedElement.Leaked"/>), shuts RmlUi down (which destroys the context and detaches every listener),
+    /// then destroys the listeners, frees
     /// the font memory RmlUi was reading, and lets the host release its own resources. Handles into RmlUi are invalid
     /// afterwards.
     /// </summary>
@@ -100,6 +102,8 @@ public abstract unsafe class RmlHost : IDisposable
         disposed = true;
         if (rmlUp)
         {
+            // RmlUi releases an element through its instancer, which Shutdown destroys.
+            OwnedElement.ReleaseLeftovers();
             Rml.Shutdown();
         }
         foreach (var listener in listeners)

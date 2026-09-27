@@ -675,6 +675,44 @@ public readonly unsafe partial struct ElementFormControlInput : IEquatable<Eleme
     public void ScrollTo(Vector2f offset, ScrollBehavior behavior = ScrollBehavior.Instant) => ((Element)this).ScrollTo(offset, behavior);
 
     /// <summary>
+    /// Append a child to this element.<br/>
+    /// 
+    /// @param element The element to append as a child.<br/>
+    /// @param dom_element True if the element is to be part of the DOM, false otherwise. Only set this to false if you know what you&apos;re doing!<br/>
+    /// </summary>
+    /// <remarks>C++: <c>Element* Rml::Element::AppendChild(ElementPtr element, bool dom_element = true)</c></remarks>
+    public Element AppendChild(OwnedElement? element, bool domElement = true) => ((Element)this).AppendChild(element, domElement);
+
+    /// <summary>
+    /// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+    /// status from the adjacent element.<br/>
+    /// 
+    /// @param element Element to be inserted.<br/>
+    /// @param adjacent_element The reference element which the new element will be inserted before.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>Element* Rml::Element::InsertBefore(ElementPtr element, Element* adjacent_element)</c></remarks>
+    public Element InsertBefore(OwnedElement? element, Element adjacentElement) => ((Element)this).InsertBefore(element, adjacentElement);
+
+    /// <summary>
+    /// Replaces the second node with the first node.<br/>
+    /// 
+    /// @param inserted_element The element that will be inserted and replace the other element.<br/>
+    /// @param replaced_element The existing element that will be replaced. If this doesn&apos;t exist, inserted_element will be appended.<br/>
+    /// @return A unique pointer to the replaced element if found, discard the result to immediately destroy.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>ElementPtr Rml::Element::ReplaceChild(ElementPtr inserted_element, Element* replaced_element)</c></remarks>
+    public OwnedElement? ReplaceChild(OwnedElement? insertedElement, Element replacedElement) => ((Element)this).ReplaceChild(insertedElement, replacedElement);
+
+    /// <summary>
+    /// Remove a child element from this element.<br/>
+    /// 
+    /// @param element The element to remove.<br/>
+    /// @returns A unique pointer to the element if found, discard the result to immediately destroy.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>ElementPtr Rml::Element::RemoveChild(Element* element)</c></remarks>
+    public OwnedElement? RemoveChild(Element element) => ((Element)this).RemoveChild(element);
+
+    /// <summary>
     /// Get a child element by its ID.<br/>
     /// 
     /// @param id The ID of the child element.<br/>
@@ -744,6 +782,12 @@ public readonly unsafe partial struct ElementFormControlInput : IEquatable<Eleme
     /// </summary>
     /// <remarks>C++: <c>void Rml::Element::ProcessDefaultAction(Event&amp; event)</c></remarks>
     public void ProcessDefaultAction(Event @event) => ((Element)this).ProcessDefaultAction(@event);
+
+    /// <summary>
+    /// Clones this element, returning a new, unparented element.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>ElementPtr Rml::Element::Clone() const</c></remarks>
+    public OwnedElement? Clone() => ((Element)this).Clone();
 
     /// <summary>
     /// Checks if a class is set on the element.<br/>

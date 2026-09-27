@@ -18,6 +18,603 @@ namespace RmlUi.Interop
 	{
 
 		/// <summary>
+		/// Get a child element by its ID.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementGetElementById(RmlElementPtr self, ReadOnlySpan<byte> id)
+		{
+			fixed (byte* pid = id)
+			{
+				RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)self, (byte*)pid);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Get a child element by its ID.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementGetElementById(RmlElementPtr self, string id)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (id != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(id);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(id, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)self, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Get a child element by its ID.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementGetElementById(ref RmlElement self, in byte id)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (byte* pid = &id)
+				{
+					RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)pself, (byte*)pid);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get a child element by its ID.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementGetElementById(ref RmlElement self, ReadOnlySpan<byte> id)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (byte* pid = id)
+				{
+					RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)pself, (byte*)pid);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get a child element by its ID.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementGetElementById(ref RmlElement self, string id)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (id != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(id);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(id, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)pself, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_GetElementsByTagName")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementGetElementsByTagNameNative(RmlElement* self, RmlElementArray* elements, byte* tag);
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, byte* tag)
+		{
+			RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, tag);
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, byte* tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, tag);
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, byte* tag)
+		{
+			fixed (RmlElementArray* pelements = &elements)
+			{
+				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, tag);
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, byte* tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElementArray* pelements = &elements)
+				{
+					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, tag);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, in byte tag)
+		{
+			fixed (byte* ptag = &tag)
+			{
+				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, (byte*)ptag);
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, ReadOnlySpan<byte> tag)
+		{
+			fixed (byte* ptag = tag)
+			{
+				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, (byte*)ptag);
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, string tag)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (tag != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(tag);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, in byte tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (byte* ptag = &tag)
+				{
+					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, (byte*)ptag);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, ReadOnlySpan<byte> tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (byte* ptag = tag)
+				{
+					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, (byte*)ptag);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, string tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (tag != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(tag);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, in byte tag)
+		{
+			fixed (RmlElementArray* pelements = &elements)
+			{
+				fixed (byte* ptag = &tag)
+				{
+					RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, (byte*)ptag);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, ReadOnlySpan<byte> tag)
+		{
+			fixed (RmlElementArray* pelements = &elements)
+			{
+				fixed (byte* ptag = tag)
+				{
+					RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, (byte*)ptag);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, string tag)
+		{
+			fixed (RmlElementArray* pelements = &elements)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (tag != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(tag);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, in byte tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElementArray* pelements = &elements)
+				{
+					fixed (byte* ptag = &tag)
+					{
+						RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, (byte*)ptag);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, ReadOnlySpan<byte> tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElementArray* pelements = &elements)
+				{
+					fixed (byte* ptag = tag)
+					{
+						RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, (byte*)ptag);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given tag.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, string tag)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElementArray* pelements = &elements)
+				{
+					byte* pStr0 = null;
+					int pStrSize0 = 0;
+					if (tag != null)
+					{
+						pStrSize0 = Utils.GetByteCountUTF8(tag);
+						if (pStrSize0 >= Utils.MaxStackallocSize)
+						{
+							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+						}
+						else
+						{
+							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+							pStr0 = pStrStack0;
+						}
+						int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
+						pStr0[pStrOffset0] = 0;
+					}
+					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, pStr0);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						Utils.Free(pStr0);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given class set on them.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_GetElementsByClassName")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementGetElementsByClassNameNative(RmlElement* self, RmlElementArray* elements, byte* className);
+
+		/// <summary>
+		/// Get all descendant elements with the given class set on them.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByClassName(RmlElementPtr self, RmlElementArrayPtr elements, byte* className)
+		{
+			RmlElementGetElementsByClassNameNative((RmlElement*)self, (RmlElementArray*)elements, className);
+		}
+
+		/// <summary>
+		/// Get all descendant elements with the given class set on them.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementGetElementsByClassName(ref RmlElement self, RmlElementArrayPtr elements, byte* className)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementGetElementsByClassNameNative((RmlElement*)pself, (RmlElementArray*)elements, className);
+			}
+		}
+
+		/// <summary>
 		/// Get all descendant elements with the given class set on them.<br/>
 		/// <br/>
 		/// <summary>
@@ -1388,6 +1985,37 @@ namespace RmlUi.Interop
 				{
 					RmlElementProcessDefaultActionNative((RmlElement*)pself, (RmlEvent*)pevnt);
 				}
+			}
+		}
+
+		/// <summary>
+		/// Clones this element, returning a new, unparented element.<br/>
+		/// C++: ElementPtr Rml::Element::Clone() const<br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_Clone")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementCloneNative(RmlElement* self);
+
+		/// <summary>
+		/// Clones this element, returning a new, unparented element.<br/>
+		/// C++: ElementPtr Rml::Element::Clone() const<br/>
+		/// </summary>
+		public static RmlElementPtr RmlElementClone(RmlElementPtr self)
+		{
+			RmlElementPtr ret = RmlElementCloneNative((RmlElement*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Clones this element, returning a new, unparented element.<br/>
+		/// C++: ElementPtr Rml::Element::Clone() const<br/>
+		/// </summary>
+		public static RmlElementPtr RmlElementClone(ref RmlElement self)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementCloneNative((RmlElement*)pself);
+				return ret;
 			}
 		}
 
@@ -4121,243 +4749,272 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
-		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// Creates the named element.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_FindNextTabElement")]
+		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_CreateElement")]
 		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElement* RmlElementDocumentFindNextTabElementNative(RmlElementDocument* self, RmlElement* currentElement, byte forward, byte wrapAround);
+		internal static partial RmlElement* RmlElementDocumentCreateElementNative(RmlElementDocument* self, byte* name);
 
 		/// <summary>
-		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// Creates the named element.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementDocumentFindNextTabElement(RmlElementDocumentPtr self, RmlElementPtr currentElement, bool forward, bool wrapAround)
+		public static RmlElementPtr RmlElementDocumentCreateElement(RmlElementDocumentPtr self, byte* name)
 		{
-			RmlElementPtr ret = RmlElementDocumentFindNextTabElementNative((RmlElementDocument*)self, (RmlElement*)currentElement, forward ? (byte)1 : (byte)0, wrapAround ? (byte)1 : (byte)0);
+			RmlElementPtr ret = RmlElementDocumentCreateElementNative((RmlElementDocument*)self, name);
 			return ret;
 		}
 
 		/// <summary>
-		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// Creates the named element.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementDocumentFindNextTabElement(ref RmlElementDocument self, RmlElementPtr currentElement, bool forward, bool wrapAround)
+		public static RmlElementPtr RmlElementDocumentCreateElement(ref RmlElementDocument self, byte* name)
 		{
 			fixed (RmlElementDocument* pself = &self)
 			{
-				RmlElementPtr ret = RmlElementDocumentFindNextTabElementNative((RmlElementDocument*)pself, (RmlElement*)currentElement, forward ? (byte)1 : (byte)0, wrapAround ? (byte)1 : (byte)0);
+				RmlElementPtr ret = RmlElementDocumentCreateElementNative((RmlElementDocument*)pself, name);
 				return ret;
 			}
 		}
 
 		/// <summary>
-		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// Creates the named element.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementDocumentFindNextTabElement(RmlElementDocumentPtr self, ref RmlElement currentElement, bool forward, bool wrapAround)
+		public static RmlElementPtr RmlElementDocumentCreateElement(RmlElementDocumentPtr self, in byte name)
 		{
-			fixed (RmlElement* pcurrentElement = &currentElement)
+			fixed (byte* pname = &name)
 			{
-				RmlElementPtr ret = RmlElementDocumentFindNextTabElementNative((RmlElementDocument*)self, (RmlElement*)pcurrentElement, forward ? (byte)1 : (byte)0, wrapAround ? (byte)1 : (byte)0);
+				RmlElementPtr ret = RmlElementDocumentCreateElementNative((RmlElementDocument*)self, (byte*)pname);
 				return ret;
 			}
 		}
 
 		/// <summary>
-		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// Creates the named element.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementDocumentFindNextTabElement(ref RmlElementDocument self, ref RmlElement currentElement, bool forward, bool wrapAround)
+		public static RmlElementPtr RmlElementDocumentCreateElement(RmlElementDocumentPtr self, ReadOnlySpan<byte> name)
 		{
-			fixed (RmlElementDocument* pself = &self)
+			fixed (byte* pname = name)
 			{
-				fixed (RmlElement* pcurrentElement = &currentElement)
+				RmlElementPtr ret = RmlElementDocumentCreateElementNative((RmlElementDocument*)self, (byte*)pname);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Creates the named element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentCreateElement(RmlElementDocumentPtr self, string name)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (name != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(name);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
-					RmlElementPtr ret = RmlElementDocumentFindNextTabElementNative((RmlElementDocument*)pself, (RmlElement*)pcurrentElement, forward ? (byte)1 : (byte)0, wrapAround ? (byte)1 : (byte)0);
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementPtr ret = RmlElementDocumentCreateElementNative((RmlElementDocument*)self, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Creates the named element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentCreateElement(ref RmlElementDocument self, in byte name)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* pname = &name)
+				{
+					RmlElementPtr ret = RmlElementDocumentCreateElementNative((RmlElementDocument*)pself, (byte*)pname);
 					return ret;
 				}
 			}
 		}
 
 		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// Creates the named element.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentCreateElement(ref RmlElementDocument self, ReadOnlySpan<byte> name)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* pname = name)
+				{
+					RmlElementPtr ret = RmlElementDocumentCreateElementNative((RmlElementDocument*)pself, (byte*)pname);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Creates the named element.<br/>
+		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentCreateElement(ref RmlElementDocument self, string name)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (name != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(name);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(name, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementPtr ret = RmlElementDocumentCreateElementNative((RmlElementDocument*)pself, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Create a text element with the given text content.<br/>
+		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
 		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_LoadInlineScript")]
+		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_CreateTextNode")]
 		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementDocumentLoadInlineScriptNative(RmlElementDocument* self, byte* content, byte* sourcePath, int sourceLine);
+		internal static partial RmlElement* RmlElementDocumentCreateTextNodeNative(RmlElementDocument* self, byte* text);
 
 		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// Create a text element with the given text content.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, byte* content, byte* sourcePath, int sourceLine)
+		public static RmlElementPtr RmlElementDocumentCreateTextNode(RmlElementDocumentPtr self, byte* text)
 		{
-			RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, content, sourcePath, sourceLine);
+			RmlElementPtr ret = RmlElementDocumentCreateTextNodeNative((RmlElementDocument*)self, text);
+			return ret;
 		}
 
 		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// Create a text element with the given text content.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, byte* content, byte* sourcePath, int sourceLine)
+		public static RmlElementPtr RmlElementDocumentCreateTextNode(ref RmlElementDocument self, byte* text)
 		{
 			fixed (RmlElementDocument* pself = &self)
 			{
-				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, content, sourcePath, sourceLine);
+				RmlElementPtr ret = RmlElementDocumentCreateTextNodeNative((RmlElementDocument*)pself, text);
+				return ret;
 			}
 		}
 
 		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// Create a text element with the given text content.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, in byte content, byte* sourcePath, int sourceLine)
+		public static RmlElementPtr RmlElementDocumentCreateTextNode(RmlElementDocumentPtr self, in byte text)
 		{
-			fixed (byte* pcontent = &content)
+			fixed (byte* ptext = &text)
 			{
-				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, (byte*)pcontent, sourcePath, sourceLine);
+				RmlElementPtr ret = RmlElementDocumentCreateTextNodeNative((RmlElementDocument*)self, (byte*)ptext);
+				return ret;
 			}
 		}
 
 		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// Create a text element with the given text content.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, ReadOnlySpan<byte> content, byte* sourcePath, int sourceLine)
+		public static RmlElementPtr RmlElementDocumentCreateTextNode(RmlElementDocumentPtr self, ReadOnlySpan<byte> text)
 		{
-			fixed (byte* pcontent = content)
+			fixed (byte* ptext = text)
 			{
-				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, (byte*)pcontent, sourcePath, sourceLine);
+				RmlElementPtr ret = RmlElementDocumentCreateTextNodeNative((RmlElementDocument*)self, (byte*)ptext);
+				return ret;
 			}
 		}
 
 		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// Create a text element with the given text content.<br/>
 		/// <br/>
 		/// <summary>
 		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
 		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, string content, byte* sourcePath, int sourceLine)
+		public static RmlElementPtr RmlElementDocumentCreateTextNode(RmlElementDocumentPtr self, string text)
 		{
 			byte* pStr0 = null;
 			int pStrSize0 = 0;
-			if (content != null)
+			if (text != null)
 			{
-				pStrSize0 = Utils.GetByteCountUTF8(content);
+				pStrSize0 = Utils.GetByteCountUTF8(text);
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
@@ -4367,673 +5024,15 @@ namespace RmlUi.Interop
 					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
 					pStr0 = pStrStack0;
 				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(content, pStr0, pStrSize0);
+				int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
 				pStr0[pStrOffset0] = 0;
 			}
-			RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, pStr0, sourcePath, sourceLine);
+			RmlElementPtr ret = RmlElementDocumentCreateTextNodeNative((RmlElementDocument*)self, pStr0);
 			if (pStrSize0 >= Utils.MaxStackallocSize)
 			{
 				Utils.Free(pStr0);
 			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, in byte content, byte* sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				fixed (byte* pcontent = &content)
-				{
-					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, (byte*)pcontent, sourcePath, sourceLine);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, ReadOnlySpan<byte> content, byte* sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				fixed (byte* pcontent = content)
-				{
-					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, (byte*)pcontent, sourcePath, sourceLine);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, string content, byte* sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (content != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(content);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(content, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, pStr0, sourcePath, sourceLine);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, byte* content, in byte sourcePath, int sourceLine)
-		{
-			fixed (byte* psourcePath = &sourcePath)
-			{
-				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, content, (byte*)psourcePath, sourceLine);
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, byte* content, ReadOnlySpan<byte> sourcePath, int sourceLine)
-		{
-			fixed (byte* psourcePath = sourcePath)
-			{
-				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, content, (byte*)psourcePath, sourceLine);
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, byte* content, string sourcePath, int sourceLine)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (sourcePath != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(sourcePath);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(sourcePath, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, content, pStr0, sourceLine);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, byte* content, in byte sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				fixed (byte* psourcePath = &sourcePath)
-				{
-					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, content, (byte*)psourcePath, sourceLine);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, byte* content, ReadOnlySpan<byte> sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				fixed (byte* psourcePath = sourcePath)
-				{
-					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, content, (byte*)psourcePath, sourceLine);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, byte* content, string sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (sourcePath != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(sourcePath);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(sourcePath, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, content, pStr0, sourceLine);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, in byte content, in byte sourcePath, int sourceLine)
-		{
-			fixed (byte* pcontent = &content)
-			{
-				fixed (byte* psourcePath = &sourcePath)
-				{
-					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, (byte*)pcontent, (byte*)psourcePath, sourceLine);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, ReadOnlySpan<byte> content, ReadOnlySpan<byte> sourcePath, int sourceLine)
-		{
-			fixed (byte* pcontent = content)
-			{
-				fixed (byte* psourcePath = sourcePath)
-				{
-					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, (byte*)pcontent, (byte*)psourcePath, sourceLine);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, string content, string sourcePath, int sourceLine)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (content != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(content);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(content, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte* pStr1 = null;
-			int pStrSize1 = 0;
-			if (sourcePath != null)
-			{
-				pStrSize1 = Utils.GetByteCountUTF8(sourcePath);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-				}
-				else
-				{
-					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-					pStr1 = pStrStack1;
-				}
-				int pStrOffset1 = Utils.EncodeStringUTF8(sourcePath, pStr1, pStrSize1);
-				pStr1[pStrOffset1] = 0;
-			}
-			RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, pStr0, pStr1, sourceLine);
-			if (pStrSize1 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr1);
-			}
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, in byte content, in byte sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				fixed (byte* pcontent = &content)
-				{
-					fixed (byte* psourcePath = &sourcePath)
-					{
-						RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, (byte*)pcontent, (byte*)psourcePath, sourceLine);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, ReadOnlySpan<byte> content, ReadOnlySpan<byte> sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				fixed (byte* pcontent = content)
-				{
-					fixed (byte* psourcePath = sourcePath)
-					{
-						RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, (byte*)pcontent, (byte*)psourcePath, sourceLine);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, string content, string sourcePath, int sourceLine)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (content != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(content);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(content, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				byte* pStr1 = null;
-				int pStrSize1 = 0;
-				if (sourcePath != null)
-				{
-					pStrSize1 = Utils.GetByteCountUTF8(sourcePath);
-					if (pStrSize1 >= Utils.MaxStackallocSize)
-					{
-						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-					}
-					else
-					{
-						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-						pStr1 = pStrStack1;
-					}
-					int pStrOffset1 = Utils.EncodeStringUTF8(sourcePath, pStr1, pStrSize1);
-					pStr1[pStrOffset1] = 0;
-				}
-				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, pStr0, pStr1, sourceLine);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr1);
-				}
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_LoadExternalScript")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementDocumentLoadExternalScriptNative(RmlElementDocument* self, byte* sourcePath);
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadExternalScript(RmlElementDocumentPtr self, byte* sourcePath)
-		{
-			RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)self, sourcePath);
-		}
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadExternalScript(ref RmlElementDocument self, byte* sourcePath)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)pself, sourcePath);
-			}
-		}
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadExternalScript(RmlElementDocumentPtr self, in byte sourcePath)
-		{
-			fixed (byte* psourcePath = &sourcePath)
-			{
-				RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)self, (byte*)psourcePath);
-			}
-		}
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadExternalScript(RmlElementDocumentPtr self, ReadOnlySpan<byte> sourcePath)
-		{
-			fixed (byte* psourcePath = sourcePath)
-			{
-				RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)self, (byte*)psourcePath);
-			}
-		}
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadExternalScript(RmlElementDocumentPtr self, string sourcePath)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (sourcePath != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(sourcePath);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(sourcePath, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)self, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadExternalScript(ref RmlElementDocument self, in byte sourcePath)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				fixed (byte* psourcePath = &sourcePath)
-				{
-					RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)pself, (byte*)psourcePath);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadExternalScript(ref RmlElementDocument self, ReadOnlySpan<byte> sourcePath)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				fixed (byte* psourcePath = sourcePath)
-				{
-					RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)pself, (byte*)psourcePath);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementDocumentLoadExternalScript(ref RmlElementDocument self, string sourcePath)
-		{
-			fixed (RmlElementDocument* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (sourcePath != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(sourcePath);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(sourcePath, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)pself, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
+			return ret;
 		}
 	}
 }

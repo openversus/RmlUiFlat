@@ -24,7 +24,26 @@ method names (C# overloads and C++ default arguments where they have a C# spelli
 methods. The other way is checked: `ElementFormControlInput.From(element)` is the input, or a null handle (`IsNull`)
 when the element is something else, so `ElementFormControlInput.From(document.GetElementById("name")).GetValue()`
 reads a text box. A `Property` prints as RmlUi writes it (`element.GetProperty("display")` is `inline-block` in an
-interpolated string). Handles do not own what they point at; RmlUi's own lifetime rules apply, and the C++ doc comments,
+interpolated string).
+
+Elements made in code are owned until attached. `CreateElement`, `CreateTextNode`, `Clone`, `RemoveChild` and
+`ReplaceChild` return an `OwnedElement` (RmlUi's `ElementPtr`); `AppendChild`, `InsertBefore`, `ReplaceChild`,
+`ElementFormControlSelect.Add` and `ElementTabSet.SetTab`/`SetPanel` take it, and RmlUi owns it from then on:
+
+```csharp
+Element row = list.AppendChild(document.CreateElement("div"));   // the usual case: made and attached at once
+row.SetInnerRML("...");
+
+using var spare = document.CreateElement("div");                 // held: set up through spare.Element, then attach
+list.AppendChild(spare);                                          // attaching it again throws; Dispose is now a no-op
+```
+
+One never attached is released by `Dispose`. Any still unattached when the host shuts down are released just before
+`Rml::Shutdown` (RmlUi releases an element through an instancer that `Shutdown` destroys; releasing after it crashes) and
+reported through `OwnedElement.Leaked`, which writes to stderr unless the application points it at its logger. There is no
+finalizer: RmlUi is called from its own thread only, and not after shutdown.
+
+Handles do not own what they point at; RmlUi's own lifetime rules apply, and the C++ doc comments,
 including `@lifetime` notes, come through as XML docs.
 
 ### A standalone window
@@ -97,7 +116,7 @@ native/rmlui_c_manual.h, .cpp             ← hand-written: C++ interfaces RmlUi
    │  same RmlShimGen run
    ├─▶ src/RmlUi.Net/Api.Generated/       ← the C# API above (CsLayer.cs), LibraryImports of its own
    └─▶ src/RmlUi.Net/Generated/           ← HexaGen's raw bindings over the C API (namespace RmlUi.Interop)
-src/RmlUi.Net/Api/                        ← hand-written C#: EventListener.Create, paired with rmlui_c_manual.cpp
+src/RmlUi.Net/Api/                        ← hand-written C#: EventListener.Create (paired with rmlui_c_manual.cpp), OwnedElement
 ```
 
 Nothing under `generated/`, `Generated/` or `Api.Generated/` is edited by hand; the generator recreates those
@@ -124,6 +143,8 @@ How a C++ type crosses:
 | `@param[out]` `String&`, `String*` | `const char**` | `out string` | per-thread copy in C |
 | `@param[out]` list | `Rml{Name}Array*` | `out T[]` | |
 | other `@param[out]` references and pointers | `T*` | `out T` | a non-const reference RmlUi does not document as `[out]` stays `ref` |
+| `ElementPtr` return | `RmlElement*`, released to the caller | `OwnedElement?` | `RmlElement_ReleaseOwned` releases one never handed back |
+| `ElementPtr` parameter | `RmlElement*`, taken by RmlUi | `OwnedElement?` | taken on the call whatever it returns; null throws `ArgumentNullException` |
 | `bool` | `bool` | `bool` (one byte on the wire) | |
 | `long` | `int64_t` | `long` | 32-bit on Windows, 64-bit on Linux |
 
@@ -227,5 +248,5 @@ the demo runs with Vulkan and with `--renderer=opengl`. The in-game DLL has no S
 
 - In-game: a DXGI Present hook and RmlUi's DX11 renderer (the game's default) and DX12 renderer (`-d3d12`), chosen
   from the device the game created.
-- Unmapped in scope (see shim-report.md): `ElementPtr` ownership (`CreateElement`, `AppendChild`), and `Dictionary`
-  and `Variant` (event parameters, attribute values, and what setting a `Property` takes).
+- Unmapped in scope (see shim-report.md): `Dictionary` and `Variant` (event parameters, attribute values, and what
+  setting a `Property` takes).

@@ -827,6 +827,56 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     }
 
     /// <summary>
+    /// Append a child to this element.<br/>
+    /// 
+    /// @param element The element to append as a child.<br/>
+    /// @param dom_element True if the element is to be part of the DOM, false otherwise. Only set this to false if you know what you&apos;re doing!<br/>
+    /// </summary>
+    /// <remarks>C++: <c>Element* Rml::Element::AppendChild(ElementPtr element, bool dom_element = true)</c></remarks>
+    public Element AppendChild(OwnedElement? element, bool domElement = true)
+    {
+        return new Element(NativeMethods.RmlElement_AppendChild(Handle, OwnedElement.Take(element), (byte)(domElement ? 1 : 0)));
+    }
+
+    /// <summary>
+    /// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+    /// status from the adjacent element.<br/>
+    /// 
+    /// @param element Element to be inserted.<br/>
+    /// @param adjacent_element The reference element which the new element will be inserted before.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>Element* Rml::Element::InsertBefore(ElementPtr element, Element* adjacent_element)</c></remarks>
+    public Element InsertBefore(OwnedElement? element, Element adjacentElement)
+    {
+        return new Element(NativeMethods.RmlElement_InsertBefore(Handle, OwnedElement.Take(element), adjacentElement.Handle));
+    }
+
+    /// <summary>
+    /// Replaces the second node with the first node.<br/>
+    /// 
+    /// @param inserted_element The element that will be inserted and replace the other element.<br/>
+    /// @param replaced_element The existing element that will be replaced. If this doesn&apos;t exist, inserted_element will be appended.<br/>
+    /// @return A unique pointer to the replaced element if found, discard the result to immediately destroy.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>ElementPtr Rml::Element::ReplaceChild(ElementPtr inserted_element, Element* replaced_element)</c></remarks>
+    public OwnedElement? ReplaceChild(OwnedElement? insertedElement, Element replacedElement)
+    {
+        return OwnedElement.Adopt(NativeMethods.RmlElement_ReplaceChild(Handle, OwnedElement.Take(insertedElement), replacedElement.Handle));
+    }
+
+    /// <summary>
+    /// Remove a child element from this element.<br/>
+    /// 
+    /// @param element The element to remove.<br/>
+    /// @returns A unique pointer to the element if found, discard the result to immediately destroy.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>ElementPtr Rml::Element::RemoveChild(Element* element)</c></remarks>
+    public OwnedElement? RemoveChild(Element element)
+    {
+        return OwnedElement.Adopt(NativeMethods.RmlElement_RemoveChild(Handle, element.Handle));
+    }
+
+    /// <summary>
     /// Get a child element by its ID.<br/>
     /// 
     /// @param id The ID of the child element.<br/>
@@ -985,6 +1035,15 @@ public readonly unsafe partial struct Element : IEquatable<Element>
     public void ProcessDefaultAction(Event @event)
     {
         NativeMethods.RmlElement_ProcessDefaultAction(Handle, @event.Handle);
+    }
+
+    /// <summary>
+    /// Clones this element, returning a new, unparented element.<br/>
+    /// </summary>
+    /// <remarks>C++: <c>ElementPtr Rml::Element::Clone() const</c></remarks>
+    public OwnedElement? Clone()
+    {
+        return OwnedElement.Adopt(NativeMethods.RmlElement_Clone(Handle));
     }
 
     /// <summary>

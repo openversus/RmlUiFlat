@@ -405,6 +405,13 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
         }
         w.AppendLine();
 
+        w.AppendLine("/* Owned objects (RmlUi's ElementPtr): release one that was never handed back to RmlUi */");
+        foreach (var owned in mapper.UsedOwned)
+        {
+            w.AppendLine($"RMLC_API void {TypeMapper.ReleaseOwnedCName(owned)}({TypeMapper.HandleCName(owned)}* value);");
+        }
+        w.AppendLine();
+
         w.AppendLine("/* Checked downcasts: null when the object is not of that type */");
         foreach (var (derived, @base) in Downcasts())
         {
@@ -558,6 +565,15 @@ public sealed partial class ShimGenerator(ShimConfig config, CppCompilation comp
             w.AppendLine($"RMLC_API {cTo}* {cFrom}_As{ShortName(to)}({cFrom}* self)");
             w.AppendLine("{");
             w.AppendLine($"    return reinterpret_cast<{cTo}*>(static_cast<{to}*>(reinterpret_cast<{from}*>(self)));");
+            w.AppendLine("}");
+            w.AppendLine();
+        }
+
+        foreach (var owned in mapper.UsedOwned)
+        {
+            w.AppendLine($"RMLC_API void {TypeMapper.ReleaseOwnedCName(owned)}({TypeMapper.HandleCName(owned)}* value)");
+            w.AppendLine("{");
+            w.AppendLine($"    Rml::UniqueReleaserPtr<{owned}> owned(reinterpret_cast<{owned}*>(value));");
             w.AppendLine("}");
             w.AppendLine();
         }

@@ -464,6 +464,11 @@ RMLC_API RmlElement* RmlElementTabSet_AsElement(RmlElementTabSet* self)
     return reinterpret_cast<RmlElement*>(static_cast<Rml::Element*>(reinterpret_cast<Rml::ElementTabSet*>(self)));
 }
 
+RMLC_API void RmlElement_ReleaseOwned(RmlElement* value)
+{
+    Rml::UniqueReleaserPtr<Rml::Element> owned(reinterpret_cast<Rml::Element*>(value));
+}
+
 RMLC_API RmlElementDocument* RmlElementDocument_FromElement(RmlElement* value)
 {
     return reinterpret_cast<RmlElementDocument*>(::rmlui_dynamic_cast<Rml::ElementDocument*>(reinterpret_cast<Rml::Element*>(value)));
@@ -1296,6 +1301,30 @@ RMLC_API void RmlElement_ScrollTo(RmlElement* self, RmlVector2f offset, RmlScrol
     reinterpret_cast<Rml::Element*>(self)->ScrollTo(std::bit_cast<Rml::Vector2f>(offset), static_cast<Rml::ScrollBehavior>(behavior));
 }
 
+RMLC_API RmlElement* RmlElement_AppendChild(RmlElement* self, RmlElement* element, bool dom_element)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->AppendChild(Rml::UniqueReleaserPtr<Rml::Element>(reinterpret_cast<Rml::Element*>(element)), dom_element);
+    return reinterpret_cast<RmlElement*>(rml_ret);
+}
+
+RMLC_API RmlElement* RmlElement_InsertBefore(RmlElement* self, RmlElement* element, RmlElement* adjacent_element)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->InsertBefore(Rml::UniqueReleaserPtr<Rml::Element>(reinterpret_cast<Rml::Element*>(element)), reinterpret_cast<Rml::Element*>(adjacent_element));
+    return reinterpret_cast<RmlElement*>(rml_ret);
+}
+
+RMLC_API RmlElement* RmlElement_ReplaceChild(RmlElement* self, RmlElement* inserted_element, RmlElement* replaced_element)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->ReplaceChild(Rml::UniqueReleaserPtr<Rml::Element>(reinterpret_cast<Rml::Element*>(inserted_element)), reinterpret_cast<Rml::Element*>(replaced_element));
+    return reinterpret_cast<RmlElement*>(rml_ret.release());
+}
+
+RMLC_API RmlElement* RmlElement_RemoveChild(RmlElement* self, RmlElement* element)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->RemoveChild(reinterpret_cast<Rml::Element*>(element));
+    return reinterpret_cast<RmlElement*>(rml_ret.release());
+}
+
 RMLC_API RmlElement* RmlElement_GetElementById(RmlElement* self, const char* id)
 {
     decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->GetElementById(Rml::String(id ? id : ""));
@@ -1350,6 +1379,12 @@ RMLC_API RmlElement* RmlElement_GetClosestScrollableContainer(RmlElement* self, 
 RMLC_API void RmlElement_ProcessDefaultAction(RmlElement* self, RmlEvent* event)
 {
     reinterpret_cast<Rml::Element*>(self)->ProcessDefaultAction(*reinterpret_cast<Rml::Event*>(event));
+}
+
+RMLC_API RmlElement* RmlElement_Clone(RmlElement* self)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::Element*>(self)->Clone();
+    return reinterpret_cast<RmlElement*>(rml_ret.release());
 }
 
 RMLC_API bool RmlElement_IsClassSet(RmlElement* self, const char* class_name)
@@ -1601,6 +1636,18 @@ RMLC_API void RmlElementDocument_Hide(RmlElementDocument* self)
 RMLC_API void RmlElementDocument_Close(RmlElementDocument* self)
 {
     reinterpret_cast<Rml::ElementDocument*>(self)->Close();
+}
+
+RMLC_API RmlElement* RmlElementDocument_CreateElement(RmlElementDocument* self, const char* name)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementDocument*>(self)->CreateElement(Rml::String(name ? name : ""));
+    return reinterpret_cast<RmlElement*>(rml_ret.release());
+}
+
+RMLC_API RmlElement* RmlElementDocument_CreateTextNode(RmlElementDocument* self, const char* text)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementDocument*>(self)->CreateTextNode(Rml::String(text ? text : ""));
+    return reinterpret_cast<RmlElement*>(rml_ret.release());
 }
 
 RMLC_API RmlElement* RmlElementDocument_FindNextTabElement(RmlElementDocument* self, RmlElement* current_element, bool forward, bool wrap_around)
@@ -1877,6 +1924,12 @@ RMLC_API int32_t RmlElementFormControlSelect_Add_String_String_Int_Bool(RmlEleme
     return rml_ret;
 }
 
+RMLC_API int32_t RmlElementFormControlSelect_Add_ElementPtr_Int(RmlElementFormControlSelect* self, RmlElement* element, int32_t before)
+{
+    decltype(auto) rml_ret = reinterpret_cast<Rml::ElementFormControlSelect*>(self)->Add(Rml::UniqueReleaserPtr<Rml::Element>(reinterpret_cast<Rml::Element*>(element)), before);
+    return rml_ret;
+}
+
 RMLC_API void RmlElementFormControlSelect_Remove(RmlElementFormControlSelect* self, int32_t index)
 {
     reinterpret_cast<Rml::ElementFormControlSelect*>(self)->Remove(index);
@@ -2049,6 +2102,16 @@ RMLC_API void RmlElementTabSet_SetTab_Int_String(RmlElementTabSet* self, int32_t
 RMLC_API void RmlElementTabSet_SetPanel_Int_String(RmlElementTabSet* self, int32_t tab_index, const char* rml)
 {
     reinterpret_cast<Rml::ElementTabSet*>(self)->SetPanel(tab_index, Rml::String(rml ? rml : ""));
+}
+
+RMLC_API void RmlElementTabSet_SetTab_Int_ElementPtr(RmlElementTabSet* self, int32_t tab_index, RmlElement* element)
+{
+    reinterpret_cast<Rml::ElementTabSet*>(self)->SetTab(tab_index, Rml::UniqueReleaserPtr<Rml::Element>(reinterpret_cast<Rml::Element*>(element)));
+}
+
+RMLC_API void RmlElementTabSet_SetPanel_Int_ElementPtr(RmlElementTabSet* self, int32_t tab_index, RmlElement* element)
+{
+    reinterpret_cast<Rml::ElementTabSet*>(self)->SetPanel(tab_index, Rml::UniqueReleaserPtr<Rml::Element>(reinterpret_cast<Rml::Element*>(element)));
 }
 
 RMLC_API void RmlElementTabSet_RemoveTab(RmlElementTabSet* self, int32_t tab_index)

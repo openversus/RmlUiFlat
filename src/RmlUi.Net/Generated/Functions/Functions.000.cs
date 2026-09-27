@@ -355,6 +355,32 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Owned objects (RmlUi's ElementPtr): release one that was never handed back to RmlUi <br/>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_ReleaseOwned")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementReleaseOwnedNative(RmlElement* value);
+
+		/// <summary>
+		/// Owned objects (RmlUi's ElementPtr): release one that was never handed back to RmlUi <br/>
+		/// </summary>
+		public static void RmlElementReleaseOwned(RmlElementPtr value)
+		{
+			RmlElementReleaseOwnedNative((RmlElement*)value);
+		}
+
+		/// <summary>
+		/// Owned objects (RmlUi's ElementPtr): release one that was never handed back to RmlUi <br/>
+		/// </summary>
+		public static void RmlElementReleaseOwned(ref RmlElement value)
+		{
+			fixed (RmlElement* pvalue = &value)
+			{
+				RmlElementReleaseOwnedNative((RmlElement*)pvalue);
+			}
+		}
+
+		/// <summary>
 		/// Checked downcasts: null when the object is not of that type <br/>
 		/// </summary>
 		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_FromElement")]
@@ -5006,36 +5032,6 @@ namespace RmlUi.Interop
 					Utils.Free(pStr0);
 				}
 			}
-		}
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlContext_GetDocument_String")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElementDocument* RmlContextGetDocumentStringNative(RmlContext* self, byte* id);
-
-		/// <summary>
-		/// Returns the first document in the context with the given id.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementDocumentPtr RmlContextGetDocumentString(RmlContextPtr self, byte* id)
-		{
-			RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, id);
-			return ret;
 		}
 	}
 }

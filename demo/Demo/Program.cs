@@ -37,6 +37,7 @@ internal static unsafe partial class Program
             <div><input type="text" id="name" value="OpenVersus"/></div>
             <button id="hello">Click me</button>
             <div id="status">Not clicked yet.</div>
+            <div id="list"></div>
         </body>
         </rml>
         """;
@@ -80,7 +81,18 @@ internal static unsafe partial class Program
             window.Run();
             return 0;
         }
-        return SelfTest(window, document, button, name, status, () => clicks);
+        // The host releases elements nothing attached or disposed, and reports each: the self-test leaves one on purpose.
+        var leaked = new List<string>();
+        OwnedElement.Leaked = leaked.Add;
+        int exitCode = SelfTest(window, document, button, name, status, () => clicks);
+        window.Dispose();
+        Console.WriteLine($"released by the host: [{string.Join(", ", leaked)}]");
+        if (leaked.Count != 1 || leaked[0] != "span#dropped")
+        {
+            Console.Error.WriteLine("FAIL: expected the host to release and report only span#dropped");
+            exitCode = 1;
+        }
+        return exitCode;
     }
 
     /// <summary>
@@ -164,6 +176,40 @@ internal static unsafe partial class Program
         if (selectionStart != 0 || selectionEnd != 4 || selected != "Open")
         {
             Console.Error.WriteLine("FAIL: expected the selection 0..4 \"Open\"");
+            exitCode = 1;
+        }
+
+        // Owned elements. Created and attached in one go, as most code will:
+        var list = document.GetElementById("list");
+        Element first = list.AppendChild(document.CreateElement("div"));
+        first.SetInnerRML("first");
+
+        // Attaching twice throws rather than handing RmlUi the same element again.
+        var twice = document.CreateElement("div")!;
+        list.AppendChild(twice);
+        bool attachedTwice = false;
+        try
+        {
+            list.AppendChild(twice);
+            attachedTwice = true;
+        }
+        catch (InvalidOperationException e)
+        {
+            Console.WriteLine($"second attach refused: {e.Message}");
+        }
+
+        // Removed comes back owned and can go back in; a disposed one is released now; one is left for the host.
+        using (document.CreateElement("p"))
+        {
+        }
+        var removed = list.RemoveChild(first);
+        bool removedIsFirst = removed != null && removed.Element == first;
+        list.AppendChild(removed);
+        document.CreateElement("span")!.Element.SetId("dropped");
+        Console.WriteLine($"list children: {list.GetNumChildren()}, removed was first: {removedIsFirst}");
+        if (attachedTwice || !removedIsFirst || list.GetNumChildren() != 2 || list.GetChild(1) != first)
+        {
+            Console.Error.WriteLine($"FAIL: owned elements (attached twice: {attachedTwice})");
             exitCode = 1;
         }
 

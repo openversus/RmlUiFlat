@@ -15,6 +15,8 @@ public sealed record EnumBase(CppEnum Enum) : Base;
 public sealed record SpanBase(string ElementCName) : Base;
 /// <summary>A std::vector of String or of a handle pointer (StringList, ElementList).</summary>
 public sealed record ListBase(Base Element) : Base;
+/// <summary>An owning RmlUi pointer, std::unique_ptr&lt;T, Rml::Releaser&lt;T&gt;&gt; (ElementPtr).</summary>
+public sealed record OwnedBase(HandleBase Handle) : Base;
 
 /// <summary>How one C++ parameter crosses: its C declarations, and the C++ that rebuilds the argument.</summary>
 public sealed record ParamMap(List<string> CDecls, string CppArg, List<string> Pre, List<string> Post)
@@ -59,6 +61,12 @@ public sealed class TypeMapper
     /// <summary>List structs reached by any mapped signature: C name to the C type of its items.</summary>
     public SortedDictionary<string, string> UsedLists { get; } = new(StringComparer.Ordinal);
 
+    /// <summary>Classes whose owning pointer (OwnedBase) any mapped signature reaches; each gets a release function.</summary>
+    public SortedSet<string> UsedOwned { get; } = new(StringComparer.Ordinal);
+
+    /// <summary>C name of the function that releases an owned object nothing else took.</summary>
+    public static string ReleaseOwnedCName(string qualified) => HandleCName(qualified) + "_ReleaseOwned";
+
     /// <summary>Enums reached by any mapped signature, keyed by qualified name.</summary>
     public SortedDictionary<string, CppEnum> UsedEnums { get; } = new(StringComparer.Ordinal);
 
@@ -102,6 +110,12 @@ public sealed class TypeMapper
 
             case ListBase l when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
                 return new([$"{UseList(l)} {name}"], $"{name}_tmp", ListFromC(l, name), []);
+
+            case OwnedBase o when ind == Indirection.None:
+                // Ownership passes to RmlUi with the call.
+                UsedOwned.Add(o.Handle.Class.FullName);
+                return new([$"{HandleCName(o.Handle.Class.FullName)}* {name}"],
+                    $"Rml::UniqueReleaserPtr<{o.Handle.Class.FullName}>(reinterpret_cast<{o.Handle.Class.FullName}*>({name}))", [], []);
 
             case ListBase l when isOut && ind == Indirection.Ref:
                 return new(
@@ -204,6 +218,12 @@ public sealed class TypeMapper
             case ListBase l when ind == Indirection.None || (ind == Indirection.Ref && pointeeConst):
                 return new(UseList(l), false, [.. ListToC(l, "rml_ret", "rml_list", out var expr), $"return {expr};"]);
 
+            case OwnedBase o when ind == Indirection.None:
+                // Ownership passes to the caller, who releases it with Rml{Class}_ReleaseOwned or hands it back.
+                UsedOwned.Add(o.Handle.Class.FullName);
+                return new($"{HandleCName(o.Handle.Class.FullName)}*", false,
+                    [$"return reinterpret_cast<{HandleCName(o.Handle.Class.FullName)}*>(rml_ret.release());"]);
+
             default:
                 throw new UnmappedException($"{Describe(b)} {ind}{(pointeeConst ? " const" : "")} return");
         }
@@ -219,6 +239,7 @@ public sealed class TypeMapper
         EnumBase e => e.Enum.FullName,
         SpanBase s => $"Span<{s.ElementCName}>",
         ListBase l => $"List<{Describe(l.Element)}>",
+        OwnedBase o => $"Owned<{o.Handle.Class.FullName}>",
         _ => b.ToString(),
     };
 
@@ -325,6 +346,8 @@ public sealed class TypeMapper
                     return new StringBase();
                 case CppClass cls when cls.Name == "vector" && cls.TemplateSpecializedArguments.Count > 0:
                     return MapList(cls, viaTypedef);
+                case CppClass cls when cls.Name == "unique_ptr" && cls.TemplateSpecializedArguments.Count == 2:
+                    return MapOwned(cls, viaTypedef);
                 case CppClass cls:
                     throw new UnmappedException(viaTypedef ?? cls.FullName);
                 default:
@@ -369,6 +392,25 @@ public sealed class TypeMapper
             (HandleBase, true) or (StringBase, false) => new ListBase(element),
             _ => throw new UnmappedException(what),
         };
+    }
+
+    /// <summary>Only RmlUi's Releaser deleter: C# can hand the object back to RmlUi, but cannot run another deleter.</summary>
+    private OwnedBase MapOwned(CppClass uniquePtr, string? viaTypedef)
+    {
+        string what = viaTypedef ?? uniquePtr.FullName;
+        var args = uniquePtr.TemplateSpecializedArguments;
+        if (args[1].ArgAsType is not CppClass { Name: "Releaser" } || args[0].ArgAsType is not { } pointee)
+        {
+            throw new UnmappedException(what);
+        }
+        try
+        {
+            return ClassifyBase(pointee) is HandleBase h ? new OwnedBase(h) : throw new UnmappedException(what);
+        }
+        catch (UnmappedException)
+        {
+            throw new UnmappedException(what);
+        }
     }
 
     public static string ListCName(ListBase l) => l.Element switch

@@ -34,6 +34,32 @@ namespace RmlUi.Interop
 		/// To be documented.
 		/// </summary>
 		/// </summary>
+		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, in byte name, byte* value)
+		{
+			fixed (byte* pname = &name)
+			{
+				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, (byte*)pname, value);
+				return ret != 0;
+			}
+		}
+
+		/// <summary>
+		/// Properties<br/>
+		/// <br/>
+		/// @<br/>
+		/// {<br/>
+		/// Sets a local property override on the element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
 		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, ReadOnlySpan<byte> name, byte* value)
 		{
 			fixed (byte* pname = name)
@@ -4358,6 +4384,578 @@ namespace RmlUi.Interop
 		}
 
 		/// <summary>
+		/// Append a child to this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_AppendChild")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementAppendChildNative(RmlElement* self, RmlElement* element, byte domElement);
+
+		/// <summary>
+		/// Append a child to this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementAppendChild(RmlElementPtr self, RmlElementPtr element, bool domElement)
+		{
+			RmlElementPtr ret = RmlElementAppendChildNative((RmlElement*)self, (RmlElement*)element, domElement ? (byte)1 : (byte)0);
+			return ret;
+		}
+
+		/// <summary>
+		/// Append a child to this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementAppendChild(ref RmlElement self, RmlElementPtr element, bool domElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementAppendChildNative((RmlElement*)pself, (RmlElement*)element, domElement ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Append a child to this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementAppendChild(RmlElementPtr self, ref RmlElement element, bool domElement)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				RmlElementPtr ret = RmlElementAppendChildNative((RmlElement*)self, (RmlElement*)pelement, domElement ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Append a child to this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementAppendChild(ref RmlElement self, ref RmlElement element, bool domElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					RmlElementPtr ret = RmlElementAppendChildNative((RmlElement*)pself, (RmlElement*)pelement, domElement ? (byte)1 : (byte)0);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_InsertBefore")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementInsertBeforeNative(RmlElement* self, RmlElement* element, RmlElement* adjacentElement);
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementInsertBefore(RmlElementPtr self, RmlElementPtr element, RmlElementPtr adjacentElement)
+		{
+			RmlElementPtr ret = RmlElementInsertBeforeNative((RmlElement*)self, (RmlElement*)element, (RmlElement*)adjacentElement);
+			return ret;
+		}
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementInsertBefore(ref RmlElement self, RmlElementPtr element, RmlElementPtr adjacentElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementInsertBeforeNative((RmlElement*)pself, (RmlElement*)element, (RmlElement*)adjacentElement);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementInsertBefore(RmlElementPtr self, ref RmlElement element, RmlElementPtr adjacentElement)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				RmlElementPtr ret = RmlElementInsertBeforeNative((RmlElement*)self, (RmlElement*)pelement, (RmlElement*)adjacentElement);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementInsertBefore(ref RmlElement self, ref RmlElement element, RmlElementPtr adjacentElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					RmlElementPtr ret = RmlElementInsertBeforeNative((RmlElement*)pself, (RmlElement*)pelement, (RmlElement*)adjacentElement);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementInsertBefore(RmlElementPtr self, RmlElementPtr element, ref RmlElement adjacentElement)
+		{
+			fixed (RmlElement* padjacentElement = &adjacentElement)
+			{
+				RmlElementPtr ret = RmlElementInsertBeforeNative((RmlElement*)self, (RmlElement*)element, (RmlElement*)padjacentElement);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementInsertBefore(ref RmlElement self, RmlElementPtr element, ref RmlElement adjacentElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElement* padjacentElement = &adjacentElement)
+				{
+					RmlElementPtr ret = RmlElementInsertBeforeNative((RmlElement*)pself, (RmlElement*)element, (RmlElement*)padjacentElement);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementInsertBefore(RmlElementPtr self, ref RmlElement element, ref RmlElement adjacentElement)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				fixed (RmlElement* padjacentElement = &adjacentElement)
+				{
+					RmlElementPtr ret = RmlElementInsertBeforeNative((RmlElement*)self, (RmlElement*)pelement, (RmlElement*)padjacentElement);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM<br/>
+		/// status from the adjacent element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementInsertBefore(ref RmlElement self, ref RmlElement element, ref RmlElement adjacentElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					fixed (RmlElement* padjacentElement = &adjacentElement)
+					{
+						RmlElementPtr ret = RmlElementInsertBeforeNative((RmlElement*)pself, (RmlElement*)pelement, (RmlElement*)padjacentElement);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_ReplaceChild")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementReplaceChildNative(RmlElement* self, RmlElement* insertedElement, RmlElement* replacedElement);
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementReplaceChild(RmlElementPtr self, RmlElementPtr insertedElement, RmlElementPtr replacedElement)
+		{
+			RmlElementPtr ret = RmlElementReplaceChildNative((RmlElement*)self, (RmlElement*)insertedElement, (RmlElement*)replacedElement);
+			return ret;
+		}
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementReplaceChild(ref RmlElement self, RmlElementPtr insertedElement, RmlElementPtr replacedElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementReplaceChildNative((RmlElement*)pself, (RmlElement*)insertedElement, (RmlElement*)replacedElement);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementReplaceChild(RmlElementPtr self, ref RmlElement insertedElement, RmlElementPtr replacedElement)
+		{
+			fixed (RmlElement* pinsertedElement = &insertedElement)
+			{
+				RmlElementPtr ret = RmlElementReplaceChildNative((RmlElement*)self, (RmlElement*)pinsertedElement, (RmlElement*)replacedElement);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementReplaceChild(ref RmlElement self, ref RmlElement insertedElement, RmlElementPtr replacedElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElement* pinsertedElement = &insertedElement)
+				{
+					RmlElementPtr ret = RmlElementReplaceChildNative((RmlElement*)pself, (RmlElement*)pinsertedElement, (RmlElement*)replacedElement);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementReplaceChild(RmlElementPtr self, RmlElementPtr insertedElement, ref RmlElement replacedElement)
+		{
+			fixed (RmlElement* preplacedElement = &replacedElement)
+			{
+				RmlElementPtr ret = RmlElementReplaceChildNative((RmlElement*)self, (RmlElement*)insertedElement, (RmlElement*)preplacedElement);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementReplaceChild(ref RmlElement self, RmlElementPtr insertedElement, ref RmlElement replacedElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElement* preplacedElement = &replacedElement)
+				{
+					RmlElementPtr ret = RmlElementReplaceChildNative((RmlElement*)pself, (RmlElement*)insertedElement, (RmlElement*)preplacedElement);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementReplaceChild(RmlElementPtr self, ref RmlElement insertedElement, ref RmlElement replacedElement)
+		{
+			fixed (RmlElement* pinsertedElement = &insertedElement)
+			{
+				fixed (RmlElement* preplacedElement = &replacedElement)
+				{
+					RmlElementPtr ret = RmlElementReplaceChildNative((RmlElement*)self, (RmlElement*)pinsertedElement, (RmlElement*)preplacedElement);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Replaces the second node with the first node.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementReplaceChild(ref RmlElement self, ref RmlElement insertedElement, ref RmlElement replacedElement)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElement* pinsertedElement = &insertedElement)
+				{
+					fixed (RmlElement* preplacedElement = &replacedElement)
+					{
+						RmlElementPtr ret = RmlElementReplaceChildNative((RmlElement*)pself, (RmlElement*)pinsertedElement, (RmlElement*)preplacedElement);
+						return ret;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Remove a child element from this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElement_RemoveChild")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementRemoveChildNative(RmlElement* self, RmlElement* element);
+
+		/// <summary>
+		/// Remove a child element from this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementRemoveChild(RmlElementPtr self, RmlElementPtr element)
+		{
+			RmlElementPtr ret = RmlElementRemoveChildNative((RmlElement*)self, (RmlElement*)element);
+			return ret;
+		}
+
+		/// <summary>
+		/// Remove a child element from this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementRemoveChild(ref RmlElement self, RmlElementPtr element)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementRemoveChildNative((RmlElement*)pself, (RmlElement*)element);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Remove a child element from this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementRemoveChild(RmlElementPtr self, ref RmlElement element)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				RmlElementPtr ret = RmlElementRemoveChildNative((RmlElement*)self, (RmlElement*)pelement);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Remove a child element from this element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementRemoveChild(ref RmlElement self, ref RmlElement element)
+		{
+			fixed (RmlElement* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					RmlElementPtr ret = RmlElementRemoveChildNative((RmlElement*)pself, (RmlElement*)pelement);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Get a child element by its ID.<br/>
 		/// <br/>
 		/// <summary>
@@ -4422,603 +5020,6 @@ namespace RmlUi.Interop
 			{
 				RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)self, (byte*)pid);
 				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Get a child element by its ID.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementGetElementById(RmlElementPtr self, ReadOnlySpan<byte> id)
-		{
-			fixed (byte* pid = id)
-			{
-				RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)self, (byte*)pid);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Get a child element by its ID.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementGetElementById(RmlElementPtr self, string id)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (id != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(id);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(id, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)self, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret;
-		}
-
-		/// <summary>
-		/// Get a child element by its ID.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementGetElementById(ref RmlElement self, in byte id)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pid = &id)
-				{
-					RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)pself, (byte*)pid);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get a child element by its ID.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementGetElementById(ref RmlElement self, ReadOnlySpan<byte> id)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* pid = id)
-				{
-					RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)pself, (byte*)pid);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get a child element by its ID.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementGetElementById(ref RmlElement self, string id)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (id != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(id);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(id, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementPtr ret = RmlElementGetElementByIdNative((RmlElement*)pself, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_GetElementsByTagName")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementGetElementsByTagNameNative(RmlElement* self, RmlElementArray* elements, byte* tag);
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, byte* tag)
-		{
-			RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, tag);
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, byte* tag)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, tag);
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, byte* tag)
-		{
-			fixed (RmlElementArray* pelements = &elements)
-			{
-				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, tag);
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, byte* tag)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (RmlElementArray* pelements = &elements)
-				{
-					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, tag);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, in byte tag)
-		{
-			fixed (byte* ptag = &tag)
-			{
-				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, (byte*)ptag);
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, ReadOnlySpan<byte> tag)
-		{
-			fixed (byte* ptag = tag)
-			{
-				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, (byte*)ptag);
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(RmlElementPtr self, RmlElementArrayPtr elements, string tag)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (tag != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(tag);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)elements, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, in byte tag)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* ptag = &tag)
-				{
-					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, (byte*)ptag);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, ReadOnlySpan<byte> tag)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (byte* ptag = tag)
-				{
-					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, (byte*)ptag);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(ref RmlElement self, RmlElementArrayPtr elements, string tag)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (tag != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(tag);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)elements, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, in byte tag)
-		{
-			fixed (RmlElementArray* pelements = &elements)
-			{
-				fixed (byte* ptag = &tag)
-				{
-					RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, (byte*)ptag);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, ReadOnlySpan<byte> tag)
-		{
-			fixed (RmlElementArray* pelements = &elements)
-			{
-				fixed (byte* ptag = tag)
-				{
-					RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, (byte*)ptag);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(RmlElementPtr self, ref RmlElementArray elements, string tag)
-		{
-			fixed (RmlElementArray* pelements = &elements)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (tag != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(tag);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementGetElementsByTagNameNative((RmlElement*)self, (RmlElementArray*)pelements, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, in byte tag)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (RmlElementArray* pelements = &elements)
-				{
-					fixed (byte* ptag = &tag)
-					{
-						RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, (byte*)ptag);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, ReadOnlySpan<byte> tag)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (RmlElementArray* pelements = &elements)
-				{
-					fixed (byte* ptag = tag)
-					{
-						RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, (byte*)ptag);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given tag.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByTagName(ref RmlElement self, ref RmlElementArray elements, string tag)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				fixed (RmlElementArray* pelements = &elements)
-				{
-					byte* pStr0 = null;
-					int pStrSize0 = 0;
-					if (tag != null)
-					{
-						pStrSize0 = Utils.GetByteCountUTF8(tag);
-						if (pStrSize0 >= Utils.MaxStackallocSize)
-						{
-							pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-						}
-						else
-						{
-							byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-							pStr0 = pStrStack0;
-						}
-						int pStrOffset0 = Utils.EncodeStringUTF8(tag, pStr0, pStrSize0);
-						pStr0[pStrOffset0] = 0;
-					}
-					RmlElementGetElementsByTagNameNative((RmlElement*)pself, (RmlElementArray*)pelements, pStr0);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						Utils.Free(pStr0);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given class set on them.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElement_GetElementsByClassName")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementGetElementsByClassNameNative(RmlElement* self, RmlElementArray* elements, byte* className);
-
-		/// <summary>
-		/// Get all descendant elements with the given class set on them.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByClassName(RmlElementPtr self, RmlElementArrayPtr elements, byte* className)
-		{
-			RmlElementGetElementsByClassNameNative((RmlElement*)self, (RmlElementArray*)elements, className);
-		}
-
-		/// <summary>
-		/// Get all descendant elements with the given class set on them.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementGetElementsByClassName(ref RmlElement self, RmlElementArrayPtr elements, byte* className)
-		{
-			fixed (RmlElement* pself = &self)
-			{
-				RmlElementGetElementsByClassNameNative((RmlElement*)pself, (RmlElementArray*)elements, className);
 			}
 		}
 	}

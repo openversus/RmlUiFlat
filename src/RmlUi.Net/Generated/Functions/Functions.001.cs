@@ -27,6 +27,36 @@ namespace RmlUi.Interop
 		/// To be documented.
 		/// </summary>
 		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlContext_GetDocument_String")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElementDocument* RmlContextGetDocumentStringNative(RmlContext* self, byte* id);
+
+		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementDocumentPtr RmlContextGetDocumentString(RmlContextPtr self, byte* id)
+		{
+			RmlElementDocumentPtr ret = RmlContextGetDocumentStringNative((RmlContext*)self, id);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the first document in the context with the given id.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
 		public static RmlElementDocumentPtr RmlContextGetDocumentString(ref RmlContext self, byte* id)
 		{
 			fixed (RmlContext* pself = &self)
@@ -4987,32 +5017,6 @@ namespace RmlUi.Interop
 			fixed (RmlElement* pself = &self)
 			{
 				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)pself, name, value);
-				return ret != 0;
-			}
-		}
-
-		/// <summary>
-		/// Properties<br/>
-		/// <br/>
-		/// @<br/>
-		/// {<br/>
-		/// Sets a local property override on the element.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static bool RmlElementSetPropertyStringString(RmlElementPtr self, in byte name, byte* value)
-		{
-			fixed (byte* pname = &name)
-			{
-				byte ret = RmlElementSetPropertyStringStringNative((RmlElement*)self, (byte*)pname, value);
 				return ret != 0;
 			}
 		}

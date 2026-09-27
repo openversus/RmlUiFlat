@@ -117,6 +117,12 @@ public sealed partial class ShimGenerator
                     [$"var {b}_h = new List<nint>();", $"foreach (var item in {n}) {{ {b}_h.Add(item.Handle); }}"],
                     $"fixed (nint* {b}_p = CollectionsMarshal.AsSpan({b}_h))", [], [], false);
 
+            case OwnedBase o:
+                // Taken on the call, whatever RmlUi returns: the C++ ElementPtr is moved from either way. Nullable so
+                // AppendChild(document.CreateElement("div")) needs no '!'; a null (a failed create) throws on the call.
+                string owned = "Owned" + ShortName(o.Handle.Class.FullName);
+                return new($"{owned}? {n}", n, $"nint {n}", $"{owned}.Take({n})", [], null, [], [], false);
+
             case ValueBase v when p.IsOut:
                 return new($"out {ShortName(v.CppName)} {n}", $"out {n}", $"{ShortName(v.CppName)}* {n}", $"{b}_p", [$"{n} = default;"],
                     $"fixed ({ShortName(v.CppName)}* {b}_p = &{n})", [], [], false);
@@ -194,6 +200,7 @@ public sealed partial class ShimGenerator
         PrimBase pr => new(CsPrimitive(pr.CName), CsPrimitive(pr.CName), x => x),
         EnumBase e => new(CsEnumName(e.Enum), CsEnumName(e.Enum), x => x),
         ListBase l => new($"{CsListElement(l)}[]", "RmlArray", x => ListFromNative(l, x)),
+        OwnedBase o => new($"Owned{ShortName(o.Handle.Class.FullName)}?", "nint", x => $"Owned{ShortName(o.Handle.Class.FullName)}.Adopt({x})"),
         _ => throw new InvalidOperationException($"no C# return mapping for {TypeMapper.Describe(r.Base)}"),
     };
 
@@ -625,6 +632,10 @@ public sealed partial class ShimGenerator
             foreach (var (derived, @base) in downcasts)
             {
                 WriteImport(w, "nint", $"{TypeMapper.HandleCName(derived)}_From{ShortName(@base)}", "nint value");
+            }
+            foreach (var owned in mapper.UsedOwned)
+            {
+                WriteImport(w, "void", TypeMapper.ReleaseOwnedCName(owned), "nint value");
             }
             foreach (var m in free.Concat(config.Classes.SelectMany(c => perClass[c])))
             {

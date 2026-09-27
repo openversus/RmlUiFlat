@@ -574,6 +574,9 @@ RMLC_API RmlElement* RmlElementFormControlTextArea_AsElement(RmlElementFormContr
 RMLC_API RmlElement* RmlElementProgress_AsElement(RmlElementProgress* self);
 RMLC_API RmlElement* RmlElementTabSet_AsElement(RmlElementTabSet* self);
 
+/* Owned objects (RmlUi's ElementPtr): release one that was never handed back to RmlUi */
+RMLC_API void RmlElement_ReleaseOwned(RmlElement* value);
+
 /* Checked downcasts: null when the object is not of that type */
 RMLC_API RmlElementDocument* RmlElementDocument_FromElement(RmlElement* value);
 RMLC_API RmlElementText* RmlElementText_FromElement(RmlElement* value);
@@ -1641,6 +1644,40 @@ RMLC_API void RmlElement_ScrollIntoView_Bool(RmlElement* self, bool align_with_t
  */
 RMLC_API void RmlElement_ScrollTo(RmlElement* self, RmlVector2f offset, RmlScrollBehavior behavior);
 /**
+ * Append a child to this element.
+ *
+ * @param element The element to append as a child.
+ * @param dom_element True if the element is to be part of the DOM, false otherwise. Only set this to false if you know what you're doing!
+ * C++: Element* Rml::Element::AppendChild(ElementPtr element, bool dom_element = true)
+ */
+RMLC_API RmlElement* RmlElement_AppendChild(RmlElement* self, RmlElement* element, bool dom_element);
+/**
+ * Adds a child to this element directly before the adjacent element. The new element inherits the DOM/non-DOM
+ * status from the adjacent element.
+ *
+ * @param element Element to be inserted.
+ * @param adjacent_element The reference element which the new element will be inserted before.
+ * C++: Element* Rml::Element::InsertBefore(ElementPtr element, Element* adjacent_element)
+ */
+RMLC_API RmlElement* RmlElement_InsertBefore(RmlElement* self, RmlElement* element, RmlElement* adjacent_element);
+/**
+ * Replaces the second node with the first node.
+ *
+ * @param inserted_element The element that will be inserted and replace the other element.
+ * @param replaced_element The existing element that will be replaced. If this doesn't exist, inserted_element will be appended.
+ * @return A unique pointer to the replaced element if found, discard the result to immediately destroy.
+ * C++: ElementPtr Rml::Element::ReplaceChild(ElementPtr inserted_element, Element* replaced_element)
+ */
+RMLC_API RmlElement* RmlElement_ReplaceChild(RmlElement* self, RmlElement* inserted_element, RmlElement* replaced_element);
+/**
+ * Remove a child element from this element.
+ *
+ * @param element The element to remove.
+ * @returns A unique pointer to the element if found, discard the result to immediately destroy.
+ * C++: ElementPtr Rml::Element::RemoveChild(Element* element)
+ */
+RMLC_API RmlElement* RmlElement_RemoveChild(RmlElement* self, RmlElement* element);
+/**
  * Get a child element by its ID.
  *
  * @param id The ID of the child element.
@@ -1703,6 +1740,11 @@ RMLC_API RmlElement* RmlElement_GetClosestScrollableContainer(RmlElement* self, 
  * C++: void Rml::Element::ProcessDefaultAction(Event& event)
  */
 RMLC_API void RmlElement_ProcessDefaultAction(RmlElement* self, RmlEvent* event);
+/**
+ * Clones this element, returning a new, unparented element.
+ * C++: ElementPtr Rml::Element::Clone() const
+ */
+RMLC_API RmlElement* RmlElement_Clone(RmlElement* self);
 /**
  * Checks if a class is set on the element.
  *
@@ -1995,6 +2037,20 @@ RMLC_API void RmlElementDocument_Hide(RmlElementDocument* self);
  * C++: void Rml::ElementDocument::Close()
  */
 RMLC_API void RmlElementDocument_Close(RmlElementDocument* self);
+/**
+ * Creates the named element.
+ *
+ * @param name The tag name of the element.
+ * C++: ElementPtr Rml::ElementDocument::CreateElement(const String& name)
+ */
+RMLC_API RmlElement* RmlElementDocument_CreateElement(RmlElementDocument* self, const char* name);
+/**
+ * Create a text element with the given text content.
+ *
+ * @param text The text content of the text element.
+ * C++: ElementPtr Rml::ElementDocument::CreateTextNode(const String& text)
+ */
+RMLC_API RmlElement* RmlElementDocument_CreateTextNode(RmlElementDocument* self, const char* text);
 /**
  * Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.
  *
@@ -2338,6 +2394,15 @@ RMLC_API int32_t RmlElementFormControlSelect_GetNumOptions(RmlElementFormControl
  */
 RMLC_API int32_t RmlElementFormControlSelect_Add_String_String_Int_Bool(RmlElementFormControlSelect* self, const char* rml, const char* value, int32_t before, bool selectable);
 /**
+ * Adds a new option to the select control.
+ *
+ * @param element The element to add, must be an 'option' element.
+ * @param before The index of the element to insert the new option before.
+ * @return The index of the new option.
+ * C++: int Rml::ElementFormControlSelect::Add(ElementPtr element, int before = -1)
+ */
+RMLC_API int32_t RmlElementFormControlSelect_Add_ElementPtr_Int(RmlElementFormControlSelect* self, RmlElement* element, int32_t before);
+/**
  * Removes an option from the select control.
  *
  * @param index The index of the option to remove. If this is outside of the bounds of the control's option list, no option will be removed.
@@ -2539,6 +2604,22 @@ RMLC_API void RmlElementTabSet_SetTab_Int_String(RmlElementTabSet* self, int32_t
  * C++: void Rml::ElementTabSet::SetPanel(int tab_index, const String& rml)
  */
 RMLC_API void RmlElementTabSet_SetPanel_Int_String(RmlElementTabSet* self, int32_t tab_index, const char* rml);
+/**
+ * Set the specified tab index's title element.
+ *
+ * @param tab_index The tab index to set. If it doesn't already exist, it will be created.
+ * @param element The root of the element tree to set as the tab title.
+ * C++: void Rml::ElementTabSet::SetTab(int tab_index, ElementPtr element)
+ */
+RMLC_API void RmlElementTabSet_SetTab_Int_ElementPtr(RmlElementTabSet* self, int32_t tab_index, RmlElement* element);
+/**
+ * Set the specified tab index's body element.
+ *
+ * @param tab_index The tab index to set. If it doesn't already exist, it will be created.
+ * @param element The root of the element tree to set as the window.
+ * C++: void Rml::ElementTabSet::SetPanel(int tab_index, ElementPtr element)
+ */
+RMLC_API void RmlElementTabSet_SetPanel_Int_ElementPtr(RmlElementTabSet* self, int32_t tab_index, RmlElement* element);
 /**
  * Remove one of the tab set's panels and its corresponding tab.
  *

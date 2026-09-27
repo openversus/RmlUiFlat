@@ -18,6 +18,997 @@ namespace RmlUi.Interop
 	{
 
 		/// <summary>
+		/// Create a text element with the given text content.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentCreateTextNode(ref RmlElementDocument self, in byte text)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* ptext = &text)
+				{
+					RmlElementPtr ret = RmlElementDocumentCreateTextNodeNative((RmlElementDocument*)pself, (byte*)ptext);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Create a text element with the given text content.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentCreateTextNode(ref RmlElementDocument self, ReadOnlySpan<byte> text)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* ptext = text)
+				{
+					RmlElementPtr ret = RmlElementDocumentCreateTextNodeNative((RmlElementDocument*)pself, (byte*)ptext);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Create a text element with the given text content.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentCreateTextNode(ref RmlElementDocument self, string text)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (text != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(text);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(text, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementPtr ret = RmlElementDocumentCreateTextNodeNative((RmlElementDocument*)pself, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_FindNextTabElement")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementDocumentFindNextTabElementNative(RmlElementDocument* self, RmlElement* currentElement, byte forward, byte wrapAround);
+
+		/// <summary>
+		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentFindNextTabElement(RmlElementDocumentPtr self, RmlElementPtr currentElement, bool forward, bool wrapAround)
+		{
+			RmlElementPtr ret = RmlElementDocumentFindNextTabElementNative((RmlElementDocument*)self, (RmlElement*)currentElement, forward ? (byte)1 : (byte)0, wrapAround ? (byte)1 : (byte)0);
+			return ret;
+		}
+
+		/// <summary>
+		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentFindNextTabElement(ref RmlElementDocument self, RmlElementPtr currentElement, bool forward, bool wrapAround)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementDocumentFindNextTabElementNative((RmlElementDocument*)pself, (RmlElement*)currentElement, forward ? (byte)1 : (byte)0, wrapAround ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentFindNextTabElement(RmlElementDocumentPtr self, ref RmlElement currentElement, bool forward, bool wrapAround)
+		{
+			fixed (RmlElement* pcurrentElement = &currentElement)
+			{
+				RmlElementPtr ret = RmlElementDocumentFindNextTabElementNative((RmlElementDocument*)self, (RmlElement*)pcurrentElement, forward ? (byte)1 : (byte)0, wrapAround ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Finds the next tabbable element in the document tree, starting at the given element, possibly wrapping around the document.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementDocumentFindNextTabElement(ref RmlElementDocument self, ref RmlElement currentElement, bool forward, bool wrapAround)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (RmlElement* pcurrentElement = &currentElement)
+				{
+					RmlElementPtr ret = RmlElementDocumentFindNextTabElementNative((RmlElementDocument*)pself, (RmlElement*)pcurrentElement, forward ? (byte)1 : (byte)0, wrapAround ? (byte)1 : (byte)0);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_LoadInlineScript")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementDocumentLoadInlineScriptNative(RmlElementDocument* self, byte* content, byte* sourcePath, int sourceLine);
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, byte* content, byte* sourcePath, int sourceLine)
+		{
+			RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, content, sourcePath, sourceLine);
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, byte* content, byte* sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, content, sourcePath, sourceLine);
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, in byte content, byte* sourcePath, int sourceLine)
+		{
+			fixed (byte* pcontent = &content)
+			{
+				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, (byte*)pcontent, sourcePath, sourceLine);
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, ReadOnlySpan<byte> content, byte* sourcePath, int sourceLine)
+		{
+			fixed (byte* pcontent = content)
+			{
+				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, (byte*)pcontent, sourcePath, sourceLine);
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, string content, byte* sourcePath, int sourceLine)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (content != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(content);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(content, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, pStr0, sourcePath, sourceLine);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, in byte content, byte* sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* pcontent = &content)
+				{
+					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, (byte*)pcontent, sourcePath, sourceLine);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, ReadOnlySpan<byte> content, byte* sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* pcontent = content)
+				{
+					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, (byte*)pcontent, sourcePath, sourceLine);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, string content, byte* sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (content != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(content);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(content, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, pStr0, sourcePath, sourceLine);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, byte* content, in byte sourcePath, int sourceLine)
+		{
+			fixed (byte* psourcePath = &sourcePath)
+			{
+				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, content, (byte*)psourcePath, sourceLine);
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, byte* content, ReadOnlySpan<byte> sourcePath, int sourceLine)
+		{
+			fixed (byte* psourcePath = sourcePath)
+			{
+				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, content, (byte*)psourcePath, sourceLine);
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, byte* content, string sourcePath, int sourceLine)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (sourcePath != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(sourcePath);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(sourcePath, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, content, pStr0, sourceLine);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, byte* content, in byte sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* psourcePath = &sourcePath)
+				{
+					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, content, (byte*)psourcePath, sourceLine);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, byte* content, ReadOnlySpan<byte> sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* psourcePath = sourcePath)
+				{
+					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, content, (byte*)psourcePath, sourceLine);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, byte* content, string sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (sourcePath != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(sourcePath);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(sourcePath, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, content, pStr0, sourceLine);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, in byte content, in byte sourcePath, int sourceLine)
+		{
+			fixed (byte* pcontent = &content)
+			{
+				fixed (byte* psourcePath = &sourcePath)
+				{
+					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, (byte*)pcontent, (byte*)psourcePath, sourceLine);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, ReadOnlySpan<byte> content, ReadOnlySpan<byte> sourcePath, int sourceLine)
+		{
+			fixed (byte* pcontent = content)
+			{
+				fixed (byte* psourcePath = sourcePath)
+				{
+					RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, (byte*)pcontent, (byte*)psourcePath, sourceLine);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(RmlElementDocumentPtr self, string content, string sourcePath, int sourceLine)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (content != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(content);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(content, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* pStr1 = null;
+			int pStrSize1 = 0;
+			if (sourcePath != null)
+			{
+				pStrSize1 = Utils.GetByteCountUTF8(sourcePath);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+				}
+				else
+				{
+					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+					pStr1 = pStrStack1;
+				}
+				int pStrOffset1 = Utils.EncodeStringUTF8(sourcePath, pStr1, pStrSize1);
+				pStr1[pStrOffset1] = 0;
+			}
+			RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)self, pStr0, pStr1, sourceLine);
+			if (pStrSize1 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr1);
+			}
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, in byte content, in byte sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* pcontent = &content)
+				{
+					fixed (byte* psourcePath = &sourcePath)
+					{
+						RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, (byte*)pcontent, (byte*)psourcePath, sourceLine);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, ReadOnlySpan<byte> content, ReadOnlySpan<byte> sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* pcontent = content)
+				{
+					fixed (byte* psourcePath = sourcePath)
+					{
+						RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, (byte*)pcontent, (byte*)psourcePath, sourceLine);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an inline script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadInlineScript(ref RmlElementDocument self, string content, string sourcePath, int sourceLine)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (content != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(content);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(content, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				byte* pStr1 = null;
+				int pStrSize1 = 0;
+				if (sourcePath != null)
+				{
+					pStrSize1 = Utils.GetByteCountUTF8(sourcePath);
+					if (pStrSize1 >= Utils.MaxStackallocSize)
+					{
+						pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+					}
+					else
+					{
+						byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+						pStr1 = pStrStack1;
+					}
+					int pStrOffset1 = Utils.EncodeStringUTF8(sourcePath, pStr1, pStrSize1);
+					pStr1[pStrOffset1] = 0;
+				}
+				RmlElementDocumentLoadInlineScriptNative((RmlElementDocument*)pself, pStr0, pStr1, sourceLine);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr1);
+				}
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementDocument_LoadExternalScript")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementDocumentLoadExternalScriptNative(RmlElementDocument* self, byte* sourcePath);
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadExternalScript(RmlElementDocumentPtr self, byte* sourcePath)
+		{
+			RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)self, sourcePath);
+		}
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadExternalScript(ref RmlElementDocument self, byte* sourcePath)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)pself, sourcePath);
+			}
+		}
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadExternalScript(RmlElementDocumentPtr self, in byte sourcePath)
+		{
+			fixed (byte* psourcePath = &sourcePath)
+			{
+				RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)self, (byte*)psourcePath);
+			}
+		}
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadExternalScript(RmlElementDocumentPtr self, ReadOnlySpan<byte> sourcePath)
+		{
+			fixed (byte* psourcePath = sourcePath)
+			{
+				RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)self, (byte*)psourcePath);
+			}
+		}
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadExternalScript(RmlElementDocumentPtr self, string sourcePath)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (sourcePath != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(sourcePath);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(sourcePath, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)self, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadExternalScript(ref RmlElementDocument self, in byte sourcePath)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* psourcePath = &sourcePath)
+				{
+					RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)pself, (byte*)psourcePath);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadExternalScript(ref RmlElementDocument self, ReadOnlySpan<byte> sourcePath)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				fixed (byte* psourcePath = sourcePath)
+				{
+					RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)pself, (byte*)psourcePath);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Loads an external script into the document. Note that the base implementation does nothing, but script plugins can hook into this method.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementDocumentLoadExternalScript(ref RmlElementDocument self, string sourcePath)
+		{
+			fixed (RmlElementDocument* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (sourcePath != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(sourcePath);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(sourcePath, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementDocumentLoadExternalScriptNative((RmlElementDocument*)pself, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
 		/// Updates the document, including its layout. Users must call this manually before requesting information such as<br/>
 		/// the size or position of an element if any element in the document was recently changed, unless Context::Update<br/>
 		/// has already been called after the change. This has a performance penalty, only call when necessary.<br/>
@@ -4035,1009 +5026,6 @@ namespace RmlUi.Interop
 					}
 				}
 			}
-		}
-
-		/// <summary>
-		/// Retrieves the selection range and text.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlInputGetSelection(RmlElementFormControlInputPtr self, ref int selectionStart, ref int selectionEnd, ref byte* selectedText)
-		{
-			fixed (int* pselectionStart = &selectionStart)
-			{
-				fixed (int* pselectionEnd = &selectionEnd)
-				{
-					fixed (byte** pselectedText = &selectedText)
-					{
-						RmlElementFormControlInputGetSelectionNative((RmlElementFormControlInput*)self, (int*)pselectionStart, (int*)pselectionEnd, (byte**)pselectedText);
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Retrieves the selection range and text.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlInputGetSelection(ref RmlElementFormControlInput self, ref int selectionStart, ref int selectionEnd, ref byte* selectedText)
-		{
-			fixed (RmlElementFormControlInput* pself = &self)
-			{
-				fixed (int* pselectionStart = &selectionStart)
-				{
-					fixed (int* pselectionEnd = &selectionEnd)
-					{
-						fixed (byte** pselectedText = &selectedText)
-						{
-							RmlElementFormControlInputGetSelectionNative((RmlElementFormControlInput*)pself, (int*)pselectionStart, (int*)pselectionEnd, (byte**)pselectedText);
-						}
-					}
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_SetValue")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementFormControlSelectSetValueNative(RmlElementFormControlSelect* self, byte* value);
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetValue(RmlElementFormControlSelectPtr self, byte* value)
-		{
-			RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)self, value);
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetValue(ref RmlElementFormControlSelect self, byte* value)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)pself, value);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetValue(RmlElementFormControlSelectPtr self, in byte value)
-		{
-			fixed (byte* pvalue = &value)
-			{
-				RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)self, (byte*)pvalue);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetValue(RmlElementFormControlSelectPtr self, ReadOnlySpan<byte> value)
-		{
-			fixed (byte* pvalue = value)
-			{
-				RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)self, (byte*)pvalue);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetValue(RmlElementFormControlSelectPtr self, string value)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (value != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(value);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)self, pStr0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetValue(ref RmlElementFormControlSelect self, in byte value)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				fixed (byte* pvalue = &value)
-				{
-					RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)pself, (byte*)pvalue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetValue(ref RmlElementFormControlSelect self, ReadOnlySpan<byte> value)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				fixed (byte* pvalue = value)
-				{
-					RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)pself, (byte*)pvalue);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Rml::ElementFormControlSelect <br/>
-		/// Sets the current value of the form control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetValue(ref RmlElementFormControlSelect self, string value)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (value != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(value);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)pself, pStr0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Sets the index of the selection. If the new index lies outside the bounds, it will be clamped.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_SetSelection")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial void RmlElementFormControlSelectSetSelectionNative(RmlElementFormControlSelect* self, int selection);
-
-		/// <summary>
-		/// Sets the index of the selection. If the new index lies outside the bounds, it will be clamped.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetSelection(RmlElementFormControlSelectPtr self, int selection)
-		{
-			RmlElementFormControlSelectSetSelectionNative((RmlElementFormControlSelect*)self, selection);
-		}
-
-		/// <summary>
-		/// Sets the index of the selection. If the new index lies outside the bounds, it will be clamped.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static void RmlElementFormControlSelectSetSelection(ref RmlElementFormControlSelect self, int selection)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				RmlElementFormControlSelectSetSelectionNative((RmlElementFormControlSelect*)pself, selection);
-			}
-		}
-
-		/// <summary>
-		/// Returns one of the select control's option elements.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_GetOption")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial RmlElement* RmlElementFormControlSelectGetOptionNative(RmlElementFormControlSelect* self, int index);
-
-		/// <summary>
-		/// Returns one of the select control's option elements.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementFormControlSelectGetOption(RmlElementFormControlSelectPtr self, int index)
-		{
-			RmlElementPtr ret = RmlElementFormControlSelectGetOptionNative((RmlElementFormControlSelect*)self, index);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns one of the select control's option elements.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static RmlElementPtr RmlElementFormControlSelectGetOption(ref RmlElementFormControlSelect self, int index)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				RmlElementPtr ret = RmlElementFormControlSelectGetOptionNative((RmlElementFormControlSelect*)pself, index);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Returns the number of options in the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_GetNumOptions")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial int RmlElementFormControlSelectGetNumOptionsNative(RmlElementFormControlSelect* self);
-
-		/// <summary>
-		/// Returns the number of options in the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectGetNumOptions(RmlElementFormControlSelectPtr self)
-		{
-			int ret = RmlElementFormControlSelectGetNumOptionsNative((RmlElementFormControlSelect*)self);
-			return ret;
-		}
-
-		/// <summary>
-		/// Returns the number of options in the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectGetNumOptions(ref RmlElementFormControlSelect self)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				int ret = RmlElementFormControlSelectGetNumOptionsNative((RmlElementFormControlSelect*)pself);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_Add_String_String_Int_Bool")]
-		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
-		internal static partial int RmlElementFormControlSelectAddStringStringIntBoolNative(RmlElementFormControlSelect* self, byte* rml, byte* value, int before, byte selectable);
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, byte* rml, byte* value, int before, bool selectable)
-		{
-			int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, rml, value, before, selectable ? (byte)1 : (byte)0);
-			return ret;
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, byte* rml, byte* value, int before, bool selectable)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, rml, value, before, selectable ? (byte)1 : (byte)0);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, in byte rml, byte* value, int before, bool selectable)
-		{
-			fixed (byte* prml = &rml)
-			{
-				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, (byte*)prml, value, before, selectable ? (byte)1 : (byte)0);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, ReadOnlySpan<byte> rml, byte* value, int before, bool selectable)
-		{
-			fixed (byte* prml = rml)
-			{
-				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, (byte*)prml, value, before, selectable ? (byte)1 : (byte)0);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, string rml, byte* value, int before, bool selectable)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (rml != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(rml);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, pStr0, value, before, selectable ? (byte)1 : (byte)0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret;
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, in byte rml, byte* value, int before, bool selectable)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				fixed (byte* prml = &rml)
-				{
-					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, (byte*)prml, value, before, selectable ? (byte)1 : (byte)0);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, ReadOnlySpan<byte> rml, byte* value, int before, bool selectable)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				fixed (byte* prml = rml)
-				{
-					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, (byte*)prml, value, before, selectable ? (byte)1 : (byte)0);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, string rml, byte* value, int before, bool selectable)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (rml != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(rml);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, pStr0, value, before, selectable ? (byte)1 : (byte)0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, byte* rml, in byte value, int before, bool selectable)
-		{
-			fixed (byte* pvalue = &value)
-			{
-				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, rml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, byte* rml, ReadOnlySpan<byte> value, int before, bool selectable)
-		{
-			fixed (byte* pvalue = value)
-			{
-				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, rml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, byte* rml, string value, int before, bool selectable)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (value != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(value);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, rml, pStr0, before, selectable ? (byte)1 : (byte)0);
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret;
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, byte* rml, in byte value, int before, bool selectable)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				fixed (byte* pvalue = &value)
-				{
-					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, rml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, byte* rml, ReadOnlySpan<byte> value, int before, bool selectable)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				fixed (byte* pvalue = value)
-				{
-					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, rml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, byte* rml, string value, int before, bool selectable)
-		{
-			fixed (RmlElementFormControlSelect* pself = &self)
-			{
-				byte* pStr0 = null;
-				int pStrSize0 = 0;
-				if (value != null)
-				{
-					pStrSize0 = Utils.GetByteCountUTF8(value);
-					if (pStrSize0 >= Utils.MaxStackallocSize)
-					{
-						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-					}
-					else
-					{
-						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-						pStr0 = pStrStack0;
-					}
-					int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
-					pStr0[pStrOffset0] = 0;
-				}
-				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, rml, pStr0, before, selectable ? (byte)1 : (byte)0);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					Utils.Free(pStr0);
-				}
-				return ret;
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, in byte rml, in byte value, int before, bool selectable)
-		{
-			fixed (byte* prml = &rml)
-			{
-				fixed (byte* pvalue = &value)
-				{
-					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, (byte*)prml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, ReadOnlySpan<byte> rml, ReadOnlySpan<byte> value, int before, bool selectable)
-		{
-			fixed (byte* prml = rml)
-			{
-				fixed (byte* pvalue = value)
-				{
-					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, (byte*)prml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
-					return ret;
-				}
-			}
-		}
-
-		/// <summary>
-		/// Adds a new option to the select control.<br/>
-		/// <br/>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// <summary>
-		/// To be documented.
-		/// </summary>
-		/// </summary>
-		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, string rml, string value, int before, bool selectable)
-		{
-			byte* pStr0 = null;
-			int pStrSize0 = 0;
-			if (rml != null)
-			{
-				pStrSize0 = Utils.GetByteCountUTF8(rml);
-				if (pStrSize0 >= Utils.MaxStackallocSize)
-				{
-					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
-				}
-				else
-				{
-					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
-					pStr0 = pStrStack0;
-				}
-				int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
-				pStr0[pStrOffset0] = 0;
-			}
-			byte* pStr1 = null;
-			int pStrSize1 = 0;
-			if (value != null)
-			{
-				pStrSize1 = Utils.GetByteCountUTF8(value);
-				if (pStrSize1 >= Utils.MaxStackallocSize)
-				{
-					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
-				}
-				else
-				{
-					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
-					pStr1 = pStrStack1;
-				}
-				int pStrOffset1 = Utils.EncodeStringUTF8(value, pStr1, pStrSize1);
-				pStr1[pStrOffset1] = 0;
-			}
-			int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, pStr0, pStr1, before, selectable ? (byte)1 : (byte)0);
-			if (pStrSize1 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr1);
-			}
-			if (pStrSize0 >= Utils.MaxStackallocSize)
-			{
-				Utils.Free(pStr0);
-			}
-			return ret;
 		}
 	}
 }

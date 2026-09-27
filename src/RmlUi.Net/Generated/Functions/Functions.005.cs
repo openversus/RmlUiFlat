@@ -18,6 +18,1009 @@ namespace RmlUi.Interop
 	{
 
 		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlInputGetSelection(RmlElementFormControlInputPtr self, ref int selectionStart, ref int selectionEnd, ref byte* selectedText)
+		{
+			fixed (int* pselectionStart = &selectionStart)
+			{
+				fixed (int* pselectionEnd = &selectionEnd)
+				{
+					fixed (byte** pselectedText = &selectedText)
+					{
+						RmlElementFormControlInputGetSelectionNative((RmlElementFormControlInput*)self, (int*)pselectionStart, (int*)pselectionEnd, (byte**)pselectedText);
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Retrieves the selection range and text.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlInputGetSelection(ref RmlElementFormControlInput self, ref int selectionStart, ref int selectionEnd, ref byte* selectedText)
+		{
+			fixed (RmlElementFormControlInput* pself = &self)
+			{
+				fixed (int* pselectionStart = &selectionStart)
+				{
+					fixed (int* pselectionEnd = &selectionEnd)
+					{
+						fixed (byte** pselectedText = &selectedText)
+						{
+							RmlElementFormControlInputGetSelectionNative((RmlElementFormControlInput*)pself, (int*)pselectionStart, (int*)pselectionEnd, (byte**)pselectedText);
+						}
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_SetValue")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlSelectSetValueNative(RmlElementFormControlSelect* self, byte* value);
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetValue(RmlElementFormControlSelectPtr self, byte* value)
+		{
+			RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)self, value);
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetValue(ref RmlElementFormControlSelect self, byte* value)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)pself, value);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetValue(RmlElementFormControlSelectPtr self, in byte value)
+		{
+			fixed (byte* pvalue = &value)
+			{
+				RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)self, (byte*)pvalue);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetValue(RmlElementFormControlSelectPtr self, ReadOnlySpan<byte> value)
+		{
+			fixed (byte* pvalue = value)
+			{
+				RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)self, (byte*)pvalue);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetValue(RmlElementFormControlSelectPtr self, string value)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (value != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(value);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)self, pStr0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetValue(ref RmlElementFormControlSelect self, in byte value)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (byte* pvalue = &value)
+				{
+					RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)pself, (byte*)pvalue);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetValue(ref RmlElementFormControlSelect self, ReadOnlySpan<byte> value)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (byte* pvalue = value)
+				{
+					RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)pself, (byte*)pvalue);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Rml::ElementFormControlSelect <br/>
+		/// Sets the current value of the form control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetValue(ref RmlElementFormControlSelect self, string value)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (value != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(value);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				RmlElementFormControlSelectSetValueNative((RmlElementFormControlSelect*)pself, pStr0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the index of the selection. If the new index lies outside the bounds, it will be clamped.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_SetSelection")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementFormControlSelectSetSelectionNative(RmlElementFormControlSelect* self, int selection);
+
+		/// <summary>
+		/// Sets the index of the selection. If the new index lies outside the bounds, it will be clamped.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetSelection(RmlElementFormControlSelectPtr self, int selection)
+		{
+			RmlElementFormControlSelectSetSelectionNative((RmlElementFormControlSelect*)self, selection);
+		}
+
+		/// <summary>
+		/// Sets the index of the selection. If the new index lies outside the bounds, it will be clamped.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementFormControlSelectSetSelection(ref RmlElementFormControlSelect self, int selection)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementFormControlSelectSetSelectionNative((RmlElementFormControlSelect*)pself, selection);
+			}
+		}
+
+		/// <summary>
+		/// Returns one of the select control's option elements.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_GetOption")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial RmlElement* RmlElementFormControlSelectGetOptionNative(RmlElementFormControlSelect* self, int index);
+
+		/// <summary>
+		/// Returns one of the select control's option elements.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlSelectGetOption(RmlElementFormControlSelectPtr self, int index)
+		{
+			RmlElementPtr ret = RmlElementFormControlSelectGetOptionNative((RmlElementFormControlSelect*)self, index);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns one of the select control's option elements.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static RmlElementPtr RmlElementFormControlSelectGetOption(ref RmlElementFormControlSelect self, int index)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				RmlElementPtr ret = RmlElementFormControlSelectGetOptionNative((RmlElementFormControlSelect*)pself, index);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Returns the number of options in the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_GetNumOptions")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementFormControlSelectGetNumOptionsNative(RmlElementFormControlSelect* self);
+
+		/// <summary>
+		/// Returns the number of options in the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectGetNumOptions(RmlElementFormControlSelectPtr self)
+		{
+			int ret = RmlElementFormControlSelectGetNumOptionsNative((RmlElementFormControlSelect*)self);
+			return ret;
+		}
+
+		/// <summary>
+		/// Returns the number of options in the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectGetNumOptions(ref RmlElementFormControlSelect self)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				int ret = RmlElementFormControlSelectGetNumOptionsNative((RmlElementFormControlSelect*)pself);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_Add_String_String_Int_Bool")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementFormControlSelectAddStringStringIntBoolNative(RmlElementFormControlSelect* self, byte* rml, byte* value, int before, byte selectable);
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, byte* rml, byte* value, int before, bool selectable)
+		{
+			int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, rml, value, before, selectable ? (byte)1 : (byte)0);
+			return ret;
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, byte* rml, byte* value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, rml, value, before, selectable ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, in byte rml, byte* value, int before, bool selectable)
+		{
+			fixed (byte* prml = &rml)
+			{
+				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, (byte*)prml, value, before, selectable ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, ReadOnlySpan<byte> rml, byte* value, int before, bool selectable)
+		{
+			fixed (byte* prml = rml)
+			{
+				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, (byte*)prml, value, before, selectable ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, string rml, byte* value, int before, bool selectable)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (rml != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(rml);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, pStr0, value, before, selectable ? (byte)1 : (byte)0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, in byte rml, byte* value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (byte* prml = &rml)
+				{
+					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, (byte*)prml, value, before, selectable ? (byte)1 : (byte)0);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, ReadOnlySpan<byte> rml, byte* value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (byte* prml = rml)
+				{
+					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, (byte*)prml, value, before, selectable ? (byte)1 : (byte)0);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, string rml, byte* value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (rml != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(rml);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, pStr0, value, before, selectable ? (byte)1 : (byte)0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, byte* rml, in byte value, int before, bool selectable)
+		{
+			fixed (byte* pvalue = &value)
+			{
+				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, rml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, byte* rml, ReadOnlySpan<byte> value, int before, bool selectable)
+		{
+			fixed (byte* pvalue = value)
+			{
+				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, rml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, byte* rml, string value, int before, bool selectable)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (value != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(value);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, rml, pStr0, before, selectable ? (byte)1 : (byte)0);
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, byte* rml, in byte value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (byte* pvalue = &value)
+				{
+					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, rml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, byte* rml, ReadOnlySpan<byte> value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (byte* pvalue = value)
+				{
+					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, rml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(ref RmlElementFormControlSelect self, byte* rml, string value, int before, bool selectable)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				byte* pStr0 = null;
+				int pStrSize0 = 0;
+				if (value != null)
+				{
+					pStrSize0 = Utils.GetByteCountUTF8(value);
+					if (pStrSize0 >= Utils.MaxStackallocSize)
+					{
+						pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+					}
+					else
+					{
+						byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+						pStr0 = pStrStack0;
+					}
+					int pStrOffset0 = Utils.EncodeStringUTF8(value, pStr0, pStrSize0);
+					pStr0[pStrOffset0] = 0;
+				}
+				int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)pself, rml, pStr0, before, selectable ? (byte)1 : (byte)0);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					Utils.Free(pStr0);
+				}
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, in byte rml, in byte value, int before, bool selectable)
+		{
+			fixed (byte* prml = &rml)
+			{
+				fixed (byte* pvalue = &value)
+				{
+					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, (byte*)prml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, ReadOnlySpan<byte> rml, ReadOnlySpan<byte> value, int before, bool selectable)
+		{
+			fixed (byte* prml = rml)
+			{
+				fixed (byte* pvalue = value)
+				{
+					int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, (byte*)prml, (byte*)pvalue, before, selectable ? (byte)1 : (byte)0);
+					return ret;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddStringStringIntBool(RmlElementFormControlSelectPtr self, string rml, string value, int before, bool selectable)
+		{
+			byte* pStr0 = null;
+			int pStrSize0 = 0;
+			if (rml != null)
+			{
+				pStrSize0 = Utils.GetByteCountUTF8(rml);
+				if (pStrSize0 >= Utils.MaxStackallocSize)
+				{
+					pStr0 = Utils.Alloc<byte>(pStrSize0 + 1);
+				}
+				else
+				{
+					byte* pStrStack0 = stackalloc byte[pStrSize0 + 1];
+					pStr0 = pStrStack0;
+				}
+				int pStrOffset0 = Utils.EncodeStringUTF8(rml, pStr0, pStrSize0);
+				pStr0[pStrOffset0] = 0;
+			}
+			byte* pStr1 = null;
+			int pStrSize1 = 0;
+			if (value != null)
+			{
+				pStrSize1 = Utils.GetByteCountUTF8(value);
+				if (pStrSize1 >= Utils.MaxStackallocSize)
+				{
+					pStr1 = Utils.Alloc<byte>(pStrSize1 + 1);
+				}
+				else
+				{
+					byte* pStrStack1 = stackalloc byte[pStrSize1 + 1];
+					pStr1 = pStrStack1;
+				}
+				int pStrOffset1 = Utils.EncodeStringUTF8(value, pStr1, pStrSize1);
+				pStr1[pStrOffset1] = 0;
+			}
+			int ret = RmlElementFormControlSelectAddStringStringIntBoolNative((RmlElementFormControlSelect*)self, pStr0, pStr1, before, selectable ? (byte)1 : (byte)0);
+			if (pStrSize1 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr1);
+			}
+			if (pStrSize0 >= Utils.MaxStackallocSize)
+			{
+				Utils.Free(pStr0);
+			}
+			return ret;
+		}
+
+		/// <summary>
 		/// Adds a new option to the select control.<br/>
 		/// <br/>
 		/// <summary>
@@ -152,6 +1155,111 @@ namespace RmlUi.Interop
 					Utils.Free(pStr0);
 				}
 				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementFormControlSelect_Add_ElementPtr_Int")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial int RmlElementFormControlSelectAddElementPtrIntNative(RmlElementFormControlSelect* self, RmlElement* element, int before);
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddElementPtrInt(RmlElementFormControlSelectPtr self, RmlElementPtr element, int before)
+		{
+			int ret = RmlElementFormControlSelectAddElementPtrIntNative((RmlElementFormControlSelect*)self, (RmlElement*)element, before);
+			return ret;
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddElementPtrInt(ref RmlElementFormControlSelect self, RmlElementPtr element, int before)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				int ret = RmlElementFormControlSelectAddElementPtrIntNative((RmlElementFormControlSelect*)pself, (RmlElement*)element, before);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddElementPtrInt(RmlElementFormControlSelectPtr self, ref RmlElement element, int before)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				int ret = RmlElementFormControlSelectAddElementPtrIntNative((RmlElementFormControlSelect*)self, (RmlElement*)pelement, before);
+				return ret;
+			}
+		}
+
+		/// <summary>
+		/// Adds a new option to the select control.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static int RmlElementFormControlSelectAddElementPtrInt(ref RmlElementFormControlSelect self, ref RmlElement element, int before)
+		{
+			fixed (RmlElementFormControlSelect* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					int ret = RmlElementFormControlSelectAddElementPtrIntNative((RmlElementFormControlSelect*)pself, (RmlElement*)pelement, before);
+					return ret;
+				}
 			}
 		}
 
@@ -2383,6 +3491,178 @@ namespace RmlUi.Interop
 				if (pStrSize0 >= Utils.MaxStackallocSize)
 				{
 					Utils.Free(pStr0);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetTab_Int_ElementPtr")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetTabIntElementPtrNative(RmlElementTabSet* self, int tabIndex, RmlElement* element);
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntElementPtr(RmlElementTabSetPtr self, int tabIndex, RmlElementPtr element)
+		{
+			RmlElementTabSetSetTabIntElementPtrNative((RmlElementTabSet*)self, tabIndex, (RmlElement*)element);
+		}
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntElementPtr(ref RmlElementTabSet self, int tabIndex, RmlElementPtr element)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetTabIntElementPtrNative((RmlElementTabSet*)pself, tabIndex, (RmlElement*)element);
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntElementPtr(RmlElementTabSetPtr self, int tabIndex, ref RmlElement element)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				RmlElementTabSetSetTabIntElementPtrNative((RmlElementTabSet*)self, tabIndex, (RmlElement*)pelement);
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's title element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetTabIntElementPtr(ref RmlElementTabSet self, int tabIndex, ref RmlElement element)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					RmlElementTabSetSetTabIntElementPtrNative((RmlElementTabSet*)pself, tabIndex, (RmlElement*)pelement);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		[LibraryImport(LibName, EntryPoint = "RmlElementTabSet_SetPanel_Int_ElementPtr")]
+		[UnmanagedCallConv(CallConvs = new Type[] {typeof(System.Runtime.CompilerServices.CallConvCdecl)})]
+		internal static partial void RmlElementTabSetSetPanelIntElementPtrNative(RmlElementTabSet* self, int tabIndex, RmlElement* element);
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntElementPtr(RmlElementTabSetPtr self, int tabIndex, RmlElementPtr element)
+		{
+			RmlElementTabSetSetPanelIntElementPtrNative((RmlElementTabSet*)self, tabIndex, (RmlElement*)element);
+		}
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntElementPtr(ref RmlElementTabSet self, int tabIndex, RmlElementPtr element)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				RmlElementTabSetSetPanelIntElementPtrNative((RmlElementTabSet*)pself, tabIndex, (RmlElement*)element);
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntElementPtr(RmlElementTabSetPtr self, int tabIndex, ref RmlElement element)
+		{
+			fixed (RmlElement* pelement = &element)
+			{
+				RmlElementTabSetSetPanelIntElementPtrNative((RmlElementTabSet*)self, tabIndex, (RmlElement*)pelement);
+			}
+		}
+
+		/// <summary>
+		/// Set the specified tab index's body element.<br/>
+		/// <br/>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// <summary>
+		/// To be documented.
+		/// </summary>
+		/// </summary>
+		public static void RmlElementTabSetSetPanelIntElementPtr(ref RmlElementTabSet self, int tabIndex, ref RmlElement element)
+		{
+			fixed (RmlElementTabSet* pself = &self)
+			{
+				fixed (RmlElement* pelement = &element)
+				{
+					RmlElementTabSetSetPanelIntElementPtrNative((RmlElementTabSet*)pself, tabIndex, (RmlElement*)pelement);
 				}
 			}
 		}
