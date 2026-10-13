@@ -1,5 +1,6 @@
-// Opens a window with RmlUi through the generated bindings. With --selftest it clicks the button through RmlUi's input
-// path, checks what the C# handler wrote back, saves a screenshot, and exits nonzero on failure.
+// Opens a window with RmlUi through the generated bindings; its fonts, a document, a style sheet and images are embedded
+// resources loaded by path. With --selftest it checks those loaded, clicks the button through RmlUi's input path, checks
+// what the C# handler wrote back, saves a screenshot, and exits nonzero on failure.
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -12,13 +13,14 @@ internal static unsafe partial class Program
 {
     private const int Width = 800;
     private const int Height = 480;
+    private const string ThrowingPath = "ui/throws.rml";
 
     private const string Document = """
         <rml>
         <head>
             <title>OpenVersus</title>
             <style>
-                body { font-family: Lato; font-size: 20dp; color: #e8e8f0; background-color: #1b1d2a;
+                body { font-family: LatoLatin; font-size: 20dp; color: #e8e8f0; background-color: #1b1d2a;
                        width: 100%; height: 100%; padding: 40dp; box-sizing: border-box; }
                 div, h1, p { display: block; }
                 h1 { font-size: 36dp; font-weight: bold; color: #ffffff; margin-bottom: 16dp; }
@@ -45,16 +47,26 @@ internal static unsafe partial class Program
     private static int Main(string[] args)
     {
         bool selfTest = args.Contains("--selftest");
-        string assets = args.FirstOrDefault(a => !a.StartsWith("--", StringComparison.Ordinal))
-            ?? Path.Combine(AppContext.BaseDirectory, "assets");
         var renderer = Enum.Parse<RmlRenderer>(Option(args, "--renderer") ?? "auto", ignoreCase: true);
         string? expectRenderer = Option(args, "--expect-renderer");
 
-        using var window = new RmlWindowBuilder("RmlUi from C#", Width, Height)
+        // The self-test asks first: it records every path RmlUi asks for, and throws for one, then passes the rest on.
+        var requested = new List<string>();
+        var builder = new RmlWindowBuilder("RmlUi from C#", Width, Height)
             .Renderer(renderer)
-            .PowerSave(!selfTest)
-            .AddFont(File.ReadAllBytes(Path.Combine(assets, "LatoLatin-Regular.ttf")), "Lato", weight: Style.FontWeight.Normal)
-            .AddFont(File.ReadAllBytes(Path.Combine(assets, "LatoLatin-Bold.ttf")), "Lato", weight: Style.FontWeight.Bold)
+            .PowerSave(!selfTest);
+        if (selfTest)
+        {
+            builder.Assets(path =>
+            {
+                requested.Add(path);
+                return path == ThrowingPath ? throw new IOException("planted by the self-test") : null;
+            });
+        }
+        using var window = builder
+            .Assets(typeof(Program).Assembly)
+            .AddFont("fonts/LatoLatin-Regular.ttf")
+            .AddFont("fonts/LatoLatin-Bold.ttf")
             .Build();
         Console.WriteLine($"RmlUi {Rml.GetVersion()}, renderer {window.Renderer}, {window.Context.GetDimensions()} px");
         if (expectRenderer != null && !string.Equals(window.Renderer.ToString(), expectRenderer, StringComparison.OrdinalIgnoreCase))
@@ -86,7 +98,7 @@ internal static unsafe partial class Program
         // The host releases elements nothing attached or disposed, and reports each: the self-test leaves one on purpose.
         var leaked = new List<string>();
         OwnedElement.Leaked = leaked.Add;
-        int exitCode = SelfTest(window, document, button, name, status, () => clicks, () => clickParameters);
+        int exitCode = SelfTest(window, document, button, name, status, () => clicks, () => clickParameters, requested);
         window.Dispose();
         Console.WriteLine($"released by the host: [{string.Join(", ", leaked)}]");
         if (leaked.Count != 1 || leaked[0] != "span#dropped")
@@ -103,9 +115,51 @@ internal static unsafe partial class Program
     /// </summary>
     private static int SelfTest(
         RmlWindow window, ElementDocument document, Element button, ElementFormControlInput name, Element status, Func<int> clicks,
-        Func<IReadOnlyDictionary<string, Variant>?> clickParameters)
+        Func<IReadOnlyDictionary<string, Variant>?> clickParameters, List<string> requested)
     {
         int exitCode = 0;
+
+        // Assets: a document by path (written "./" to go through the path cleanup), its linked style sheet, and two
+        // images, a TGA through RmlUi's own loader (Seek and Tell) and a PNG through stb (Length and Read). An image
+        // only gets a size once its bytes have been read and decoded. The fonts came the same way, or Build would
+        // have thrown.
+        var panel = window.Context.LoadDocument("./ui/panel.rml");
+        float probeWidth = 0, tgaWidth = 0, tgaHeight = 0, pngWidth = 0, pngHeight = 0;
+        if (!panel.IsNull)
+        {
+            panel.Show();
+            window.RunFrame();
+            probeWidth = panel.GetElementById("probe").GetOffsetWidth();
+            var tga = panel.GetElementById("tga");
+            var png = panel.GetElementById("png");
+            (tgaWidth, tgaHeight) = (tga.GetOffsetWidth(), tga.GetOffsetHeight());
+            (pngWidth, pngHeight) = (png.GetOffsetWidth(), png.GetOffsetHeight());
+        }
+        Console.WriteLine($"assets: probe {probeWidth} px wide, tga {tgaWidth}x{tgaHeight}, png {pngWidth}x{pngHeight}");
+        Console.WriteLine($"assets asked for: {string.Join(", ", requested.Distinct())}");
+        string[] expectedPaths = ["fonts/LatoLatin-Regular.ttf", "fonts/LatoLatin-Bold.ttf", "ui/panel.rml", "ui/panel.rcss",
+            "images/alien_small.tga", "images/hello_world.png"];
+        // alien_small.tga is 32x32 and hello_world.png 540x276: the shapes must survive whatever scale the layout applies.
+        if (probeWidth != 123 || tgaWidth <= 0 || Math.Abs(tgaWidth - tgaHeight) > 1
+            || pngHeight <= 0 || Math.Abs(pngWidth / pngHeight - 540f / 276f) > 0.02f || expectedPaths.Except(requested).Any())
+        {
+            Console.Error.WriteLine($"FAIL: assets (missing paths: [{string.Join(", ", expectedPaths.Except(requested))}])");
+            exitCode = 1;
+        }
+
+        // A source that throws: the exception is reported, never reaches RmlUi, and the file counts as missing.
+        var reported = new List<Exception>();
+        var report = EventListener.UnhandledException;
+        EventListener.UnhandledException = reported.Add;
+        bool thrownDocumentLoaded = !window.Context.LoadDocument(ThrowingPath).IsNull;
+        EventListener.UnhandledException = report;
+        Console.WriteLine($"throwing source: document loaded {thrownDocumentLoaded}, reported [{string.Join(" | ", reported.Select(e => e.Message + " <- " + e.InnerException?.Message))}]");
+        if (thrownDocumentLoaded || reported.Count != 1 || !reported[0].Message.Contains(ThrowingPath, StringComparison.Ordinal)
+            || reported[0].InnerException is not IOException)
+        {
+            Console.Error.WriteLine("FAIL: a throwing asset source must be reported once and count as missing");
+            exitCode = 1;
+        }
 
         // RmlUi is process-wide: a second host must be refused while this one is open, and leave this one working.
         try

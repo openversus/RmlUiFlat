@@ -14,9 +14,13 @@
     <ProjectReference Include="../../src/RmlUi.Net.Desktop/RmlUi.Net.Desktop.csproj" />
     <!-- The licenses of what is linked into the binaries travel with them. -->
     <None Include="../../THIRD-PARTY-NOTICES.txt" CopyToPublishDirectory="PreserveNewest" Link="THIRD-PARTY-NOTICES.txt" />
-    <!-- The fonts the document uses, in assets/ beside the executable, so a published folder runs anywhere. -->
-    <None Include="../../external/RmlUi/Samples/assets/LatoLatin-Regular.ttf" Link="assets/LatoLatin-Regular.ttf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
-    <None Include="../../external/RmlUi/Samples/assets/LatoLatin-Bold.ttf" Link="assets/LatoLatin-Bold.ttf" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <!-- Everything RmlUi loads by path, embedded under that path and served by RmlHostBuilder.Assets, so the
+         executable runs from any folder with nothing beside it. -->
+    <EmbeddedResource Include="ui/**" LogicalName="ui/%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="../../external/RmlUi/Samples/assets/LatoLatin-Regular.ttf" LogicalName="fonts/LatoLatin-Regular.ttf" />
+    <EmbeddedResource Include="../../external/RmlUi/Samples/assets/LatoLatin-Bold.ttf" LogicalName="fonts/LatoLatin-Bold.ttf" />
+    <EmbeddedResource Include="../../external/RmlUi/Samples/assets/alien_small.tga" LogicalName="images/alien_small.tga" />
+    <EmbeddedResource Include="../../external/RmlUi/Samples/assets/hello_world.png" LogicalName="images/hello_world.png" />
   </ItemGroup>
 
   <!-- Linux: static link. The shim, the desktop backend and RmlUi itself go into the executable. Build native/ first

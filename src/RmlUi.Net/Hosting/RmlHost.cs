@@ -20,6 +20,7 @@ public abstract unsafe class RmlHost : IDisposable
 
     private readonly List<nint> fontMemory = [];
     private readonly List<EventListener> listeners = [];
+    private FileInterface fileInterface;
     private bool rmlUp;
     private bool disposed;
 
@@ -65,6 +66,11 @@ public abstract unsafe class RmlHost : IDisposable
         ArgumentNullException.ThrowIfNull(settings);
         Rml.SetSystemInterface(systemInterface);
         Rml.SetRenderInterface(renderInterface);
+        if (settings.Assets.Count > 0)
+        {
+            fileInterface = FileInterface.Create(AssetSources.Combine(settings.Assets));
+            Rml.SetFileInterface(fileInterface);
+        }
         if (!Rml.Initialise())
         {
             throw new InvalidOperationException("Rml::Initialise failed.");
@@ -89,7 +95,7 @@ public abstract unsafe class RmlHost : IDisposable
     /// <summary>
     /// Releases any <see cref="OwnedElement"/> nothing attached or disposed (reporting each through
     /// <see cref="OwnedElement.Leaked"/>), shuts RmlUi down (which destroys the context and detaches every listener),
-    /// then destroys the listeners, frees
+    /// then destroys the listeners and the assets' file interface, frees
     /// the font memory RmlUi was reading, and lets the host release its own resources. Handles into RmlUi are invalid
     /// afterwards.
     /// </summary>
@@ -111,6 +117,13 @@ public abstract unsafe class RmlHost : IDisposable
             listener.Destroy();
         }
         listeners.Clear();
+        if (!fileInterface.IsNull)
+        {
+            // RmlUi uses it until Shutdown, which forgets it; forgetting it here too covers an Initialise that failed.
+            Rml.SetFileInterface(default);
+            fileInterface.Destroy();
+            fileInterface = default;
+        }
         foreach (var memory in fontMemory)
         {
             NativeMemory.Free((void*)memory);

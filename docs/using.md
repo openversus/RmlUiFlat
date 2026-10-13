@@ -27,24 +27,43 @@ everything below except the window itself applies there too.
 using RmlUi;
 using RmlUi.Desktop;
 
-string assets = Path.Combine(AppContext.BaseDirectory, "assets");
 using var window = new RmlWindowBuilder("Installer", 800, 480)
-    .AddFont(File.ReadAllBytes(Path.Combine(assets, "LatoLatin-Regular.ttf")), "Lato")
-    .AddFont(File.ReadAllBytes(Path.Combine(assets, "LatoLatin-Bold.ttf")), "Lato", weight: Style.FontWeight.Bold)
+    .Assets(typeof(Program).Assembly)
+    .AddFont("fonts/LatoLatin-Regular.ttf")
+    .AddFont("fonts/LatoLatin-Bold.ttf")
     .Build();
 
-var document = window.Context.LoadDocumentFromMemory(rml);
+var document = window.Context.LoadDocument("ui/installer.rml");
 document.Show();
 window.Listen(document.GetElementById("install"), "click", e => StartInstall());
 window.Run();
 ```
 
+with the files embedded under their paths in the project file:
+
+```xml
+<ItemGroup>
+  <EmbeddedResource Include="ui/**" LogicalName="ui/%(RecursiveDir)%(Filename)%(Extension)" />
+  <EmbeddedResource Include="fonts/*.ttf" LogicalName="fonts/%(Filename)%(Extension)" />
+</ItemGroup>
+```
+
 - **The native library** must be built with the desktop backend: `-DRMLC_DESKTOP=ON` on Linux,
-  `cross/build-windows.sh desktop` for Windows ([testing.md](testing.md) has the commands). The publish folder is then
-  self-contained (the executable, `rmlui_c.dll` on Windows, anything you copy in such as fonts, and
-  `THIRD-PARTY-NOTICES.txt`), so it can be zipped and run anywhere.
-- **Fonts** are either bytes (`AddFont(data, family, style, weight)`), which the host keeps in native memory until
-  RmlUi shuts down, or a file path (`AddFont(path)`). RmlUi draws no text without one.
+  `cross/build-windows.sh desktop` for Windows ([testing.md](testing.md) has the commands). With the assets embedded,
+  the publish folder is the executable, `rmlui_c.dll` on Windows, and `THIRD-PARTY-NOTICES.txt`.
+- **Assets** are what RmlUi loads by path: documents, the style sheets and templates they link, and fonts and images
+  given by path. `Assets(assembly)` serves an assembly's embedded resources, each under its logical name read as a
+  path (a `\` counts as `/`); `Assets(path => bytes)` serves anything else, returning null for a file it does not
+  have. Paths arrive as RmlUi resolved them against the referencing document, cleaned up: `/` separators, `.` and
+  `..` collapsed, no leading `/`. A document `ui/main.rml` that links `main.rcss` asks for `ui/main.rcss`, and an
+  `<img src="../images/logo.png"/>` in it for `images/logo.png`. With several sources the first that has the file
+  wins, and once there is any source RmlUi no longer reads the disk by itself. A source that throws is reported
+  through `EventListener.UnhandledException` and the file counts as missing.
+- **Fonts** are either a path (`AddFont(path)`), read through the assets when there are any and from the disk
+  otherwise, or bytes (`AddFont(data, family, style, weight)`), which the host keeps in native memory until RmlUi shuts
+  down. A font loaded by path takes its family, style and weight from the file: the Lato files RmlUi ships declare the
+  family `LatoLatin`, so documents ask for `font-family: LatoLatin`. RmlUi draws no text without a font, and logs
+  `No font face defined` for each element that asked for a family it does not have.
 - **The size** is in the display's logical units; the context is sized in physical pixels, so on a display scaled to
   125% an 800-wide window has a 1000-wide context. RmlUi's `dp` unit follows the scale, so write sizes in `dp`.
 - **The renderer** is Vulkan where the machine can run it and OpenGL 3 otherwise. `.Renderer(RmlRenderer.OpenGL)`
@@ -55,8 +74,8 @@ window.Run();
   before it is shown, so the back buffer can still be read; RmlUi's Vulkan renderer presents as it finishes).
 - **One host at a time.** RmlUi is process-wide; building a second while one is open throws
   `InvalidOperationException`.
-- **Dispose** tears down in the order RmlUi needs: unattached elements (below), `Rml::Shutdown`, listeners, font
-  memory, then the window. Every handle into RmlUi is invalid afterwards.
+- **Dispose** tears down in the order RmlUi needs: unattached elements (below), `Rml::Shutdown`, listeners, the
+  assets' file interface, font memory, then the window. Every handle into RmlUi is invalid afterwards.
 
 ## Documents
 
@@ -67,9 +86,10 @@ document.Show();
 document.Close();
 ```
 
-`LoadDocument(path)` loads from a file. RmlUi opens it with a plain `fopen`, so **a relative path is relative to the
-working directory, not to the executable**. A published app should build the path from `AppContext.BaseDirectory`,
-as the font example above does:
+`LoadDocument(path)` loads by path: through the assets when the host has any (above), so `"ui/menu.rml"` means the
+embedded `ui/menu.rml` wherever the program runs. Without assets RmlUi opens it with a plain `fopen`, so **a relative
+path is relative to the working directory, not to the executable**, and a published app should build the path from
+`AppContext.BaseDirectory`:
 
 ```csharp
 var menu = window.Context.LoadDocument(Path.Combine(AppContext.BaseDirectory, "ui", "menu.rml"));
@@ -227,6 +247,9 @@ var status = document.GetElementById("status");
 var listener = EventListener.Create(evt => status.SetInnerRML("clicked"));
 document.GetElementById("hello").AddEventListener("click", listener);
 ```
+
+`Assets` is `FileInterface.Create(path => bytes)` installed with `Rml.SetFileInterface` before `Rml.Initialise`, and
+destroyed after `Rml.Shutdown`; the host also cleans up the path before asking the sources.
 
 ## Rules worth knowing
 

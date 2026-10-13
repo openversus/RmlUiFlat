@@ -1,0 +1,5 @@
+/* Linked from panel.rml: reaching RmlUi at all proves the link was resolved through the assets. */
+body { position: absolute; z-index: 1; top: 40dp; right: 40dp; width: 300px; font-family: LatoLatin; font-size: 16dp; color: #ffd43b; }
+div, img { display: block; }
+#probe { width: 123px; margin-bottom: 8dp; }
+#png { width: 270px; }

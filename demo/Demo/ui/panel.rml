@@ -1,0 +1,11 @@
+<rml>
+<head>
+    <title>Assets</title>
+    <link type="text/rcss" href="panel.rcss"/>
+</head>
+<body>
+    <div id="probe">Loaded by path from embedded resources</div>
+    <img id="tga" src="../images/alien_small.tga"/>
+    <img id="png" src="/images/hello_world.png"/>
+</body>
+</rml>

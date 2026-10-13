@@ -33,7 +33,8 @@ wine demo/Demo/bin/publish-win/Demo.exe --selftest --expect-renderer=vulkan
 ```
 
 **Look at the screenshot.** `demo-selftest.ppm` is the OpenGL back buffer at the end of the self-test (Linux only),
-a plain PPM image most viewers open. A log line says what the code did, not what appeared on screen:
+a plain PPM image most viewers open. The demo's text, and at the top right the assets panel with its two images
+(a small alien and a yellow RmlUi page), must be there. A log line says what the code did, not what appeared on screen:
 the window has been black while every log line said frames were being presented.
 
 **Warnings are errors that matter.** The build turns style rules and missing XML docs into errors. A clean build
@@ -65,6 +66,8 @@ It exits non-zero and prints `FAIL:` for each check that fails:
 
 | Check | Proves |
 |---|---|
+| The fonts load by path, `./ui/panel.rml` loads, its linked `panel.rcss` sets `#probe` to 123 px, and both `<img>`s get a size of the right shape | `Assets`: embedded resources by path, path cleanup, the link resolved against the document, a TGA through RmlUi's loader (`Seek`, `Tell`) and a PNG through stb (`Length`, `Read`); the paths asked for are recorded and checked |
+| An asset source that throws for `ui/throws.rml` | the exception is reported once through `EventListener.UnhandledException`, never reaches RmlUi, and the document counts as missing |
 | Building a second window while one is open throws | one host per process |
 | A click at the button's centre reaches the C# handler, which writes the status text | input, events, listeners, strings both ways |
 | `RemoveContext` of a missing and an existing context | a C `bool` reads back false and true |
@@ -137,6 +140,9 @@ it was and the test passing, which proves nothing. Mutations that have been run 
 | Report a null `Variant*` as a `NONE` variant | the missing attribute is not null |
 | Make `GetParameter` look up the wrong key | the parameter reads as the default |
 | Disable the Vulkan preflight, run with `VK_LOADER_DEVICE_ID_FILTER=0xdead` | a crash inside RmlUi instead of the OpenGL fallback |
+| File interface `Seek` refuses `SEEK_END` | the TGA image gets no size |
+| File interface `Length` returns 0 | the fonts by path fail to load, and `Build` throws before the test starts |
+| Asset path cleanup keeps `.` segments | `./ui/panel.rml` is not found: no probe, no images, the paths are missing |
 
 ## The renderer cases
 
@@ -155,6 +161,9 @@ Linux (checked on NVIDIA):
 
 ## Diagnosing a failure under Wine
 
+- Redirect the demo's output to a file (`wine ... > out.txt 2> err.txt`), not a pipe: through a pipe its own output
+  did not arrive while DXVK's did (seen every time on 2026-10-13 with Wine 11.13; a .NET single-file build printed
+  through a pipe fine; the cause is not known). The output is CRLF: `tr -d '\r'` before grepping.
 - RmlUi logs through `OutputDebugString`: run with `WINEDEBUG=+debugstr` to see it.
 - `WINEDEBUG=+vulkan` shows every Vulkan call.
 - For line numbers, build `cross/build-windows.sh desktop -DCMAKE_BUILD_TYPE=RelWithDebInfo` and resolve addresses

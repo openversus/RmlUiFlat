@@ -11,12 +11,12 @@ RmlUi's C++ headers (external/RmlUi/Include)
    │  gen/RmlShimGen: parses them (HexaGen.CppAst), maps each type (TypeMapper.cs); scope in gen/shim.json
    ▼
 native/generated/rmlui_c.h, rmlui_c.cpp   ← a C API over the C++ one                         (generated)
-native/rmlui_c_manual.h, .cpp             ← C++ interfaces RmlUi calls back into (EventListener)   (hand-written)
+native/rmlui_c_manual.h, .cpp             ← C++ interfaces RmlUi calls back into (EventListener, FileInterface) (hand-written)
 native/backend/                           ← the standalone window: SDL3 + RmlUi's Vulkan/OpenGL renderers (hand-written)
    │  same RmlShimGen run
    ├─▶ src/RmlUi.Net/Api.Generated/       ← the C# API, namespace RmlUi                         (generated)
    └─▶ src/RmlUi.Net/Generated/           ← HexaGen's raw bindings over the C API, RmlUi.Interop (generated)
-src/RmlUi.Net/Api/                        ← EventListener.Create, OwnedElement, Variant          (hand-written)
+src/RmlUi.Net/Api/                        ← EventListener.Create, FileInterface.Create, OwnedElement, Variant (hand-written)
 src/RmlUi.Net/Hosting/                    ← RmlHost, RmlHostBuilder: what every host shares      (hand-written)
 src/RmlUi.Net.Desktop/                    ← RmlWindow, RmlWindowBuilder over native/backend      (hand-written)
 ```
@@ -29,9 +29,10 @@ and doc comments. Hand-written code exists only where generation cannot do the j
 | Hand-written | Why it cannot be generated |
 |---|---|
 | `native/rmlui_c_manual.cpp` + `Api/EventListener.cs` | `Rml::EventListener` is an interface RmlUi calls *into*: a C++ class has to implement it and forward to C function pointers, and C# has to supply them. |
+| `native/rmlui_c_manual.cpp` + `Api/FileInterface.cs` | `Rml::FileInterface` likewise. RmlUi opens, reads, seeks and asks the length; the C++ side asks C# once per open for the whole file, through one callback, and serves the rest from that copy, so C# never holds a stream for RmlUi. |
 | `Api/OwnedElement.cs` | Ownership rules (attach once, release unattached ones before shutdown, report leftovers) are a design, not a type mapping. The generator maps `ElementPtr` to it. |
 | `Api/Variant.cs` | The C# value type and its conversions. The generator maps `Rml::Variant` to it and writes the C side. |
-| `Hosting/` | Setup and teardown order, fonts kept alive, one host per process. |
+| `Hosting/` | Setup and teardown order, fonts kept alive, asset sources and their paths, one host per process. |
 | `native/backend/` + `RmlUi.Net.Desktop` | A window and a renderer, from RmlUi's sample backends. |
 
 `native/`, `Generated/` and `Api.Generated/` hold generated code under version control, so a build needs no

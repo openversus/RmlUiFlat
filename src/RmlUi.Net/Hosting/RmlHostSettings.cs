@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace RmlUi.Hosting;
@@ -7,14 +8,17 @@ public sealed class RmlHostSettings
 {
     internal sealed record Font(string? Path, byte[]? Data, string? Family, Style.FontStyle Style, Style.FontWeight Weight, bool Fallback);
 
-    internal RmlHostSettings(string contextName, IReadOnlyList<Font> fonts)
+    internal RmlHostSettings(string contextName, IReadOnlyList<Font> fonts, IReadOnlyList<Func<string, byte[]?>> assets)
     {
         ContextName = contextName;
         Fonts = fonts;
+        Assets = assets;
     }
 
     /// <summary>Name of the RmlUi context the host creates.</summary>
     public string ContextName { get; }
 
     internal IReadOnlyList<Font> Fonts { get; }
+
+    internal IReadOnlyList<Func<string, byte[]?>> Assets { get; }
 }

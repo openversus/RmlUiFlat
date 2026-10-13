@@ -9,10 +9,11 @@ using RmlUi;
 using RmlUi.Desktop;
 
 using var window = new RmlWindowBuilder("Installer", 800, 480)
-    .AddFont(File.ReadAllBytes(Path.Combine(AppContext.BaseDirectory, "assets", "LatoLatin-Regular.ttf")), "Lato")
+    .Assets(typeof(Program).Assembly)          // documents, style sheets, fonts and images, embedded by path
+    .AddFont("fonts/LatoLatin-Regular.ttf")
     .Build();
 
-var document = window.Context.LoadDocumentFromMemory(rml);
+var document = window.Context.LoadDocument("ui/installer.rml");
 document.Show();
 
 var name = ElementFormControlInput.From(document.GetElementById("name"));
