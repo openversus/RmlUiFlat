@@ -20,7 +20,7 @@ internal static unsafe partial class Program
         <head>
             <title>OpenVersus</title>
             <style>
-                body { font-family: LatoLatin; font-size: 20dp; color: #e8e8f0; background-color: #1b1d2a;
+                body { font-family: Lato; font-size: 20dp; color: #e8e8f0; background-color: #1b1d2a;
                        width: 100%; height: 100%; padding: 40dp; box-sizing: border-box; }
                 div, h1, p { display: block; }
                 h1 { font-size: 36dp; font-weight: bold; color: #ffffff; margin-bottom: 16dp; }
@@ -65,8 +65,9 @@ internal static unsafe partial class Program
         }
         using var window = builder
             .Assets(typeof(Program).Assembly)
-            .AddFont("fonts/LatoLatin-Regular.ttf")
-            .AddFont("fonts/LatoLatin-Bold.ttf")
+            .AddFont("fonts/LatoLatin-Regular.ttf")                                   // family from the file: LatoLatin
+            .AddFont("fonts/LatoLatin-Regular.ttf", "Lato")                           // the same file, as Lato
+            .AddFont("fonts/LatoLatin-Bold.ttf", "Lato", weight: Style.FontWeight.Bold)
             .Build();
         Console.WriteLine($"RmlUi {Rml.GetVersion()}, renderer {window.Renderer}, {window.Context.GetDimensions()} px");
         if (expectRenderer != null && !string.Equals(window.Renderer.ToString(), expectRenderer, StringComparison.OrdinalIgnoreCase))
@@ -124,7 +125,7 @@ internal static unsafe partial class Program
         // only gets a size once its bytes have been read and decoded. The fonts came the same way, or Build would
         // have thrown.
         var panel = window.Context.LoadDocument("./ui/panel.rml");
-        float probeWidth = 0, tgaWidth = 0, tgaHeight = 0, pngWidth = 0, pngHeight = 0;
+        float probeWidth = 0, tgaWidth = 0, tgaHeight = 0, pngWidth = 0, pngHeight = 0, renamedWidth = 0;
         if (!panel.IsNull)
         {
             panel.Show();
@@ -134,13 +135,15 @@ internal static unsafe partial class Program
             var png = panel.GetElementById("png");
             (tgaWidth, tgaHeight) = (tga.GetOffsetWidth(), tga.GetOffsetHeight());
             (pngWidth, pngHeight) = (png.GetOffsetWidth(), png.GetOffsetHeight());
+            renamedWidth = panel.GetElementById("renamed").GetOffsetWidth();
         }
-        Console.WriteLine($"assets: probe {probeWidth} px wide, tga {tgaWidth}x{tgaHeight}, png {pngWidth}x{pngHeight}");
+        Console.WriteLine($"assets: probe {probeWidth} px wide, tga {tgaWidth}x{tgaHeight}, png {pngWidth}x{pngHeight}, text in Lato bold {renamedWidth} px wide");
         Console.WriteLine($"assets asked for: {string.Join(", ", requested.Distinct())}");
         string[] expectedPaths = ["fonts/LatoLatin-Regular.ttf", "fonts/LatoLatin-Bold.ttf", "ui/panel.rml", "ui/panel.rcss",
             "images/alien_small.tga", "images/hello_world.png"];
         // alien_small.tga is 32x32 and hello_world.png 540x276: the shapes must survive whatever scale the layout applies.
-        if (probeWidth != 123 || tgaWidth <= 0 || Math.Abs(tgaWidth - tgaHeight) > 1
+        // Text in a family nothing has loaded lays out with no width: "Lato" exists only through AddFont(path, family).
+        if (probeWidth != 123 || renamedWidth <= 0 || tgaWidth <= 0 || Math.Abs(tgaWidth - tgaHeight) > 1
             || pngHeight <= 0 || Math.Abs(pngWidth / pngHeight - 540f / 276f) > 0.02f || expectedPaths.Except(requested).Any())
         {
             Console.Error.WriteLine($"FAIL: assets (missing paths: [{string.Join(", ", expectedPaths.Except(requested))}])");

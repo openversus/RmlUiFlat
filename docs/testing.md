@@ -66,7 +66,7 @@ It exits non-zero and prints `FAIL:` for each check that fails:
 
 | Check | Proves |
 |---|---|
-| The fonts load by path, `./ui/panel.rml` loads, its linked `panel.rcss` sets `#probe` to 123 px, and both `<img>`s get a size of the right shape | `Assets`: embedded resources by path, path cleanup, the link resolved against the document, a TGA through RmlUi's loader (`Seek`, `Tell`) and a PNG through stb (`Length`, `Read`); the paths asked for are recorded and checked |
+| The fonts load by path, `./ui/panel.rml` loads, its linked `panel.rcss` sets `#probe` to 123 px, text in `Lato` bold (a family that exists only through `AddFont(path, family)`) has a width, and both `<img>`s get a size of the right shape | `Assets`: embedded resources by path, path cleanup, the link resolved against the document, a TGA through RmlUi's loader (`Seek`, `Tell`) and a PNG through stb (`Length`, `Read`); the paths asked for are recorded and checked |
 | An asset source that throws for `ui/throws.rml` | the exception is reported once through `EventListener.UnhandledException`, never reaches RmlUi, and the document counts as missing |
 | Building a second window while one is open throws | one host per process |
 | A click at the button's centre reaches the C# handler, which writes the status text | input, events, listeners, strings both ways |
@@ -143,6 +143,7 @@ it was and the test passing, which proves nothing. Mutations that have been run 
 | File interface `Seek` refuses `SEEK_END` | the TGA image gets no size |
 | File interface `Length` returns 0 | the fonts by path fail to load, and `Build` throws before the test starts |
 | Asset path cleanup keeps `.` segments | `./ui/panel.rml` is not found: no probe, no images, the paths are missing |
+| `AddFont(path, family)` loads the file under its own family | the `Lato` bold text has no width |
 
 ## The renderer cases
 

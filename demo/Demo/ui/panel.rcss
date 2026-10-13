@@ -3,3 +3,4 @@ body { position: absolute; z-index: 1; top: 40dp; right: 40dp; width: 300px; fon
 div, img { display: block; }
 #probe { width: 123px; margin-bottom: 8dp; }
 #png { width: 270px; }
+#renamed { font-family: Lato; font-weight: bold; }

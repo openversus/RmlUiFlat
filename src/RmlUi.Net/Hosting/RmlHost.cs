@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -21,6 +22,7 @@ public abstract unsafe class RmlHost : IDisposable
     private readonly List<nint> fontMemory = [];
     private readonly List<EventListener> listeners = [];
     private FileInterface fileInterface;
+    private Func<string, byte[]?>? assets;
     private bool rmlUp;
     private bool disposed;
 
@@ -68,7 +70,8 @@ public abstract unsafe class RmlHost : IDisposable
         Rml.SetRenderInterface(renderInterface);
         if (settings.Assets.Count > 0)
         {
-            fileInterface = FileInterface.Create(AssetSources.Combine(settings.Assets));
+            assets = AssetSources.Combine(settings.Assets);
+            fileInterface = FileInterface.Create(assets);
             Rml.SetFileInterface(fileInterface);
         }
         if (!Rml.Initialise())
@@ -136,7 +139,7 @@ public abstract unsafe class RmlHost : IDisposable
 
     private void LoadFont(RmlHostSettings.Font font)
     {
-        if (font.Path != null)
+        if (font.Path != null && font.Family == null)
         {
             if (!Rml.LoadFontFace(font.Path, font.Fallback))
             {
@@ -145,8 +148,25 @@ public abstract unsafe class RmlHost : IDisposable
             return;
         }
 
+        // A path with a family of its own: read it here, through the assets as RmlUi would, and load it as bytes.
+        byte[]? data = font.Data;
+        if (data == null)
+        {
+            try
+            {
+                data = assets != null ? assets(font.Path!) : File.Exists(font.Path) ? File.ReadAllBytes(font.Path!) : null;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Reading the font file {font.Path} threw.", e);
+            }
+            if (data == null)
+            {
+                throw new InvalidOperationException($"There is no font file {font.Path}.");
+            }
+        }
+
         // RmlUi keeps this pointer until Shutdown, so it lives in native memory owned by the host.
-        var data = font.Data!;
         byte* memory = (byte*)NativeMemory.Alloc((nuint)data.Length);
         fontMemory.Add((nint)memory);
         data.CopyTo(new Span<byte>(memory, data.Length));

@@ -62,7 +62,9 @@ with the files embedded under their paths in the project file:
 - **Fonts** are either a path (`AddFont(path)`), read through the assets when there are any and from the disk
   otherwise, or bytes (`AddFont(data, family, style, weight)`), which the host keeps in native memory until RmlUi shuts
   down. A font loaded by path takes its family, style and weight from the file: the Lato files RmlUi ships declare the
-  family `LatoLatin`, so documents ask for `font-family: LatoLatin`. RmlUi draws no text without a font, and logs
+  family `LatoLatin`. To call it something else, give the family: `AddFont("fonts/LatoLatin-Bold.ttf", "Lato",
+  weight: Style.FontWeight.Bold)` reads the file the same way and registers it under the name, style and weight
+  given. RmlUi draws no text without a font, and logs
   `No font face defined` for each element that asked for a family it does not have.
 - **The size** is in the display's logical units; the context is sized in physical pixels, so on a display scaled to
   125% an 800-wide window has a 1000-wide context. RmlUi's `dp` unit follows the scale, so write sizes in `dp`.

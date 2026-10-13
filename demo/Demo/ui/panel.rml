@@ -5,6 +5,7 @@
 </head>
 <body>
     <div id="probe">Loaded by path from embedded resources</div>
+    <div><span id="renamed">Lato bold</span></div>
     <img id="tga" src="../images/alien_small.tga"/>
     <img id="png" src="/images/hello_world.png"/>
 </body>

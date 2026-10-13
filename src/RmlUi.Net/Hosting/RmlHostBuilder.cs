@@ -34,6 +34,21 @@ public abstract class RmlHostBuilder<TSelf> where TSelf : RmlHostBuilder<TSelf>
     }
 
     /// <summary>
+    /// A font file registered under the family, style and weight given here instead of the ones in the file, so
+    /// documents can call it whatever they like. Read when the host is built, through the
+    /// <see cref="Assets(Func{string, byte[]})"/> sources when there are any, from the disk otherwise, then loaded as
+    /// <see cref="AddFont(ReadOnlySpan{byte}, string, Style.FontStyle, Style.FontWeight, bool)"/> loads bytes.
+    /// </summary>
+    public TSelf AddFont(string path, string family, Style.FontStyle style = Style.FontStyle.Normal,
+        Style.FontWeight weight = Style.FontWeight.Auto, bool fallback = false)
+    {
+        ArgumentNullException.ThrowIfNull(path);
+        ArgumentNullException.ThrowIfNull(family);
+        fonts.Add(new(path, null, family, style, weight, fallback));
+        return (TSelf)this;
+    }
+
+    /// <summary>
     /// A font from memory, such as an embedded resource. The bytes are copied; the host keeps its copy in native memory
     /// for as long as RmlUi needs it (until the host is disposed), so the caller's buffer can go away at once.
     /// </summary>
