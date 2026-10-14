@@ -1,3 +1,5 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using RmlUi.Hosting;
 
 namespace RmlUi.Desktop;
@@ -81,6 +83,38 @@ public sealed unsafe class RmlWindow : RmlHost
 
     /// <summary>Asks the window to close; <see cref="RunFrame"/> then returns false.</summary>
     public void RequestExit() => NativeBackend.RequestExit();
+
+    /// <summary>
+    /// Asks the person for a folder with the system's folder picker, over this window, starting in
+    /// <paramref name="startIn"/> (null: where the system chooses). Returns at once; the task gets the folder chosen, or
+    /// null when they cancelled, and fails with <see cref="InvalidOperationException"/> when no picker could be shown.
+    /// Call it on the window's thread. On Linux the answer can arrive only while frames run, so run them without power
+    /// save until the task completes; its continuations never run inside a frame.
+    /// </summary>
+    public Task<string?> ChooseFolderAsync(string? startIn = null)
+    {
+        ObjectDisposedException.ThrowIf(IsDisposed, this);
+        var answer = new TaskCompletionSource<string?>(TaskCreationOptions.RunContinuationsAsynchronously);
+        NativeBackend.ShowOpenFolderDialog(&FolderChosen, GCHandle.ToIntPtr(GCHandle.Alloc(answer)), startIn);
+        return answer.Task;
+    }
+
+    // The picker's answer, on whichever thread the system gives it; the strings are copied before it returns.
+    [UnmanagedCallersOnly(CallConvs = [typeof(CallConvCdecl)])]
+    private static void FolderChosen(nint userdata, byte* folder, byte* error)
+    {
+        var handle = GCHandle.FromIntPtr(userdata);
+        var answer = (TaskCompletionSource<string?>)handle.Target!;
+        handle.Free();
+        if (error != null)
+        {
+            answer.TrySetException(new InvalidOperationException($"The folder picker could not be shown: {Marshal.PtrToStringUTF8((nint)error)}"));
+        }
+        else
+        {
+            answer.TrySetResult(folder == null ? null : Marshal.PtrToStringUTF8((nint)folder));
+        }
+    }
 
     /// <summary>Closes the window; RmlUi is already shut down by the time this runs.</summary>
     protected override void ShutdownHost()

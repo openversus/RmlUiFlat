@@ -45,6 +45,20 @@ RMLC_API void RmlBackend_EndFrame(void);
 /** Shows the finished frame (for OpenGL, swaps buffers; for Vulkan, already done by EndFrame). */
 RMLC_API void RmlBackend_PresentFrame(void);
 
+/**
+ * The answer to RmlBackend_ShowOpenFolderDialog, given once: the folder chosen (UTF-8), or NULL when the person
+ * cancelled; error is NULL unless the picker could not be shown, and then says why. Both strings are valid only during
+ * the call. It may run on another thread: the system's picker answers on its own thread on Windows and with zenity on
+ * Linux, and during RmlBackend_ProcessEvents with the desktop portal.
+ */
+typedef void (*RmlBackendFolderChosen)(void* userdata, const char* folder, const char* error);
+/**
+ * Opens the system's folder picker over the window, starting in default_location (NULL: where the system chooses), and
+ * returns at once; callback gets the answer. Call it on the thread that runs the window. With the desktop portal the
+ * answer arrives while events are processed, so keep processing them (power save off) until it has.
+ */
+RMLC_API void RmlBackend_ShowOpenFolderDialog(RmlBackendFolderChosen callback, void* userdata, const char* default_location);
+
 #ifdef __cplusplus
 }
 #endif

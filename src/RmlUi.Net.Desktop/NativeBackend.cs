@@ -55,4 +55,8 @@ internal static unsafe partial class NativeBackend
     [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_PresentFrame")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial void PresentFrame();
+
+    [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_ShowOpenFolderDialog", StringMarshalling = StringMarshalling.Utf8)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void ShowOpenFolderDialog(delegate* unmanaged[Cdecl]<nint, byte*, byte*, void> callback, nint userdata, string? defaultLocation);
 }

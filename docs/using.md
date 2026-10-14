@@ -74,6 +74,10 @@ with the files embedded under their paths in the project file:
   returns false once the window has closed, for driving it from your own loop. `PowerSave(true)` (the default) waits
   for input between frames; turn it off for animation. `AfterRender` fires once each frame is complete (with OpenGL,
   before it is shown, so the back buffer can still be read; RmlUi's Vulkan renderer presents as it finishes).
+- **A folder picker**: `await window.ChooseFolderAsync(startIn)` shows the system's own (the desktop portal or zenity
+  on Linux), over the window, and gives the folder chosen or null for a cancel; it fails with
+  `InvalidOperationException` when no picker can be shown. Call it on the window's thread, and keep frames running
+  without power save until it completes: on Linux the answer arrives while events are processed.
 - **One host at a time.** RmlUi is process-wide; building a second while one is open throws
   `InvalidOperationException`.
 - **Dispose** tears down in the order RmlUi needs: unattached elements (below), `Rml::Shutdown`, listeners, the

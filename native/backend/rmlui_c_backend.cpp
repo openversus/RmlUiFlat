@@ -538,6 +538,39 @@ RMLC_API bool RmlBackend_ProcessEvents(RmlContext* context_handle, bool power_sa
     return result;
 }
 
+namespace
+{
+    struct FolderRequest
+    {
+        RmlBackendFolderChosen callback;
+        void* userdata;
+    };
+
+    // SDL's answer: no list for an error, an empty list for a cancel; zenity cancels with an empty name instead.
+    void SDLCALL FolderChosen(void* userdata, const char* const* filelist, int /*filter*/)
+    {
+        auto* request = static_cast<FolderRequest*>(userdata);
+        if (!filelist)
+        {
+            request->callback(request->userdata, nullptr, SDL_GetError());
+        }
+        else
+        {
+            request->callback(request->userdata, filelist[0] && filelist[0][0] ? filelist[0] : nullptr, nullptr);
+        }
+        delete request;
+    }
+}
+
+RMLC_API void RmlBackend_ShowOpenFolderDialog(RmlBackendFolderChosen callback, void* userdata, const char* default_location)
+{
+    if (!callback)
+    {
+        return;
+    }
+    SDL_ShowOpenFolderDialog(FolderChosen, new FolderRequest{callback, userdata}, state ? state->window : nullptr, default_location, false);
+}
+
 RMLC_API void RmlBackend_RequestExit(void)
 {
     if (state)
