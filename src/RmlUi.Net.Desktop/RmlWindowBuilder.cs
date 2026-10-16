@@ -11,6 +11,8 @@ public sealed class RmlWindowBuilder : RmlHostBuilder<RmlWindowBuilder>
     private bool resizable = true;
     private bool powerSave = true;
     private RmlRenderer renderer = RmlRenderer.Auto;
+    private string? appId;
+    private byte[]? icon;
 
     /// <summary>A window with the given title and size.</summary>
     /// <param name="title">The window's title bar text.</param>
@@ -58,7 +60,32 @@ public sealed class RmlWindowBuilder : RmlHostBuilder<RmlWindowBuilder>
         return this;
     }
 
+    /// <summary>
+    /// The application id the window is made with, which the desktop pairs with the program's <c>.desktop</c> entry (the
+    /// entry's file name without <c>.desktop</c>): Wayland's app_id, X11's WM_CLASS. On Wayland this is also how the window
+    /// gets its icon, the entry's. Default: none (SDL uses the program's name).
+    /// </summary>
+    public RmlWindowBuilder AppId(string appId)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(appId);
+        this.appId = appId;
+        return this;
+    }
+
+    /// <summary>
+    /// The window's icon, a PNG or JPEG. Where a window carries an icon of its own (X11, Windows) it is set; where the
+    /// desktop supplies it (Wayland, by <see cref="AppId"/> and the desktop entry) nothing happens, and
+    /// <see cref="RmlWindow.HasIcon"/> says which. An image that cannot be decoded fails <see cref="Build"/>.
+    /// </summary>
+    public RmlWindowBuilder Icon(byte[] image)
+    {
+        ArgumentNullException.ThrowIfNull(image);
+        icon = image;
+        return this;
+    }
+
     /// <summary>Opens the window, initialises RmlUi, loads the fonts and creates the context.</summary>
     /// <exception cref="InvalidOperationException">Another RmlUi host exists, or a step fails; nothing is left initialised.</exception>
-    public RmlWindow Build() => new(Settings, title, width, height, resizable, powerSave, renderer);
+    /// <exception cref="ArgumentException">The <see cref="Icon"/> is not an image RmlUi can decode.</exception>
+    public RmlWindow Build() => new(Settings, title, width, height, resizable, powerSave, renderer, appId, icon);
 }

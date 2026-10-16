@@ -399,6 +399,39 @@ RMLC_API bool RmlBackend_Initialize(const char* window_name, int32_t width, int3
     return true;
 }
 
+RMLC_API void RmlBackend_SetAppId(const char* app_id)
+{
+    SDL_SetHint(SDL_HINT_APP_ID, app_id);
+}
+
+RMLC_API int32_t RmlBackend_SetWindowIcon(const uint8_t* image, int32_t size)
+{
+    if (!state || !state->window || !image || size <= 0)
+    {
+        return -1;
+    }
+    int width = 0, height = 0, channels = 0;
+    stbi_uc* pixels = stbi_load_from_memory(image, size, &width, &height, &channels, 4);
+    if (!pixels)
+    {
+        Rml::Log::Message(Rml::Log::LT_ERROR, "The window icon could not be decoded: %s", stbi_failure_reason());
+        return -1;
+    }
+    // SDL keeps its own copy of the surface's pixels (it converts them), so both are freed here.
+    SDL_Surface* surface = SDL_CreateSurfaceFrom(width, height, SDL_PIXELFORMAT_RGBA32, pixels, width * 4);
+    const bool set = surface && SDL_SetWindowIcon(state->window, surface);
+    if (!set)
+    {
+        Rml::Log::Message(Rml::Log::LT_INFO, "The window carries no icon here: %s", SDL_GetError());
+    }
+    if (surface)
+    {
+        SDL_DestroySurface(surface);
+    }
+    stbi_image_free(pixels);
+    return set ? 1 : 0;
+}
+
 RMLC_API void RmlBackend_Shutdown(void)
 {
     if (!state)

@@ -11,6 +11,14 @@ internal static unsafe partial class NativeBackend
     [return: MarshalAs(UnmanagedType.U1)]
     public static partial bool Initialize(string windowName, int width, int height, [MarshalAs(UnmanagedType.U1)] bool allowResize, RmlRenderer renderer);
 
+    [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_SetAppId", StringMarshalling = StringMarshalling.Utf8)]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial void SetAppId(string appId);
+
+    [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_SetWindowIcon")]
+    [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
+    public static partial int SetWindowIcon(byte* image, int size);
+
     [LibraryImport(NativeMethods.LibraryName, EntryPoint = "RmlBackend_GetRenderer")]
     [UnmanagedCallConv(CallConvs = [typeof(CallConvCdecl)])]
     public static partial RmlRenderer GetRenderer();

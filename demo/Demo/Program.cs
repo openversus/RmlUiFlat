@@ -63,13 +63,17 @@ internal static unsafe partial class Program
                 return path == ThrowingPath ? throw new IOException("planted by the self-test") : null;
             });
         }
+        // The icon and app id go through the same path a real program's would; the self-test prints whether the window
+        // took the icon, which depends on the platform (not on Wayland), so it is reported rather than asserted.
         using var window = builder
+            .AppId("rmlui-demo")
+            .Icon(Embedded("images/hello_world.png"))
             .Assets(typeof(Program).Assembly)
             .AddFont("fonts/LatoLatin-Regular.ttf")                                   // family from the file: LatoLatin
             .AddFont("fonts/LatoLatin-Regular.ttf", "Lato")                           // the same file, as Lato
             .AddFont("fonts/LatoLatin-Bold.ttf", "Lato", weight: Style.FontWeight.Bold)
             .Build();
-        Console.WriteLine($"RmlUi {Rml.GetVersion()}, renderer {window.Renderer}, {window.Context.GetDimensions()} px");
+        Console.WriteLine($"RmlUi {Rml.GetVersion()}, renderer {window.Renderer}, {window.Context.GetDimensions()} px, icon {(window.HasIcon ? "on the window" : "left to the desktop")}");
         if (expectRenderer != null && !string.Equals(window.Renderer.ToString(), expectRenderer, StringComparison.OrdinalIgnoreCase))
         {
             Console.Error.WriteLine($"FAIL: expected renderer {expectRenderer}, got {window.Renderer}");
@@ -378,4 +382,12 @@ internal static unsafe partial class Program
 
     [LibraryImport("libGL.so.1")]
     private static partial void glPixelStorei(uint pname, int param);
+
+    private static byte[] Embedded(string name)
+    {
+        using var stream = typeof(Program).Assembly.GetManifestResourceStream(name) ?? throw new FileNotFoundException(name);
+        using var bytes = new MemoryStream();
+        stream.CopyTo(bytes);
+        return bytes.ToArray();
+    }
 }

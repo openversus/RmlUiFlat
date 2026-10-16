@@ -13,10 +13,14 @@ public sealed unsafe class RmlWindow : RmlHost
 {
     private bool backendUp;
 
-    internal RmlWindow(RmlHostSettings settings, string title, int width, int height, bool resizable, bool powerSave, RmlRenderer renderer)
+    internal RmlWindow(RmlHostSettings settings, string title, int width, int height, bool resizable, bool powerSave, RmlRenderer renderer, string? appId, byte[]? icon)
     {
         try
         {
+            if (appId != null)
+            {
+                NativeBackend.SetAppId(appId);
+            }
             if (!NativeBackend.Initialize(title, width, height, resizable, renderer))
             {
                 throw new InvalidOperationException(renderer == RmlRenderer.Auto
@@ -25,6 +29,19 @@ public sealed unsafe class RmlWindow : RmlHost
             }
             backendUp = true;
             Renderer = NativeBackend.GetRenderer();
+            if (icon != null)
+            {
+                int set;
+                fixed (byte* image = icon)
+                {
+                    set = NativeBackend.SetWindowIcon(image, icon.Length);
+                }
+                if (set < 0)
+                {
+                    throw new ArgumentException("The window icon is not an image RmlUi can decode (PNG or JPEG).");
+                }
+                HasIcon = set == 1;
+            }
 
             // The context works in physical pixels; RmlUi's dp unit scales by the display, as the platform layer does
             // again when the window moves to a display with another scale.
@@ -46,6 +63,12 @@ public sealed unsafe class RmlWindow : RmlHost
 
     /// <summary>The renderer in use: <see cref="RmlRenderer.Vulkan"/> or <see cref="RmlRenderer.OpenGL"/>.</summary>
     public RmlRenderer Renderer { get; }
+
+    /// <summary>
+    /// Whether the window carries the icon given to <see cref="RmlWindowBuilder.Icon"/>: true on X11 and Windows; false
+    /// where the desktop supplies it from the desktop entry instead (Wayland), and when none was given.
+    /// </summary>
+    public bool HasIcon { get; }
 
     /// <summary>Whether each frame waits for input before running.</summary>
     public bool PowerSave { get; set; }

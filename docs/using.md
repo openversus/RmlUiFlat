@@ -78,6 +78,9 @@ with the files embedded under their paths in the project file:
   on Linux), over the window, and gives the folder chosen or null for a cancel; it fails with
   `InvalidOperationException` when no picker can be shown. Call it on the window's thread, and keep frames running
   without power save until it completes: on Linux the answer arrives while events are processed.
+- **An icon and an app id**: `.Icon(pngBytes)` on the builder gives the window its icon where windows carry one (X11,
+  Windows; `window.HasIcon` says whether it took), and `.AppId("my-program")` names the window for the desktop so that
+  on Wayland it shows the icon of `my-program.desktop` instead. Use both for a program with a desktop entry.
 - **One host at a time.** RmlUi is process-wide; building a second while one is open throws
   `InvalidOperationException`.
 - **Dispose** tears down in the order RmlUi needs: unattached elements (below), `Rml::Shutdown`, listeners, the

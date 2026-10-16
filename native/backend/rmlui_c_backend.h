@@ -25,6 +25,17 @@ typedef enum RmlBackendRenderer
  */
 RMLC_API bool RmlBackend_Initialize(const char* window_name, int32_t width, int32_t height, bool allow_resize, RmlBackendRenderer renderer);
 RMLC_API void RmlBackend_Shutdown(void);
+/**
+ * The application id the window is made with, which the desktop pairs with the program's .desktop entry (its file name
+ * without .desktop): Wayland's app_id, X11's WM_CLASS. Call before RmlBackend_Initialize; later it changes nothing.
+ */
+RMLC_API void RmlBackend_SetAppId(const char* app_id);
+/**
+ * Gives the window an icon from an image in memory (PNG or JPEG, decoded here). 1 when it is set; 0 when this platform's
+ * windows carry no icon of their own (Wayland shows the desktop entry's, by app id); -1 when the image cannot be decoded
+ * or there is no window.
+ */
+RMLC_API int32_t RmlBackend_SetWindowIcon(const uint8_t* image, int32_t size);
 /** The renderer in use, or RmlBackendRenderer_Auto before Initialize succeeds. */
 RMLC_API RmlBackendRenderer RmlBackend_GetRenderer(void);
 /** The window's size in physical pixels: the size to give the RmlUi context. */
